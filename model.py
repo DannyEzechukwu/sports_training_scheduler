@@ -50,7 +50,7 @@ class User(db.Model):
     events = db.relationship("ScheduledEvent", back_populates = "user")
     
     def __repr__(self): 
-        return f"<User{self.id} {self.username} {self.email}"
+        return f"<User{self.id} username : {self.username} email: {self.email}>"
     
 
 #ScheduledEvent Table
@@ -95,7 +95,7 @@ class ScheduledEvent(db.Model):
     user = db.relationship("User", back_populates = "events")
 
     #1 scheuled event can contain 1 event
-    event = db.relationship("Day", back_populates = "events")
+    event = db.relationship("Event", back_populates = "events")
     
     def __repr__(self): 
         return f"<Event{self.event_id} - {self.weekday}- {self.event_description}>"
@@ -112,6 +112,10 @@ class Event(db.Model):
     name = db.Column(db.String,
                         nullable = False, 
                         index = True)
+    
+    location = db.Column(db.String,
+                nullable = False, 
+                index = True)
     
     description = db.Column(db.String,
                         nullable = False,

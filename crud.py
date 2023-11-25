@@ -1,4 +1,4 @@
-from model import User, ScheduledEvent, Event, 
+from model import User, ScheduledEvent, Event
 
 #User crud functions
 
@@ -26,8 +26,9 @@ def schedule_event(user_id, event_id, weekday, month, date, event_start_time, ev
     return scheduled_event
 
 #Day crud functions
-def create_event(name, description): 
-    day = Event(name = name, 
+def create_event(name, location, description): 
+    day = Event(name = name,
+            location = location, 
             description = description)
     
     return day
