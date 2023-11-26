@@ -45,23 +45,23 @@ app_users = {
 
 app_events = {
     "event1" : { "name" : "Football Training (Edge / ILB)",
-        "location" : "Grapevine Rec Turf Field - 1175 Municipal Way, Grapevine, TX 76051",
-        "description" : "Ladder/cone agility\nSpeed work\nPosition specific drills",
+        "location" : "Mustang-Panther Stadium 2909 Ira E Woods Ave, Grapevine, TX 76051",
+        "description" : "Ladder/cone agility, Speed work, Position specific drills",
     },
 
     "event2" : { "name" : "Basketball Training (All Positions)",
     "location" : "Grapevine Rec Main Gym - 1175 Municipal Way, Grapevine, TX 76051",
-    "description" : "Ball handling\nShooting\nConditioning",
+    "description" : "Ball handling, Shooting, Conditioning",
     },
 
     "event3" : { "name" : "Baseball Training (Infield / Outfield)",
     "location" : "Oak Grove Baseball Complex Field H - 2520 Oak Grove Loop S, Grapevine, TX 76051",
-    "description" : "Fielding\nHitting\nSpeed work",
+    "description" : "Fielding, Hitting, Speed work",
     },
 
     "event4" : { "name" : "General Workout",
     "location": "Grapevine Rec Fitness Center - 1175 Municipal Way, Grapevine, TX 76051",
-    "description" : "Upper body lift\nLower body lift\nAuxileries (biceps, triceps, calves, etc.)",
+    "description" : "Upper body lift, Lower body lift, Auxileries (biceps, triceps, calves, etc.)",
     },
 
 }

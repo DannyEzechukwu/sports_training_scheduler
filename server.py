@@ -13,3 +13,11 @@ app = Flask(__name__)
 #Secret Key to enable session
 app.secret_key = os.environ["APP_KEY"]
 app.jinja_env.undefined = StrictUndefined
+
+@app.route("/calendar")
+def show_cal(): 
+    return render_template("calendar.html")
+
+if __name__ == "__main__":
+    connect_to_db(app)
+    app.run(host="0.0.0.0", debug=True)
