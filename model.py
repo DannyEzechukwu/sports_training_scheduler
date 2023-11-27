@@ -159,7 +159,7 @@ class EventSchedule(db.Model):
 
     
     def __repr__(self): 
-        return f"<Event Schedule ID : {self.id}, Event ID : {self.event_id}, Month / Year : {self.month} / {self.year}, Start - End : {self.start_time} - {self.end_time}>"
+        return f"<Event Schedule ID : {self.id}, Event ID : {self.event_id}, Date : {self.month}, {self.date} {self.year}, Time : {self.start_time} - {self.end_time}>"
     
 
 if __name__ == "__main__":
