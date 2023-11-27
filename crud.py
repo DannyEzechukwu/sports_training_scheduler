@@ -1,4 +1,4 @@
-from model import User, ScheduledEvent, Event
+from model import User, SelectedEvent, Event
 
 #User crud functions
 
@@ -13,9 +13,9 @@ def create_user(fname, lname, username, email, password):
     return user
 
 #Event crud functions
-def schedule_event(user_id, event_id, weekday, month, date, event_start_time, event_end_time): 
+def select_event(user_id, event_id, weekday, month, date, event_start_time, event_end_time): 
     
-    scheduled_event = ScheduledEvent(user_id = user_id, 
+    scheduled_event = SelectedEvent(user_id = user_id, 
             event_id = event_id, 
             weekday = weekday,
             month = month,

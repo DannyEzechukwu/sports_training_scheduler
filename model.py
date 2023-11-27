@@ -14,7 +14,6 @@ def connect_to_db(flask_app, db_uri="postgresql:///training", echo=False):
 
         print("Connected to the db!")
 
-
 #User Table
 class User(db.Model): 
     
@@ -46,17 +45,17 @@ class User(db.Model):
                     index = True, 
                     nullable = False)
     
-    #User can schedule many events
-    events = db.relationship("ScheduledEvent", back_populates = "user")
+    #User can have multiple selected events
+    selected_events = db.relationship("SelectedEvent", back_populates = "user")
     
     def __repr__(self): 
-        return f"<User{self.id} username : {self.username} email: {self.email}>"
+        return f"<User ID : {self.id},  Username : {self.username},  Email: {self.email}>"
     
 
-#ScheduledEvent Table
-class ScheduledEvent(db.Model): 
+#SelectedEvent Table
+class SelectedEvent(db.Model): 
     
-    __tablename__ = "scheduled_events"
+    __tablename__ = "selected_events"
 
     id = db.Column(db.Integer, 
                 primary_key = True,
@@ -67,38 +66,25 @@ class ScheduledEvent(db.Model):
                         nullable = False, 
                         index = True)
     
+    event_schedule_id = db.Column(db.Integer, 
+                        db.ForeignKey("event_schedule.id"),
+                        nullable = False,
+                        index = True)
+    
     event_id = db.Column(db.Integer, 
-                        db.ForeignKey("events.id"),
-                        index = True)
+            db.ForeignKey("events.id"),
+            nullable = False,
+            index = True)
 
-    weekday = db.Column(db.String, 
-                index = True, 
-                nullable = False)
     
-    month = db.Column(db.String, 
-                    index = True, 
-                    nullable = False)
-    
-    date = db.Column(db.Integer, 
-                    index = True, 
-                    nullable = False)
-    
-    event_start_time = db.Column(db.String,
-                        nullable = False,
-                        index = True)
-    
-    event_end_time = db.Column(db.String,
-                        nullable = False,
-                        index = True)
-    
-    #1 scheduled event can be scheduled by 1 user
-    user = db.relationship("User", back_populates = "events")
+    #1 selected event can be owned by 1 user
+    user = db.relationship("User", back_populates = "selected_events")
 
-    #1 scheuled event can contain 1 event
-    event = db.relationship("Event", back_populates = "events")
-    
+    #ONLY 1 selection can be made for a scheduled event
+    selection = db.relationship('EventSchedule', uselist = False, back_populates = "specific_event_selected")
+
     def __repr__(self): 
-        return f"<Event{self.event_id} - {self.weekday}- {self.event_description}>"
+        return f"<User ID {self.user_id}, Scheduled Event ID : {self.event_schedule_id}, Event ID : {self.event_id} >"
 
 
 #Event Table
@@ -120,15 +106,62 @@ class Event(db.Model):
     description = db.Column(db.String,
                         nullable = False,
                         index = True)
-    
 
-    #1 type of event can be schedule ,many times
-    events = db.relationship("ScheduledEvent", back_populates = "event")
+    #An event can be appear on the Schedule MANY times
+    schedule_appearances = db.relationship("EventSchedule", back_populates = "specific_event_scheduled")
 
     def __repr__(self): 
-        return f"<Event{self.id} - {self.name}, {self.description}>"
+        return f"<Event ID : {self.id}, Event Name : {self.name}, Event Description : {self.description}>"
 
-   
+
+#Event Schedule Table
+class EventSchedule(db.Model): 
+    __tablename__ = "event_schedule"
+    
+    id = db.Column(db.Integer, 
+        primary_key = True,
+        index = True)
+    
+    event_id = db.Column(db.Integer, 
+            db.ForeignKey("events.id"), 
+            nullable = False, 
+            index = True)
+    
+    weekday = db.Column(db.String, 
+                index = True, 
+                nullable = False)
+    
+    month = db.Column(db.String, 
+                    index = True, 
+                    nullable = False)
+    
+    date = db.Column(db.Integer, 
+                    index = True, 
+                    nullable = False)
+
+    year = db.Column(db.Integer, 
+                index = True, 
+                nullable = False)
+    
+    start_time = db.Column(db.String,
+                        nullable = False,
+                        index = True)
+    
+    end_time = db.Column(db.String,
+                        nullable = False,
+                        index = True)
+    
+    #A scheduled event can only contain 1 event from the Event table
+    specific_event_scheduled = db.relationship("Event", back_populates = "schedule_appearances")
+
+    #A scheduled event can ONLY be selected 1 time
+    specific_event_selected = db.relationship("SelectedEvent", back_populates = "selection")
+
+    
+    def __repr__(self): 
+        return f"<Event Schedule ID : {self.id}, Event ID : {self.event_id}, Month / Year : {self.month} / {self.year}, Start - End : {self.start_time} - {self.end_time}>"
+    
+
 if __name__ == "__main__":
     from server import app
 
