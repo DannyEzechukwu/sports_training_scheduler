@@ -20,8 +20,8 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, 
-                    primary_key = True,
-                    index = True)
+                primary_key = True,
+                index = True)
 
     fname = db.Column(db.String, 
                     index = True, 
@@ -52,6 +52,43 @@ class User(db.Model):
         return f"<User ID : {self.id},  Username : {self.username},  Email: {self.email}>"
     
 
+#Coach Table 
+class Coach(db.Model): 
+    __tablename__ = "coaches"
+
+    id = db.Column(db.Integer, 
+                primary_key = True,
+                index = True)
+
+    fname = db.Column(db.String, 
+                index = True, 
+                nullable = False)
+    
+    lname = db.Column(db.String,
+                index = True,
+                nullable = False)
+    
+    username = db.Column(db.String,
+                index = True,
+                nullable = False,
+                unique = True)
+
+    email = db.Column(db.String,
+                index = True, 
+                nullable = False, 
+                unique = True)
+    
+    password = db.Column(db.String,
+                index = True, 
+                nullable = False)
+    
+    #ONLY 1 coach can be assigned to 1 event
+    event = db.relationship('Event', uselist = False, back_populates = "coach")
+
+    def __repr__(self): 
+        return f"<Coach ID : {self.id},  Username : {self.username},  Email : {self.email}>"
+
+
 #SelectedEvent Table
 class SelectedEvent(db.Model): 
     
@@ -76,7 +113,6 @@ class SelectedEvent(db.Model):
             nullable = False,
             index = True)
 
-    
     #1 selected event can be owned by 1 user
     user = db.relationship("User", back_populates = "selected_events")
 
@@ -106,9 +142,17 @@ class Event(db.Model):
     description = db.Column(db.String,
                         nullable = False,
                         index = True)
+    
+    coach_id = db.Column(db.Integer, 
+                    db.ForeignKey("coaches.id"), 
+                    nullable = False, 
+                    index = True)
 
     #An event can be appear on the Schedule MANY times
     schedule_appearances = db.relationship("EventSchedule", back_populates = "specific_event_scheduled")
+
+    #ONLY 1 event can be assigned to 1 coach
+    coach = db.relationship('Coach', back_populates = "event")
 
     def __repr__(self): 
         return f"<Event ID : {self.id}, Event Name : {self.name}, Event Description : {self.description}>"
@@ -127,11 +171,7 @@ class EventSchedule(db.Model):
             nullable = False, 
             index = True)
     
-    weekday = db.Column(db.String, 
-                index = True, 
-                nullable = False)
-    
-    month = db.Column(db.String, 
+    month = db.Column(db.Integer, 
                     index = True, 
                     nullable = False)
     
@@ -157,9 +197,8 @@ class EventSchedule(db.Model):
     #A scheduled event can ONLY be selected 1 time
     specific_event_selected = db.relationship("SelectedEvent", back_populates = "selection")
 
-    
     def __repr__(self): 
-        return f"<Event Schedule ID : {self.id}, Event ID : {self.event_id}, Date : {self.month}, {self.date} {self.year}, Time : {self.start_time} - {self.end_time}>"
+        return f"<Event Schedule ID : {self.id}, Event ID : {self.event_id}, Date : {self.month}/{self.date}/{self.year}, Time : {self.start_time} - {self.end_time}>"
     
 
 if __name__ == "__main__":
