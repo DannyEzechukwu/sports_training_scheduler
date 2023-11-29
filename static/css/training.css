@@ -1,0 +1,37 @@
+body{
+    /* Set the background image */
+    background-image: url("../images/training3.jpeg");
+
+    /* Specify background properties */
+    background-size: cover; /* Cover the entire background */
+    background-position: 50% 20%; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    
+    /* Set additional styles for the body if needed */
+    margin: 0; /* Remove default margin */
+    height: 100vh; /* Make the body fill the entire viewport height */
+    overflow: hidden;
+}
+
+#home-title{
+    color : whitesmoke;
+    text-decoration: underline;
+    font-style: italic;
+    margin-left: 40px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    font-size: 8em;
+}
+
+.login-options{
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.options{
+    font-size: 2em;
+    margin: 10px;
+    background-color: #38D56C;
+    color: white;
+    border-radius: 5px;
+}

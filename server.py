@@ -10,13 +10,15 @@ from jinja2 import StrictUndefined
 
 app = Flask(__name__)
 
+app.static_folder = 'static'
+
 #Secret Key to enable session
 app.secret_key = os.environ["APP_KEY"]
 app.jinja_env.undefined = StrictUndefined
 
-@app.route("/calendar")
-def show_cal(): 
-    return render_template("calendar.html")
+@app.route("/")
+def homepage(): 
+    return render_template("home.html")
 
 if __name__ == "__main__":
     connect_to_db(app)
