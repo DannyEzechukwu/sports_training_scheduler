@@ -9,9 +9,23 @@
 <h1 id="home-title">GAINZ</h1>
 
 <div class = "login-options">
-    <button class="options">Coaches</button>
-    <button class ="options">Athletes</button>
-    <button class="options">New Athletes</button>
+    <button class="options" id= "coaches">Coaches</button>
+    <button class ="options" id= "athletes">Athletes</button>
+    <button class="options" id = "new-athletes">New Athletes</button>
 </div>
+
+<dialog coach-data-modal class="modal" open>
+    <form action ="/coach_login" method="POST">
+        <label for = "coach_username">Username:</label>
+        <input type="text" id="coach_username" name = "coach_username">
+        <label for = "coach_password"> Password:</label>
+        <input type="password" id="coach_password" name ="coach_password">
+        <input Type ="submit">
+    </form>
+</dialog>
+
+
+
+<script src="/static/js/training.js"></script>
 
 {% endblock %}

@@ -1,8 +1,12 @@
 """"Seed Training database with Users and events"""
 
 import os
-import crud
 import model
+import user_crud
+import coach_crud
+import event_crud
+import selectedevent_crud
+import eventschedule_crud
 import server
 
 from datetime import datetime, timedelta
@@ -103,7 +107,7 @@ app_events = [
 user_accounts = []
 for user in app_users:
 
-    user_account = crud.create_user(user['fname'], 
+    user_account = user_crud.create_user(user['fname'], 
                 user["lname"], 
                 user["username"], 
                 user["email"], 
@@ -121,7 +125,7 @@ for user in app_users:
 coach_accounts = []
 for coach in app_coaches: 
     
-    coach = crud.create_coach(coach["fname"], 
+    coach = coach_crud.create_coach(coach["fname"], 
                       coach["lname"], 
                       coach["username"], 
                       coach["email"],
@@ -138,7 +142,7 @@ for coach in coach_accounts:
 #EVENTS
 events = []
 for event in app_events:
-    event_type = crud.create_event(event['name'], 
+    event_type = event_crud.create_event(event['name'], 
             event["location"], 
             event["description"], 
             event["coach_id"]) 
@@ -206,8 +210,8 @@ for date in date_list:
         end_time = time_interval[1]
 
         #Create EventSchedule object
-        scheduled_event = crud.schedule_event(event_id,month, date, year, 
-                                            start_time, end_time)
+        scheduled_event = eventschedule_crud.schedule_event(event_id,month, date, year, 
+                                start_time, end_time)
         
         event_schedule.append(scheduled_event)
         model.db.session.add_all(event_schedule)
