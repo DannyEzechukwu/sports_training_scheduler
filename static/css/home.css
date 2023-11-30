@@ -35,3 +35,30 @@ body{
     color: white;
     border-radius: 5px;
 }
+
+.modal{
+    background-color: lightgrey;
+}
+
+.modal-header{
+    display: flex; /* Puts elements side by side */
+    justify-content: space-between; /* Puts space between elements*/
+    align-items: center; /*Seperates elements completely, and aligns them in the center */
+}
+
+.closer{
+    cursor: pointer; /* let's user know that they can click on button */
+    border: none;
+    outline: none;
+    background: none;
+    font-weight: bold;
+}
+
+.asterisk{
+    color: red;
+}
+form label, form input, form button {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px; /* Adjust the margin as needed */
+}

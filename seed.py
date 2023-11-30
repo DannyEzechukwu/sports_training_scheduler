@@ -2,7 +2,7 @@
 
 import os
 import model
-import user_crud
+import athlete_crud
 import coach_crud
 import event_crud
 import selectedevent_crud
@@ -19,7 +19,7 @@ model.connect_to_db(server.app)
 model.db.create_all()
 
 #ARTIFICIAL DATA
-app_users = [
+app_athletes = [
         {"fname" : "Tyson", 
         "lname": "Chandler",
         "username" : "tchandler",
@@ -103,22 +103,22 @@ app_events = [
     }
 ]
 
-#USERS
-user_accounts = []
-for user in app_users:
+#ATHLETES
+athlete_accounts = []
+for athlete in app_athletes:
 
-    user_account = user_crud.create_user(user['fname'], 
-                user["lname"], 
-                user["username"], 
-                user["email"], 
-                user["password"])
+    athlete_account = athlete_crud.create_athlete(athlete['fname'], 
+                athlete["lname"], 
+                athlete["username"], 
+                athlete["email"], 
+                athlete["password"])
     
-    user_accounts.append(user_account)
-    model.db.session.add_all(user_accounts)
+    athlete_accounts.append(athlete_account)
+    model.db.session.add_all(athlete_accounts)
     model.db.session.commit()
 
-#Confirmation that users have been added
-# for account in user_accounts: 
+#Confirmation that athlete  have been added
+# for account in athlete_accounts: 
 #     print(f"{account} \n")
 
 #COACHES

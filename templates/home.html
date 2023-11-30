@@ -2,7 +2,7 @@
 
 {% block title %}Home Page{% endblock %}
 
-{% block head %}<link rel="stylesheet" href="/static/css/training.css"/>{% endblock %}
+{% block head %}<link rel="stylesheet" href="/static/css/home.css"/>{% endblock %}
 
 {% block body %}
 
@@ -14,12 +14,52 @@
     <button class="options" id = "new-athletes">New Athletes</button>
 </div>
 
-<dialog coach-data-modal class="modal" open>
+<dialog coach-data-modal class="modal">
+    <div class="modal-header" id="coach-modal-header">
+        <div class="modal-title" id="coach-modal-title">Coach Login</div>
+        <button coach-modal-closer class="closer">&times;</button>
+    </div>
     <form action ="/coach_login" method="POST">
-        <label for = "coach_username">Username:</label>
-        <input type="text" id="coach_username" name = "coach_username">
-        <label for = "coach_password"> Password:</label>
-        <input type="password" id="coach_password" name ="coach_password">
+        <label for = "coach-username">Username:</label>
+        <input type="text" id="coach-username" name = "coach-username">
+        <label for = "coach-password">Password:</label>
+        <input type="password" id="coach-password" name ="coach-password">
+        <input Type ="submit">
+    </form>
+</dialog>
+
+<dialog athlete-data-modal class="modal">
+    <div class="modal-header" id="athlete-modal-header">
+        <div class="modal-title" id="athlete-modal-title">Athlete Login</div>
+        <button athlete-modal-closer class="closer">&times;</button>
+    </div>
+    <form action ="/athlete_login" method="POST">
+        <label for = "athlete-username">Username:</label>
+        <input type="text" id="athlete-username" name = "athlete-username">
+        <label for = "athlete-username">Username:</label>
+        <input type="text" id="athlete-username" name = "athlete-username">
+        <label for = "athlete-password">Password:</label>
+        <input type="password" id="athlete-password" name ="athlete-password">
+        <input Type ="submit">
+    </form>
+</dialog>
+
+<dialog new-athlete-data-modal class="modal" open>
+    <div class="modal-header" id="new-athlete-modal-header">
+        <div class="modal-title" id="new-athlete-modal-title">New Athlete Account</div>
+        <button new-athlete-modal-closer class="closer">&times;</button>
+    </div>
+    <form action ="/new_athlete_account" method="POST" >
+        <label for = "new-athlete-fname"><span class="asterisk">*</span>First Name:</label>
+        <input type="text" id="new-athlete-fname" name = "new-athlete-fname">
+        <label for = "new-athlete-lname"><span class="asterisk">*</span>Last Name:</label>
+        <input type="text" id="new-athlete-lname" name = "new-athlete-lname">
+        <label for = "new-athlete-username"><span class="asterisk">*</span>Username:</label>
+        <input type="text" id="new-athlete-username" name = "new-athlete-username">
+        <label for = "new-athlete-email"><span class="asterisk">*</span>Email:</label>
+        <input type="text" id="new-athlete-email" name = "new-athlete-email">
+        <label for = "new-athlete-password"><span class="asterisk">*</span>Password:</label>
+        <input type="password" id="new-athlete-password" name ="new-athlete-password">
         <input Type ="submit">
     </form>
 </dialog>

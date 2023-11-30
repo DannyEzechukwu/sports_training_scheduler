@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, session, redirect, jso
 
 from model import connect_to_db, db
 
-import user_crud
+import athlete_crud
 import coach_crud
 import event_crud
 import selectedevent_crud
@@ -26,17 +26,66 @@ app.jinja_env.undefined = StrictUndefined
 def homepage(): 
     return render_template("home.html")
 
+
+#Coach Login
 @app.route("/coach_login", methods = ["POST"])
 def coach_login(): 
-    username = request.form.get("coach_username")
-    password = request.form.get("coach_password")
+    username = request.form.get("coach-username")
+    password = request.form.get("coach-password")
 
     if coach_crud.get_coach_by_username_and_password(username, password):
         print(True)
-        flash("Hooray")
         return redirect('/')
     else:
-        flash("Try again")
+        print("Try again")
+        return "try again"
+
+#Current Athlete Login
+@app.route("/athlete_login", methods = ["POST"])
+def athlete_login():
+    username = request.form.get("athlete-username")
+    password = request.form.get("athlete-password")
+
+    if athlete_crud.get_athlete_by_username_and_password(username, password):
+        print(True)
+        return redirect('/')
+    else:
+        print("Try again")
+        return("Try again")
+
+#New Athlete Account
+@app.route("/new_athlete_account", methods = ["POST"])
+def new_athlete(): 
+    fname = request.form.get("new-athlete-fname")
+    lname = request.form.get("new-athlete-lname")
+    username = request.form.get("new-athlete-username")
+    email = request.form.get("new-athlete-email")
+    password = request.form.get("new-athlete-password")
+
+    inputs = [fname, lname, username, email, password]
+
+    if inputs[0] == "":
+        print("First name not included. Please try again.")
+        return redirect("/")
+    elif inputs[1] == "": 
+        print("Last name not included. Please try again.")
+        return redirect("/")
+    elif inputs[2] == "":
+        print("Username not included. Please try again.")
+        return redirect("/")
+    elif athlete_crud.get_athlete_by_username(inputs[2]): 
+        print("Username already exists. Please try again.")
+        return redirect("/")
+    elif inputs[3] == "": 
+        print("Email not included. Please try again.")
+        return redirect("/")
+    elif athlete_crud.get_athlete_by_email(email): 
+        flash("Email already exists. Please try again.")
+        return redirect("/")
+    else: 
+        new_athlete = athlete_crud.create_athlete(fname, lname, username, email, password)
+        return f"{new_athlete.fname} {new_athlete.lname}"
+    
 
 
 if __name__ == "__main__":

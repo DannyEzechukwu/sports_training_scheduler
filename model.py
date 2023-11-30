@@ -14,10 +14,10 @@ def connect_to_db(flask_app, db_uri="postgresql:///training", echo=False):
 
         print("Connected to the db!")
 
-#User Table
-class User(db.Model): 
+#Athlete Table
+class Athlete (db.Model): 
     
-    __tablename__ = "users"
+    __tablename__ = "athletes"
 
     id = db.Column(db.Integer, 
                 primary_key = True,
@@ -45,11 +45,11 @@ class User(db.Model):
                     index = True, 
                     nullable = False)
     
-    #User can have multiple selected events
-    selected_events = db.relationship("SelectedEvent", back_populates = "user")
+    #Athlete can have multiple selected events
+    selected_events = db.relationship("SelectedEvent", back_populates = "athlete")
     
     def __repr__(self): 
-        return f"<User ID : {self.id},  Username : {self.username},  Email: {self.email}>"
+        return f"<Athlete ID : {self.id},  Username : {self.username},  Email: {self.email}>"
     
 
 #Coach Table 
@@ -98,8 +98,8 @@ class SelectedEvent(db.Model):
                 primary_key = True,
                 index = True)
     
-    user_id = db.Column(db.Integer, 
-                        db.ForeignKey("users.id"), 
+    athlete_id = db.Column(db.Integer, 
+                        db.ForeignKey("athletes.id"), 
                         nullable = False, 
                         index = True)
     
@@ -113,14 +113,14 @@ class SelectedEvent(db.Model):
             nullable = False,
             index = True)
 
-    #1 selected event can be owned by 1 user
-    user = db.relationship("User", back_populates = "selected_events")
+    #1 selected event can be owned by 1 athlete
+    athlete  = db.relationship("Athlete", back_populates = "selected_events")
 
     #ONLY 1 selection can be made for a scheduled event
     selection = db.relationship('EventSchedule', uselist = False, back_populates = "specific_event_selected")
 
     def __repr__(self): 
-        return f"<User ID {self.user_id}, Scheduled Event ID : {self.event_schedule_id}, Event ID : {self.event_id} >"
+        return f"<Athlete ID {self.user_id}, Scheduled Event ID : {self.event_schedule_id}, Event ID : {self.event_id} >"
 
 
 #Event Table
