@@ -14,7 +14,7 @@
     <button class="options" id = "new-athletes">New Athletes</button>
 </div>
 
-<dialog coach-data-modal class="modal">
+<dialog coach-modal class="modal">
     <div class="modal-header" id="coach-modal-header">
         <div class="modal-title" id="coach-modal-title">Coach Login</div>
         <button coach-modal-closer class="closer">&times;</button>
@@ -28,14 +28,12 @@
     </form>
 </dialog>
 
-<dialog athlete-data-modal class="modal">
+<dialog athlete-modal class="modal">
     <div class="modal-header" id="athlete-modal-header">
         <div class="modal-title" id="athlete-modal-title">Athlete Login</div>
         <button athlete-modal-closer class="closer">&times;</button>
     </div>
     <form action ="/athlete_login" method="POST">
-        <label for = "athlete-username">Username:</label>
-        <input type="text" id="athlete-username" name = "athlete-username">
         <label for = "athlete-username">Username:</label>
         <input type="text" id="athlete-username" name = "athlete-username">
         <label for = "athlete-password">Password:</label>
@@ -44,7 +42,7 @@
     </form>
 </dialog>
 
-<dialog new-athlete-data-modal class="modal" open>
+<dialog new-athlete-modal class="modal">
     <div class="modal-header" id="new-athlete-modal-header">
         <div class="modal-title" id="new-athlete-modal-title">New Athlete Account</div>
         <button new-athlete-modal-closer class="closer">&times;</button>
@@ -66,6 +64,6 @@
 
 
 
-<script src="/static/js/training.js"></script>
+<script src="/static/js/home.js"></script>
 
 {% endblock %}

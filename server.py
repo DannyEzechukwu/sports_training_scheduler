@@ -43,8 +43,8 @@ def coach_login():
 #Current Athlete Login
 @app.route("/athlete_login", methods = ["POST"])
 def athlete_login():
-    username = request.form.get("athlete-username")
-    password = request.form.get("athlete-password")
+    username = request.form.get("athlete-username").strip()
+    password = request.form.get("athlete-password").strip()
 
     if athlete_crud.get_athlete_by_username_and_password(username, password):
         print(True)
@@ -56,11 +56,11 @@ def athlete_login():
 #New Athlete Account
 @app.route("/new_athlete_account", methods = ["POST"])
 def new_athlete(): 
-    fname = request.form.get("new-athlete-fname")
-    lname = request.form.get("new-athlete-lname")
-    username = request.form.get("new-athlete-username")
-    email = request.form.get("new-athlete-email")
-    password = request.form.get("new-athlete-password")
+    fname = request.form.get("new-athlete-fname").strip()
+    lname = request.form.get("new-athlete-lname").strip()
+    username = request.form.get("new-athlete-username").strip()
+    email = request.form.get("new-athlete-email").strip()
+    password = request.form.get("new-athlete-password").stip()
 
     inputs = [fname, lname, username, email, password]
 
