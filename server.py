@@ -26,7 +26,7 @@ app.jinja_env.undefined = StrictUndefined
 def homepage(): 
     return render_template("home.html")
 
-
+#LOGIN FUNCTIONALITY
 #Coach Login
 @app.route("/coach_login", methods = ["POST"])
 def coach_login(): 
@@ -50,7 +50,7 @@ def athlete_login():
 
     if athlete:
         session["id"] = athlete.id
-        return redirect('/')
+        return redirect(f"/athlete/{athlete.id}/{athlete.fname}/{athlete.lname}")
     else:
         print("Try again")
         return("Try again")
@@ -91,6 +91,9 @@ def new_athlete():
         session['id'] = new_athlete.id
         return redirect('/')
     
+
+#ATHLETE FEATURES
+# @app.route("/athlete/<int:id>/<fname>/<lname>")
 
 
 if __name__ == "__main__":
