@@ -42,16 +42,25 @@ closeNewAthleteModal.addEventListener("click", () => {
 //Closing any modal by clicking outside of it
 const homeModalArray = [coachModal, athleteModal, newAthleteModal];
 
-for(let modal of homeModalArray){
+for (let modal of homeModalArray) {
     modal.addEventListener("click", (evt) => {
         const dimensions = modal.getBoundingClientRect();
-        if(
+        if (
             evt.clientX < dimensions.left ||
             evt.clientX > dimensions.right ||
             evt.clientY > dimensions.top ||
             evt.clientY < dimensions.bottom
-        ){
+        ) {
             modal.close();
         }
-    })
+    });
+
+    // Prevent modal close when clicking inside the form fields
+    // Without this the event listener above will propogate down the DOM
+    // to the form in the modal
+    modal.querySelectorAll('form input, form button, form select, form textarea').forEach((element) => {
+        element.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    });
 }

@@ -30,11 +30,12 @@ def homepage():
 #Coach Login
 @app.route("/coach_login", methods = ["POST"])
 def coach_login(): 
-    username = request.form.get("coach-username")
-    password = request.form.get("coach-password")
+    username = request.form.get("coach-username").strip()
+    password = request.form.get("coach-password").strip()
+    coach = coach_crud.get_coach_by_username_and_password(username, password)
 
-    if coach_crud.get_coach_by_username_and_password(username, password):
-        print(True)
+    if coach:
+        session["id"] = coach.id
         return redirect('/')
     else:
         print("Try again")
@@ -45,9 +46,10 @@ def coach_login():
 def athlete_login():
     username = request.form.get("athlete-username").strip()
     password = request.form.get("athlete-password").strip()
+    athlete = athlete_crud.get_athlete_by_username_and_password(username, password)
 
-    if athlete_crud.get_athlete_by_username_and_password(username, password):
-        print(True)
+    if athlete:
+        session["id"] = athlete.id
         return redirect('/')
     else:
         print("Try again")
@@ -60,7 +62,7 @@ def new_athlete():
     lname = request.form.get("new-athlete-lname").strip()
     username = request.form.get("new-athlete-username").strip()
     email = request.form.get("new-athlete-email").strip()
-    password = request.form.get("new-athlete-password").stip()
+    password = request.form.get("new-athlete-password").strip()
 
     inputs = [fname, lname, username, email, password]
 
@@ -84,7 +86,10 @@ def new_athlete():
         return redirect("/")
     else: 
         new_athlete = athlete_crud.create_athlete(fname, lname, username, email, password)
-        return f"{new_athlete.fname} {new_athlete.lname}"
+        db.session.add(new_athlete)
+        db.session.commit()
+        session['id'] = new_athlete.id
+        return redirect('/')
     
 
 

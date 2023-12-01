@@ -57,6 +57,7 @@ body{
 .asterisk{
     color: red;
 }
+
 form label, form input, form button {
     display: block;
     margin-top: 10px;
