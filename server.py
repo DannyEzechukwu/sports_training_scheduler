@@ -29,18 +29,18 @@ def homepage():
 
 #LOGIN FUNCTIONALITY
 #Coach Login
-@app.route("/coach_login", methods = ["POST"])
-def coach_login(): 
+@app.route("/coach_login/json", methods = ["POST"])
+def coach_login():
     username = request.form.get("coach-username").strip()
-    password = request.form.get("coach-password").strip()
+    password = request.form.get("coach-password")
     coach = coach_crud.get_coach_by_username_and_password(username, password)
 
     if coach:
         session["id"] = coach.id
         return redirect('/')
-    else:
-        print("Try again")
-        return "try again"
+    else: 
+        flash("Nope")
+        return jsonify({"response" : "bad"})
 
 #Current Athlete Login
 @app.route("/athlete_login", methods = ["POST"])
@@ -92,6 +92,43 @@ def new_athlete():
         session['id'] = new_athlete.id
         return redirect('/')
     
+#New Coach Account
+@app.route("/new_coach_account", methods = ["POST"])
+def new_coach(): 
+    fname = request.form.get("new-coach-fname").strip()
+    lname = request.form.get("new-coach-lname").strip()
+    username = request.form.get("new-coach-username").strip()
+    email = request.form.get("new-coach-email").strip()
+    password = request.form.get("new-coach-password").strip()
+
+    inputs = [fname, lname, username, email, password]
+
+    if inputs[0] == "":
+        print("First name not included. Please try again.")
+        return redirect("/")
+    elif inputs[1] == "": 
+        print("Last name not included. Please try again.")
+        return redirect("/")
+    elif inputs[2] == "":
+        print("Username not included. Please try again.")
+        return redirect("/")
+    elif athlete_crud.get_athlete_by_username(inputs[2]): 
+        print("Username already exists. Please try again.")
+        return redirect("/")
+    elif inputs[3] == "": 
+        print("Email not included. Please try again.")
+        return redirect("/")
+    elif athlete_crud.get_athlete_by_email(email): 
+        flash("Email already exists. Please try again.")
+        return redirect("/")
+    else: 
+        new_coach = coach_crud.create_coach(fname, lname, username, email, password)
+        db.session.add(new_coach)
+        db.session.commit()
+        session['id'] = new_coach.id
+        return redirect('/')
+
+#***********************************************************************************   
 
 #ATHLETE FEATURES
 # @app.route("/athlete/<int:id>/<fname>/<lname>")
