@@ -28,7 +28,7 @@ def homepage():
     return render_template("home.html")
 
 #LOGIN FUNCTIONALITY
-#Coach Login
+#Current Coach Login
 @app.route("/coach_login/json", methods = ["POST"])
 def coach_login():
     username = request.form.get("coach-username").strip()
@@ -37,24 +37,31 @@ def coach_login():
 
     if coach:
         session["id"] = coach.id
-        return redirect('/')
+        coach = coach_crud.get_coach_by_id(session["id"])
+
+        return jsonify({"response" : "valid coach",
+                        "id": coach.id,
+                        "fname" : coach.fname,
+                        "lname" : coach.lname})
     else: 
-        flash("Nope")
-        return jsonify({"response" : "bad"})
+        return jsonify({"response" : "invalid"})
 
 #Current Athlete Login
-@app.route("/athlete_login", methods = ["POST"])
+@app.route("/athlete_login/json", methods = ["POST"])
 def athlete_login():
     username = request.form.get("athlete-username").strip()
-    password = request.form.get("athlete-password").strip()
+    password = request.form.get("athlete-password")
     athlete = athlete_crud.get_athlete_by_username_and_password(username, password)
 
     if athlete:
         session["id"] = athlete.id
-        return redirect(f"/athlete/{athlete.id}/{athlete.fname}/{athlete.lname}")
+        athlete = athlete_crud.get_athlete_id(session["id"])
+        return jsonify({"response": "valid athlete",
+                        "id": athlete.id,
+                        "fname" : athlete.fname,
+                        "lname" : athlete.lname})
     else:
-        print("Try again")
-        return("Try again")
+        return jsonify({"response" : "invalid"})
 
 #New Athlete Account
 @app.route("/new_athlete_account", methods = ["POST"])
@@ -131,7 +138,16 @@ def new_coach():
 #***********************************************************************************   
 
 #ATHLETE FEATURES
-# @app.route("/athlete/<int:id>/<fname>/<lname>")
+@app.route("/athlete/<int:id>/<fname><lname>")
+def athlete(id, fname, lname): 
+    return "money"
+
+#***********************************************************************************   
+
+#COACH EATURES
+@app.route("/coach/<int:id>/<fname><lname>")
+def coach(id, fname, lname): 
+    return "gettin money too"
 
 
 if __name__ == "__main__":

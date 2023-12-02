@@ -25,13 +25,15 @@
         <div class="modal-title" id="coach-modal-title">Coach Login</div>
         <button coach-modal-closer class="closer">&times;</button>
     </div>
-    <form action ="/coach_login/json" method="POST" id="coach-form" onsubmit="return handleFormSubmission('coach-form');">
-        <label for = "coach-username">Username:</label>
-        <input type="text" id="coach-username" name = "coach-username">
-        <label for = "coach-password">Password:</label>
-        <input type="password" id="coach-password" name ="coach-password">
-        <input Type ="submit">
-    </form>
+    <div>
+        <form action ="/coach_login/json" method="POST" id="coach-form" onsubmit="return handleCurrentAccountFormSubmission(event, 'coach-form');">
+            <label for = "coach-username">Username:</label>
+            <input type="text" id="coach-username" name = "coach-username">
+            <label for = "coach-password">Password:</label>
+            <input type="password" id="coach-password" name ="coach-password">
+            <input Type ="submit">
+        </form>   
+    </div>
 </dialog>
 
 <dialog new-coach-modal class="modal">
@@ -39,19 +41,21 @@
         <div class="modal-title" id="new-coach-modal-title">New Coach Account</div>
         <button new-coach-modal-closer class="closer">&times;</button>
     </div>
-    <form action ="/new_coach_account" method="POST" >
-        <label for = "new-coach-fname"><span class="asterisk">*</span>First Name:</label>
-        <input type="text" id="new-coach-fname" name = "new-coach-fname">
-        <label for = "new-coach-lname"><span class="asterisk">*</span>Last Name:</label>
-        <input type="text" id="new-coach-lname" name = "new-coach-lname">
-        <label for = "new-coach-username"><span class="asterisk">*</span>Username:</label>
-        <input type="text" id="new-coach-username" name = "new-coach-username">
-        <label for = "new-coach-email"><span class="asterisk">*</span>Email:</label>
-        <input type="text" id="new-coach-email" name = "new-coach-email">
-        <label for = "new-coach-password"><span class="asterisk">*</span>Password:</label>
-        <input type="password" id="new-coach-password" name ="new-coach-password">
-        <input Type ="submit">
-    </form>
+    <div>
+        <form action ="/new_coach_account" method="POST" >
+            <label for = "new-coach-fname"><span class="asterisk">*</span>First Name:</label>
+            <input type="text" id="new-coach-fname" name = "new-coach-fname">
+            <label for = "new-coach-lname"><span class="asterisk">*</span>Last Name:</label>
+            <input type="text" id="new-coach-lname" name = "new-coach-lname">
+            <label for = "new-coach-username"><span class="asterisk">*</span>Username:</label>
+            <input type="text" id="new-coach-username" name = "new-coach-username">
+            <label for = "new-coach-email"><span class="asterisk">*</span>Email:</label>
+            <input type="text" id="new-coach-email" name = "new-coach-email">
+            <label for = "new-coach-password"><span class="asterisk">*</span>Password:</label>
+            <input type="password" id="new-coach-password" name ="new-coach-password">
+            <input Type ="submit">
+        </form>
+</div>
 </dialog>
 
 <dialog athlete-modal class="modal">
@@ -59,13 +63,15 @@
         <div class="modal-title" id="athlete-modal-title">Athlete Login</div>
         <button athlete-modal-closer class="closer">&times;</button>
     </div>
-    <form action ="/athlete_login" method="POST">
-        <label for = "athlete-username">Username:</label>
-        <input type="text" id="athlete-username" name = "athlete-username">
-        <label for = "athlete-password">Password:</label>
-        <input type="password" id="athlete-password" name ="athlete-password">
-        <input Type ="submit">
-    </form>
+    <div>
+        <form id="athlete-form" action ="/athlete_login/json" method="POST" onsubmit="return handleCurrentAccountFormSubmission(event, 'athlete-form');">
+            <label for = "athlete-username">Username:</label>
+            <input type="text" id="athlete-username" name = "athlete-username">
+            <label for = "athlete-password">Password:</label>
+            <input type="password" id="athlete-password" name ="athlete-password">
+            <input Type ="submit">
+        </form>
+    </div>
 </dialog>
 
 <dialog new-athlete-modal class="modal">
@@ -73,19 +79,21 @@
         <div class="modal-title" id="new-athlete-modal-title">New Athlete Account</div>
         <button new-athlete-modal-closer class="closer">&times;</button>
     </div>
-    <form action ="/new_athlete_account" method="POST" >
-        <label for = "new-athlete-fname"><span class="asterisk">*</span>First Name:</label>
-        <input type="text" id="new-athlete-fname" name = "new-athlete-fname">
-        <label for = "new-athlete-lname"><span class="asterisk">*</span>Last Name:</label>
-        <input type="text" id="new-athlete-lname" name = "new-athlete-lname">
-        <label for = "new-athlete-username"><span class="asterisk">*</span>Username:</label>
-        <input type="text" id="new-athlete-username" name = "new-athlete-username">
-        <label for = "new-athlete-email"><span class="asterisk">*</span>Email:</label>
-        <input type="text" id="new-athlete-email" name = "new-athlete-email">
-        <label for = "new-athlete-password"><span class="asterisk">*</span>Password:</label>
-        <input type="password" id="new-athlete-password" name ="new-athlete-password">
-        <input Type ="submit">
-    </form>
+    <div>
+        <form action ="/new_athlete_account" method="POST" >
+            <label for = "new-athlete-fname"><span class="asterisk">*</span>First Name:</label>
+            <input type="text" id="new-athlete-fname" name = "new-athlete-fname">
+            <label for = "new-athlete-lname"><span class="asterisk">*</span>Last Name:</label>
+            <input type="text" id="new-athlete-lname" name = "new-athlete-lname">
+            <label for = "new-athlete-username"><span class="asterisk">*</span>Username:</label>
+            <input type="text" id="new-athlete-username" name = "new-athlete-username">
+            <label for = "new-athlete-email"><span class="asterisk">*</span>Email:</label>
+            <input type="text" id="new-athlete-email" name = "new-athlete-email">
+            <label for = "new-athlete-password"><span class="asterisk">*</span>Password:</label>
+            <input type="password" id="new-athlete-password" name ="new-athlete-password">
+            <input Type ="submit">
+        </form>
+</div>
 </dialog>
 
 <script src="/static/js/home.js"></script>

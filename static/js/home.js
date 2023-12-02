@@ -31,39 +31,6 @@ for(let i in buttons){
     })
 }
 
-function handleFormSubmission(formID){
-    const form = document.getElementById(formID);
-    const formData = new FormData(form);
-
-    fetch(form.action, {
-        method: "POST",
-        body: formData,
-    })
-        .then((response) => response.json())
-        .then((data) =>{
-            if (data.response == "ok"){
-                console.log(data.response);
-            }else{
-                alert("Email or password incorrect. Please try again");
-                form.preventDefault();
-            }
-        })
-    
-}
-
-function redirectToPreviousPage() {
-    const previousPageURL = document.referrer;
-    
-    // Check if there is a previous page URL
-    if (previousPageURL) {
-        // Redirect to the previous page
-        window.location.href = previousPageURL;
-    } else {
-        // If no previous page URL, redirect to a default page
-        window.location.href = '/';
-    }
-}
-
 // Loop to close corresponding modal with correct &times button;
 for(let i in closers){
     closers[i].addEventListener("click", () => {
@@ -87,10 +54,41 @@ for (let modal of modals) {
     // Prevent modal close when clicking inside the form fields
     // Without this the event listener above will propogate down the DOM
     // to the form in the modal
-    modal.querySelectorAll('form input, form button, form select, form textarea').forEach((element) => {
+    modal.querySelectorAll('div').forEach((element) => {
         element.addEventListener('click', (e) => {
             e.stopPropagation();
         });
     });
 }
 
+// Function to handle submission of form for exisiting athletes and coaches
+function handleCurrentAccountFormSubmission(event, formID){
+    // Prevent default behavior
+    event.preventDefault()
+    // Get the form we are working with by using the formID 
+    // string parameter passed into the function
+    const form = document.getElementById(formID);
+    // Use FormData constructor to create a new object of key value pairs from form
+    const formData = new FormData(form);
+
+    // Fetch the endpoint the form is submitted to
+    fetch(form.action, {
+        // Specify the request type
+        method: "POST",
+        // Establish the body
+        body: formData,
+    })
+        .then((response) => response.json())
+        .then((data) =>{
+            if (data.response == "invalid"){
+                console.log(data.response);
+                alert("Username or password incorrect. Please try again");
+            }else if(data.response == "valid coach"){
+                //Go to correct endpoint if response is not"bad"
+                window.location.href = `/coach/${data.id}/${data.fname}${data.lname}`;
+            }
+            else{
+                window.location.href  = `/athlete/${data.id}/${data.fname}${data.lname}`
+            }
+        }) 
+}

@@ -19,4 +19,6 @@ def get_athlete_by_username(username):
 def get_athlete_by_username_and_password(username, password): 
      return Athlete.query.filter((Athlete.username == username) & (Athlete.password == password)).first()
 
+def get_athlete_id(id): 
+     return Athlete.query.get(id)
  

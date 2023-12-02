@@ -10,3 +10,6 @@ def create_coach(fname, lname, username, email, password):
 
 def get_coach_by_username_and_password(username, password): 
      return Coach.query.filter((Coach.username == username) & (Coach.password == password)).first()
+
+def get_coach_by_id(id): 
+     return Coach.query.get(id)
