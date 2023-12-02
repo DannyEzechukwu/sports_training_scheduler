@@ -84,77 +84,14 @@ class Coach(db.Model):
                 index = True, 
                 nullable = False)
     
-    #ONLY 1 coach can be assigned to 1 event
-    event = db.relationship('Event', uselist = False, back_populates = "coach")
     #A coach can have MANY feedback messages
     feedback_messages = db.relationship("Feedback", back_populates = "coach")
+    #A coach can be scheduled for MANY selected events
+    events = db.relationship("SelectedEvent", back_populates = "coach")
 
     def __repr__(self): 
         return f"<Coach ID : {self.id},  Username : {self.username},  Email : {self.email}>"
-
-#SelectedEvent Table
-class SelectedEvent(db.Model): 
     
-    __tablename__ = "selected_events"
-
-    id = db.Column(db.Integer, 
-                primary_key = True,
-                index = True)
-    
-    athlete_id = db.Column(db.Integer, 
-                        db.ForeignKey("athletes.id"), 
-                        nullable = False, 
-                        index = True)
-    
-    event_schedule_id = db.Column(db.Integer, 
-                        db.ForeignKey("event_schedule.id"),
-                        nullable = False,
-                        index = True)
-    
-    event_id = db.Column(db.Integer, 
-            db.ForeignKey("events.id"),
-            nullable = False,
-            index = True)
-
-    #1 selected event can be owned by 1 athlete
-    athlete  = db.relationship("Athlete", back_populates = "selected_events")
-    #ONLY 1 selection can be made for a scheduled event
-    selection = db.relationship('EventSchedule', uselist = False, back_populates = "specific_event_selected")
-    #1 selected event can ONLY have 1 feedback message
-    feedback_message = db.relationship("Feedback", back_populates = "event")
-
-    def __repr__(self): 
-        return f"<Athlete ID {self.user_id}, Scheduled Event ID : {self.event_schedule_id}, Event ID : {self.event_id} >"
-
-#Feedback Table 
-class Feedback(db.Model): 
-    __tablename__ = "feedback"
-
-    id = db.Column(db.Integer,
-                    primary_key = True)
-    
-    coach_id = db.Column(db.Integer,
-                db.ForeignKey('coaches.id'),
-                index = True)
-    
-    selected_event_id = db.Column(db.Integer,
-                    db.ForeignKey('selected_events.id'),
-                    index = True)
-    
-    feedback = db.Column(db.String,
-                    index = True)
-    
-    created_at = db.Column(db.String, 
-                    default = datetime.now().date().strftime('%A, %B, %d %Y'))
-    
-    #1 coach can provide a feedback message
-    coach = db.relationship("Coach", back_populates = "feedback_messages")
-    #1 feedback message can only be tied to 1 selected event
-    event = db.relationship("SelectedEvent", uselist = False, back_populates = "feedback_message")
-    
-    def __repr__(self): 
-        return f'<Feedback ID : {self.id}, Coach ID : {self.coach_id}, Feedback : {self.feedback}>'
-
 #Event Table
 class Event(db.Model): 
     __tablename__ = "events"
@@ -175,20 +112,11 @@ class Event(db.Model):
                         nullable = False,
                         index = True)
     
-    coach_id = db.Column(db.Integer, 
-                    db.ForeignKey("coaches.id"), 
-                    nullable = False, 
-                    index = True)
-
     #An event can be appear on the Schedule MANY times
     schedule_appearances = db.relationship("EventSchedule", back_populates = "specific_event_scheduled")
 
-    #ONLY 1 event can be assigned to 1 coach
-    coach = db.relationship('Coach', back_populates = "event")
-
     def __repr__(self): 
         return f"<Event ID : {self.id}, Event Name : {self.name}, Event Description : {self.description}>"
-
 
 #Event Schedule Table
 class EventSchedule(db.Model): 
@@ -231,7 +159,73 @@ class EventSchedule(db.Model):
 
     def __repr__(self): 
         return f"<Event Schedule ID : {self.id}, Event ID : {self.event_id}, Date : {self.month}/{self.date}/{self.year}, Time : {self.start_time} - {self.end_time}>"
+
+#SelectedEvent Table
+class SelectedEvent(db.Model): 
     
+    __tablename__ = "selected_events"
+
+    id = db.Column(db.Integer, 
+                primary_key = True,
+                index = True)
+    
+    athlete_id = db.Column(db.Integer, 
+                        db.ForeignKey("athletes.id"), 
+                        nullable = False, 
+                        index = True)
+    
+    coach_id = db.Column(db.Integer, 
+                    db.ForeignKey("coaches.id"), 
+                    nullable = False, 
+                    index = True)
+    
+    event_schedule_id = db.Column(db.Integer, 
+                        db.ForeignKey("event_schedule.id"),
+                        nullable = False,
+                        index = True, 
+                        unique = True)
+
+    #1 selected event can be owned by ONLY 1 athlete
+    athlete  = db.relationship("Athlete", back_populates = "selected_events")
+    #ONLY 1 selection can be made for a scheduled event
+    selection = db.relationship('EventSchedule', uselist = False, back_populates = "specific_event_selected")
+    #1 selected event can ONLY have 1 feedback message
+    feedback_message = db.relationship("Feedback", back_populates = "event")
+    #ONLY 1 coach can be chosen by an athlete for a selected event
+    coach = db.relationship("Coach", back_populates = "events")
+
+    def __repr__(self): 
+        return f"<Selection ID : {self.id}, Athlete ID : {self.athlete_id}, Coach ID : {self.coach_id}, Scheduled Event ID : {self.event_schedule_id}>"
+
+#Feedback Table 
+class Feedback(db.Model): 
+    __tablename__ = "feedback"
+
+    id = db.Column(db.Integer,
+                    primary_key = True)
+    
+    coach_id = db.Column(db.Integer,
+                db.ForeignKey('coaches.id'),
+                index = True)
+    
+    selected_event_id = db.Column(db.Integer,
+                    db.ForeignKey('selected_events.id'),
+                    index = True)
+    
+    feedback = db.Column(db.String,
+                    index = True)
+    
+    created_at = db.Column(db.String, 
+                    default = datetime.now().date().strftime('%A, %B, %d %Y'))
+    
+    #1 coach can provide a feedback message
+    coach = db.relationship("Coach", back_populates = "feedback_messages")
+    #1 feedback message can only be tied to 1 selected event
+    event = db.relationship("SelectedEvent", uselist = False, back_populates = "feedback_message")
+    
+    def __repr__(self): 
+        return f'<Feedback ID : {self.id}, Coach ID : {self.coach_id}, Feedback : {self.feedback}>'
+
 
 if __name__ == "__main__":
     from server import app

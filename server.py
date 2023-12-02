@@ -7,6 +7,7 @@ import coach_crud
 import event_crud
 import selectedevent_crud
 import eventschedule_crud
+import feedback_crud
 
 import os
 

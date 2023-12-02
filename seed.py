@@ -5,11 +5,12 @@ import model
 import athlete_crud
 import coach_crud
 import event_crud
-import selectedevent_crud
 import eventschedule_crud
+import selectedevent_crud
+import feedback_crud
 import server
 
-from datetime import datetime, timedelta
+import datetime
 import random
 
 os.system("dropdb training")
@@ -48,7 +49,37 @@ app_athletes = [
         "lname": "Bradford",
         "username" : "tbradford",
         "email" : "tbradford@gmail.com",
-        "password" : "test"}
+        "password" : "test"} , 
+
+        {"fname" : "Reneé", 
+        "lname": "Stewart",
+        "username" : "rstewart",
+        "email" : "rstewart@gmail.com",
+        "password" : "test"} ,
+
+        {"fname" : "Marcus", 
+        "lname": "Nelson",
+        "username" : "mnelson",
+        "email" : "mnelson@gmail.com",
+        "password" : "test"} ,
+
+        {"fname" : "Tenita", 
+        "lname": "Thomas",
+        "username" : "tthomas",
+        "email" : "tthomas@gmail.com",
+        "password" : "test"} ,
+    
+        {"fname" : "Niles", 
+        "lname": "Taylor",
+        "username" : "ntaylor",
+        "email" : "ntaylor@gmail.com",
+        "password" : "test"} ,   
+
+        {"fname" : "Aubrey", 
+        "lname": "Adams",
+        "username" : "aadams",
+        "email" : "aadmas",
+        "password" : "test"} 
 ]
 
 app_coaches = [
@@ -75,32 +106,62 @@ app_coaches = [
         "username" : "arichards",
         "email" : "arichards@gmail.com",
         "password" : "test"} ,
+
+        {"fname" : "Rhianna", 
+        "lname": "Burgess",
+        "username" : "rburgess",
+        "email" : "rburgess@gmail.com",
+        "password" : "test"} 
 ]
 
 app_events = [
     { "name" : "Football Training (Edge / ILB)",
     "location" : "Mustang-Panther Stadium 2909 Ira E Woods Ave, Grapevine, TX 76051",
     "description" : "Ladder/cone agility, Speed work, Position specific drills",
-    "coach_id" : 1
     },
 
     { "name" : "Basketball Training (All Positions)",
     "location" : "Grapevine Rec Main Gym - 1175 Municipal Way, Grapevine, TX 76051",
-    "description" : "Ball handling, Shooting, Conditioning",
-    "coach_id" : 2
+    "description" : "Ball handling, Shooting, Defensive drills, Conditioning",
     },
 
     { "name" : "Baseball Training (Infield / Outfield)",
     "location" : "Oak Grove Baseball Complex Field H - 2520 Oak Grove Loop S, Grapevine, TX 76051",
     "description" : "Fielding, Hitting, Speed work",
-    "coach_id" : 3
+    },
+
+    { "name" : "Volleyball Training (All Positions)",
+    "location" : "Grapevine Rec Secondary Gym - 1175 Municipal Way, Grapevine, TX 76051",
+    "description" : "Serving, Setting, Defense, Plyometrics",
     },
 
     { "name" : "General Workout",
     "location": "Grapevine Rec Fitness Center - 1175 Municipal Way, Grapevine, TX 76051",
     "description" : "Upper body lift, Lower body lift, Auxileries (biceps, triceps, calves, etc.)",
-    "coach_id" : 4
     }
+]
+
+coach_feedback_messages = [
+    
+    "Great job outh there! I can really tell you are working hard outside of our sessions.",
+
+    "Make sure you bring water to every session. Hydration is key!", 
+
+    "Your movements are starting to look more explosive. Keep working!", 
+
+    "Don't sweat it. The next session will be better. Keep your head up.", 
+
+    "Really enjoyed working with you at today's session. Great job.",
+
+    "The effort you gave today was not your best. Let's get after it next time!",
+
+    "Be sure to come with some areas of concern you want to see improvement in so we can develop a solid plan of attack.", 
+
+    "Massive improvement since we began working with another. I am proud of you!",
+
+    "Let's make sure that we are consistent with every rep. Wanna make sure we are stacking good days.",
+
+    "Solid session today. That's the way to get after it."
 ]
 
 #ATHLETES
@@ -120,6 +181,7 @@ for athlete in app_athletes:
 #Confirmation that athlete  have been added
 # for account in athlete_accounts: 
 #     print(f"{account} \n")
+#**********************************************************************
 
 #COACHES
 coach_accounts = []
@@ -136,24 +198,25 @@ for coach in app_coaches:
     model.db.session.commit()
 
 #Confirmation coaches have been added
-for coach in coach_accounts: 
-    print(coach)
+# for coach in coach_accounts: 
+#     print(coach)
+#*****************************************************************
 
 #EVENTS
 events = []
 for event in app_events:
     event_type = event_crud.create_event(event['name'], 
             event["location"], 
-            event["description"], 
-            event["coach_id"]) 
+            event["description"]) 
     
     events.append(event_type)
     model.db.session.add_all(events)
     model.db.session.commit()
 
 #Confirmation events have been added
-for event in events: 
-    print(event, "\n")
+# for event in events: 
+#     print(event, "\n")
+#*********************************************************************
 
 #EVENT SCHEDULE
 #Time interval container
@@ -172,9 +235,9 @@ for i in range (9, 17):
     
 # print(time_intervals)
 
-start_date = datetime(2023, 11,  27)
-end_date = datetime(2024, 6, 30)
-delta = timedelta(days = 1)
+start_date = datetime.datetime(2023, 11,  27)
+end_date = datetime.datetime(2024, 6, 30)
+delta = datetime.timedelta(days = 1)
 
 #Function to get days to schedule events
 def generate_date_list(start_date, end_date, delta, separator = "/"):
@@ -214,12 +277,62 @@ for date in date_list:
                                 start_time, end_time)
         
         event_schedule.append(scheduled_event)
-        model.db.session.add_all(event_schedule)
-        model.db.session.commit()
 
-#Confirmation event schedule has been created
-for event in event_schedule: 
-    print(event)
+model.db.session.add_all(event_schedule)
+model.db.session.commit()
+
+# #Confirmation event schedule has been created
+# for event in event_schedule: 
+#     print(event)
+#********************************************************************
+
+#SELECTED EVENTS
+selected_events = []
+#Loop through each event in the event schedule list of objects from
+# the EventSchedule class
+for scheduled_event in event_schedule:
+    #Identify today's date (MM/DD/YY)
+    today = datetime.datetime.now().date()
+    #identify the date of each object from the event_schedule list
+    event_date = datetime.datetime(scheduled_event.year, scheduled_event.month, scheduled_event.date).date()
+    
+    #Condition for if an event is in the past 
+    if event_date < today:
+        #Select an athlete 
+        athlete = random.choice(athlete_accounts)
+        coach = random.choice(coach_accounts)
+
+        selected_event = selectedevent_crud.select_event(athlete.id, coach.id, scheduled_event.id)
+        selected_events.append(selected_event)
+
+model.db.session.add_all(selected_events)
+model.db.session.commit()
+
+#Confirm selected events have been added 
+# for event in selected_events: 
+#     print(event)
+#**************************************************************
+
+#FEEDBACK
+feedback_container = [] 
+
+for athlete_selection in selected_events:
+    feedback = feedback_crud.create_feedback_message(
+        athlete_selection.id, 
+        athlete_selection.coach_id,
+        random.choice(coach_feedback_messages)
+    ) 
+
+    feedback_container.append(feedback)
+
+
+model.db.session.add_all(feedback_container)
+model.db.session.commit()
+
+
+#Confirm feedback messages have been added 
+for feedback in feedback_container: 
+    print(feedback)
 
 
 
