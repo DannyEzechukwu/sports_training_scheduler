@@ -38,7 +38,7 @@ def coach_login():
     if coach:
         session["id"] = coach.id
         coach = coach_crud.get_coach_by_id(session["id"])
-
+        # Form validation handled on the front end
         return jsonify({"response" : "valid coach",
                         "id": coach.id,
                         "fname" : coach.fname,
@@ -55,7 +55,8 @@ def athlete_login():
 
     if athlete:
         session["id"] = athlete.id
-        athlete = athlete_crud.get_athlete_id(session["id"])
+        athlete = athlete_crud.get_athlete_by_id(session["id"])
+        # Form validation handled on the front end
         return jsonify({"response": "valid athlete",
                         "id": athlete.id,
                         "fname" : athlete.fname,
@@ -64,41 +65,38 @@ def athlete_login():
         return jsonify({"response" : "invalid"})
 
 #New Athlete Account
-@app.route("/new_athlete_account", methods = ["POST"])
+@app.route("/new_athlete_account/json", methods = ["POST"])
 def new_athlete(): 
     fname = request.form.get("new-athlete-fname").strip()
     lname = request.form.get("new-athlete-lname").strip()
     username = request.form.get("new-athlete-username").strip()
     email = request.form.get("new-athlete-email").strip()
-    password = request.form.get("new-athlete-password").strip()
+    password = request.form.get("new-athlete-password")
 
-    inputs = [fname, lname, username, email, password]
+    # See if athete username and/or athlete email already exists in database
+    username_validation = athlete_crud.get_athlete_by_username(username)
+    email_validation = athlete_crud.get_athlete_by_email(email)
 
-    if inputs[0] == "":
-        print("First name not included. Please try again.")
-        return redirect("/")
-    elif inputs[1] == "": 
-        print("Last name not included. Please try again.")
-        return redirect("/")
-    elif inputs[2] == "":
-        print("Username not included. Please try again.")
-        return redirect("/")
-    elif athlete_crud.get_athlete_by_username(inputs[2]): 
-        print("Username already exists. Please try again.")
-        return redirect("/")
-    elif inputs[3] == "": 
-        print("Email not included. Please try again.")
-        return redirect("/")
-    elif athlete_crud.get_athlete_by_email(email): 
-        flash("Email already exists. Please try again.")
-        return redirect("/")
-    else: 
-        new_athlete = athlete_crud.create_athlete(fname, lname, username, email, password)
-        db.session.add(new_athlete)
+    if fname and lname and username_validation == None and email_validation == None:
+        athlete = athlete_crud.create_athlete(fname, lname, username, email, password)
+        db.session.add(athlete)
         db.session.commit()
-        session['id'] = new_athlete.id
-        return redirect('/')
+        session["id"] = athlete.id
+        
+        return jsonify({"response": "valid athlete",
+                        "id": athlete.id,
+                        "fname" : athlete.fname,
+                        "lname" : athlete.lname})
     
+    if username_validation: 
+        return jsonify({"response" : "invalid username", 
+            "message" : "Username is taken. Please enter a different username."})
+    
+    if email_validation: 
+        return jsonify({"response" : "invalid email", 
+            "message" : "Email is taken. Please enter a different email."})
+
+        
 #New Coach Account
 @app.route("/new_coach_account", methods = ["POST"])
 def new_coach(): 
@@ -106,34 +104,31 @@ def new_coach():
     lname = request.form.get("new-coach-lname").strip()
     username = request.form.get("new-coach-username").strip()
     email = request.form.get("new-coach-email").strip()
-    password = request.form.get("new-coach-password").strip()
+    password = request.form.get("new-coach-password")
 
-    inputs = [fname, lname, username, email, password]
+    # See if athete username and/or athlete email already exists in database
+    username_validation = coach_crud.get_coach_by_username(username)
+    email_validation = coach_crud.get_coach_by_email(email)
 
-    if inputs[0] == "":
-        print("First name not included. Please try again.")
-        return redirect("/")
-    elif inputs[1] == "": 
-        print("Last name not included. Please try again.")
-        return redirect("/")
-    elif inputs[2] == "":
-        print("Username not included. Please try again.")
-        return redirect("/")
-    elif athlete_crud.get_athlete_by_username(inputs[2]): 
-        print("Username already exists. Please try again.")
-        return redirect("/")
-    elif inputs[3] == "": 
-        print("Email not included. Please try again.")
-        return redirect("/")
-    elif athlete_crud.get_athlete_by_email(email): 
-        flash("Email already exists. Please try again.")
-        return redirect("/")
-    else: 
-        new_coach = coach_crud.create_coach(fname, lname, username, email, password)
-        db.session.add(new_coach)
+
+    if fname and lname and username_validation == None and email_validation == None:
+        coach = coach_crud.create_coach(fname, lname, username, email, password)
+        db.session.add(coach)
         db.session.commit()
-        session['id'] = new_coach.id
-        return redirect('/')
+        session["id"] = coach.id
+        
+        return jsonify({"response": "valid coach",
+                        "id": coach.id,
+                        "fname" : coach.fname,
+                        "lname" : coach.lname})
+    
+    if username_validation: 
+        return jsonify({"response" : "invalid username", 
+            "message" : "Username is taken. Please enter a different username."})
+    
+    if email_validation: 
+        return jsonify({"response" : "invalid email", 
+            "message" : "Email is taken. Please enter a different email."})
 
 #***********************************************************************************   
 

@@ -17,7 +17,7 @@
     <div>
         <button class ="options" id= "athletes">Athletes</button>
         <button class="options" id = "new-athletes">New Athletes</button>
-</div>
+    </div>
 </div>
 
 <dialog coach-modal class="modal">
@@ -26,7 +26,7 @@
         <button coach-modal-closer class="closer">&times;</button>
     </div>
     <div>
-        <form action ="/coach_login/json" method="POST" id="coach-form" onsubmit="return handleCurrentAccountFormSubmission(event, 'coach-form');">
+        <form id="coach-form" action ="/coach_login/json" method="POST" onsubmit="return handleCurrentAccountFormSubmission(event, 'coach-form');">
             <label for = "coach-username">Username:</label>
             <input type="text" id="coach-username" name = "coach-username">
             <label for = "coach-password">Password:</label>
@@ -42,17 +42,17 @@
         <button new-coach-modal-closer class="closer">&times;</button>
     </div>
     <div>
-        <form action ="/new_coach_account" method="POST" >
+        <form id="new-coach-form" action ="/new_coach_account" method="POST" onsubmit="return handleNewAccountFormSubmission(event , 'new-coach-form');">
             <label for = "new-coach-fname"><span class="asterisk">*</span>First Name:</label>
-            <input type="text" id="new-coach-fname" name = "new-coach-fname">
+            <input type="text" id="new-coach-fname" name = "new-coach-fname" required>
             <label for = "new-coach-lname"><span class="asterisk">*</span>Last Name:</label>
-            <input type="text" id="new-coach-lname" name = "new-coach-lname">
+            <input type="text" id="new-coach-lname" name = "new-coach-lname" required>
             <label for = "new-coach-username"><span class="asterisk">*</span>Username:</label>
-            <input type="text" id="new-coach-username" name = "new-coach-username">
+            <input type="text" id="new-coach-username" name = "new-coach-username" required>
             <label for = "new-coach-email"><span class="asterisk">*</span>Email:</label>
-            <input type="text" id="new-coach-email" name = "new-coach-email">
+            <input type="email" id="new-coach-email" name = "new-coach-email" required>
             <label for = "new-coach-password"><span class="asterisk">*</span>Password:</label>
-            <input type="password" id="new-coach-password" name ="new-coach-password">
+            <input type="password" id="new-coach-password" name ="new-coach-password" required>
             <input Type ="submit">
         </form>
 </div>
@@ -80,17 +80,17 @@
         <button new-athlete-modal-closer class="closer">&times;</button>
     </div>
     <div>
-        <form action ="/new_athlete_account" method="POST" >
+        <form id = "new-athlete-form" action ="/new_athlete_account/json" method="POST" onsubmit ="return handleNewAccountFormSubmission(event, 'new-athlete-form');" >
             <label for = "new-athlete-fname"><span class="asterisk">*</span>First Name:</label>
-            <input type="text" id="new-athlete-fname" name = "new-athlete-fname">
+            <input type="text" id="new-athlete-fname" name = "new-athlete-fname" required>
             <label for = "new-athlete-lname"><span class="asterisk">*</span>Last Name:</label>
-            <input type="text" id="new-athlete-lname" name = "new-athlete-lname">
+            <input type="text" id="new-athlete-lname" name = "new-athlete-lname" required>
             <label for = "new-athlete-username"><span class="asterisk">*</span>Username:</label>
-            <input type="text" id="new-athlete-username" name = "new-athlete-username">
+            <input type="text" id="new-athlete-username" name = "new-athlete-username" required>
             <label for = "new-athlete-email"><span class="asterisk">*</span>Email:</label>
-            <input type="text" id="new-athlete-email" name = "new-athlete-email">
+            <input type="email" id="new-athlete-email" name = "new-athlete-email" required>
             <label for = "new-athlete-password"><span class="asterisk">*</span>Password:</label>
-            <input type="password" id="new-athlete-password" name ="new-athlete-password">
+            <input type="password" id="new-athlete-password" name ="new-athlete-password" required>
             <input Type ="submit">
         </form>
 </div>

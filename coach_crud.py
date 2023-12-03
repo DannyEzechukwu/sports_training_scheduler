@@ -8,8 +8,14 @@ def create_coach(fname, lname, username, email, password):
                 password = password)
      return coach
 
-def get_coach_by_username_and_password(username, password): 
-     return Coach.query.filter((Coach.username == username) & (Coach.password == password)).first()
-
 def get_coach_by_id(id): 
      return Coach.query.get(id)
+
+def get_coach_by_email(email):
+     return Coach.query.filter((Coach.email == email)).first()
+
+def get_coach_by_username(username): 
+     return Coach.query.filter((Coach.username == username)).first()
+
+def get_coach_by_username_and_password(username, password): 
+     return Coach.query.filter((Coach.username == username) & (Coach.password == password)).first()
