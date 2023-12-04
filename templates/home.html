@@ -42,7 +42,7 @@
         <button new-coach-modal-closer class="closer">&times;</button>
     </div>
     <div>
-        <form id="new-coach-form" action ="/new_coach_account" method="POST" onsubmit="return handleNewAccountFormSubmission(event , 'new-coach-form');">
+        <form id="new-coach-form" action ="/new_coach_account/json" method="POST" onsubmit="return handleNewAccountFormSubmission(event , 'new-coach-form');">
             <label for = "new-coach-fname"><span class="asterisk">*</span>First Name:</label>
             <input type="text" id="new-coach-fname" name = "new-coach-fname" required>
             <label for = "new-coach-lname"><span class="asterisk">*</span>Last Name:</label>

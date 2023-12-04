@@ -30,7 +30,7 @@ const closeNewCoachModal = document.querySelector("[new-coach-modal-closer]");
 const closeAthleteModal = document.querySelector("[athlete-modal-closer]");
 const closeNewAthleteModal = document.querySelector("[new-athlete-modal-closer]");
 //Closers Array
-const closers = [closeCoachModal, closeNewAthleteModal, closeAthleteModal, closeNewAthleteModal];
+const closers = [closeCoachModal, closeNewCoachModal, closeAthleteModal, closeNewAthleteModal];
 
 // Loop to open the the corresponding modal with the correct button
 for(let i in buttons){

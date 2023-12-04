@@ -1,3 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Home Page{% endblock %}
+{% block title %}Athlete Profile{% endblock %}
+
+{% block head %}{% endblock %}
+
+{% block body %}
+<h1>{{ athlete.fname }}'s Profile</h1>
+
+{% for event_dict in past_events %}
+<p>{{ event_dict }}</p>
+{% endfor %}
+{% endblock %}

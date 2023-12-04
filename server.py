@@ -64,7 +64,7 @@ def athlete_login():
     else:
         return jsonify({"response" : "invalid"})
 
-#New Athlete Account
+#New Athlete Account Creation
 @app.route("/new_athlete_account/json", methods = ["POST"])
 def new_athlete(): 
     fname = request.form.get("new-athlete-fname").strip()
@@ -97,8 +97,8 @@ def new_athlete():
             "message" : "Email is taken. Please enter a different email."})
 
         
-#New Coach Account
-@app.route("/new_coach_account", methods = ["POST"])
+#New Coach Account Creation
+@app.route("/new_coach_account/json", methods = ["POST"])
 def new_coach(): 
     fname = request.form.get("new-coach-fname").strip()
     lname = request.form.get("new-coach-lname").strip()
@@ -109,7 +109,6 @@ def new_coach():
     # See if athete username and/or athlete email already exists in database
     username_validation = coach_crud.get_coach_by_username(username)
     email_validation = coach_crud.get_coach_by_email(email)
-
 
     if fname and lname and username_validation == None and email_validation == None:
         coach = coach_crud.create_coach(fname, lname, username, email, password)
@@ -134,12 +133,19 @@ def new_coach():
 
 #ATHLETE FEATURES
 @app.route("/athlete/<int:id>/<fname><lname>")
-def athlete(id, fname, lname): 
-    return "money"
+def athlete(id, fname, lname):
+    if session["id"]: 
+        athlete = athlete_crud.get_athlete_by_id(id)
+        past_events = athlete_crud.athlete_past_present_future_events(id)[0]
+        return render_template("athlete.html", 
+                        athlete = athlete, 
+                        past_events = past_events)
+    else: 
+        return redirect("/")
 
 #***********************************************************************************   
 
-#COACH EATURES
+#COACH FEATURES
 @app.route("/coach/<int:id>/<fname><lname>")
 def coach(id, fname, lname): 
     return "gettin money too"

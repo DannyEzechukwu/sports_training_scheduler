@@ -331,8 +331,8 @@ model.db.session.commit()
 
 
 #Confirm feedback messages have been added 
-for feedback in feedback_container: 
-    print(feedback)
+# for feedback in feedback_container: 
+#     print(feedback)
 
 
 
