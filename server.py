@@ -132,17 +132,28 @@ def new_coach():
 #***********************************************************************************   
 
 #ATHLETE FEATURES
+
+#Side 
+@app.route("/athlete_info/json")
+def identify_athlete_for_side_nav_bar(): 
+    if session["id"]:
+       athlete = athlete_crud.get_athlete_by_id(session["id"])
+       return jsonify({"username" : athlete.username })
+
 @app.route("/athlete/<int:id>/<fname><lname>")
 def athlete(id, fname, lname):
     if session["id"]: 
         athlete = athlete_crud.get_athlete_by_id(id)
         past_events = athlete_crud.athlete_past_present_future_events(id)[0]
+        current_events = athlete_crud.athlete_past_present_future_events(id)[1]
+        future_events = athlete_crud.athlete_past_present_future_events(id)[2]
         return render_template("athlete.html", 
                         athlete = athlete, 
-                        past_events = past_events)
+                        past_events = past_events,
+                        current_events = current_events,
+                        future_events = future_events )
     else: 
         return redirect("/")
-
 #***********************************************************************************   
 
 #COACH FEATURES

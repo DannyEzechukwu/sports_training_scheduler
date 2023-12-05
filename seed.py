@@ -135,6 +135,11 @@ app_events = [
     "description" : "Serving, Setting, Defense, Plyometrics",
     },
 
+    { "name" : "Soccer Training (All Positions)",
+    "location" : "Oak Grove Soccer Complex Field 4 - 1299 Oak Grove Loop North, Grapevine, TX 76051",
+    "description" : "Ball Handling, Passsing, Goal Keeping",
+    },
+
     { "name" : "General Workout",
     "location": "Grapevine Rec Fitness Center - 1175 Municipal Way, Grapevine, TX 76051",
     "description" : "Upper body lift, Lower body lift, Auxileries (biceps, triceps, calves, etc.)",
@@ -223,7 +228,7 @@ for event in app_events:
 time_intervals = []
 
 #Loop to add hour long time intervals from 9: AM to 5:00 PM
-for i in range (9, 17):
+for i in range (9, 14):
     if i < 11: 
         time_intervals.append((f"{str(i)}:00 AM", f"{str(i + 1)}:00 AM"))
     elif i == 11: 

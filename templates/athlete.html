@@ -2,12 +2,36 @@
 
 {% block title %}Athlete Profile{% endblock %}
 
-{% block head %}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/static/css/athlete.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+{% endblock %}
 
 {% block body %}
-<h1>{{ athlete.fname }}'s Profile</h1>
 
-{% for event_dict in past_events %}
-<p>{{ event_dict }}</p>
-{% endfor %}
+<div id = "side-nav"></div>
+
+
+<table id = "past-sessions-table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Event</th>
+            <th>Description</th>
+            <th>Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="/static/js/athlete/athlete.jsx" type="text/babel"></script>
 {% endblock %}
