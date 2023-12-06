@@ -1,4 +1,4 @@
-from model import db, connect_to_db, Athlete, Event
+from model import db, connect_to_db, Athlete, Event, Feedback
 
 import datetime
 
@@ -62,18 +62,22 @@ def athlete_past_present_future_events(id):
                          "athlete": get_athlete_by_id(event.athlete_id).fname,
                          "coach" : f"Coach {event.coach.fname}",
                          "event" : Event.query.get(event_on_schedule.event_id).name,
-                         "event description": Event.query.get(event_on_schedule.event_id).description, 
+                         "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
-                         "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}", 
-                         "feedback" : f"{event.feedback_message}"
+                         "start_time" : f"{event_on_schedule.start_time}",
+                         "end_time" : f"{event_on_schedule.start_time}",
+                         "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}",
+                         "feedback" : f"{Feedback.query.filter(Feedback.selected_event_id == event.id).first().feedback}"
                     })
                elif current_date < date_for_event_on_schedule: 
                     future_events.append({
                          "athlete": get_athlete_by_id(event.athlete_id).fname,
                          "coach" : f"Coach {event.coach.fname}",
                          "event" : Event.query.get(event_on_schedule.event_id).name,
-                         "event description": Event.query.get(event_on_schedule.event_id).description, 
+                         "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
+                         "start_time" : f"{event_on_schedule.start_time}",
+                         "end_time" : f"{event_on_schedule.start_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}"
                     })
                else: 
@@ -81,11 +85,12 @@ def athlete_past_present_future_events(id):
                          "athlete": get_athlete_by_id(event.athlete_id).fname,
                          "coach" : f"Coach {event.coach.fname}",
                          "event" : Event.query.get(event_on_schedule.event_id).name,
-                         "event description": Event.query.get(event_on_schedule.event_id).description, 
+                         "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
-                         "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}", 
+                         "start_time" : f"{event_on_schedule.start_time}",
+                         "end_time" : f"{event_on_schedule.start_time}",
+                         "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}"
                     })
-
 
      return past_events, current_events, future_events
 

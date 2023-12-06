@@ -227,7 +227,7 @@ for event in app_events:
 #Time interval container
 time_intervals = []
 
-#Loop to add hour long time intervals from 9: AM to 5:00 PM
+#Loop to add hour long time intervals from 9: AM to 3:00 PM
 for i in range (9, 14):
     if i < 11: 
         time_intervals.append((f"{str(i)}:00 AM", f"{str(i + 1)}:00 AM"))

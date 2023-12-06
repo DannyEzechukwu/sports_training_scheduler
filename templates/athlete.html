@@ -11,27 +11,33 @@
 
 <div id = "side-nav"></div>
 
+<div class="data-table-container" id="past-sessions">
+    <table class="data-table" id="past-sessions-table">
 
-<table id = "past-sessions-table">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Duration</th>
-            <th>Event</th>
-            <th>Description</th>
-            <th>Feedback</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-    </tbody>
-</table>
+        <thead>
+            <tr> 
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Event</th>
+                <th>Description</th>
+                <th>Coach Feedback</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for dict in past_events %}
+            <tr>
+                <td>{{ dict["date"] }}</td>
+                <td>{{ dict["duration"] }}</td>
+                <td>{{ dict["event"] }}</td>
+                <td>{{ dict["description"] }}</td>
+                <td>{{ dict["feedback"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
 
 <script src="/static/js/athlete/athlete.jsx" type="text/babel"></script>
 {% endblock %}

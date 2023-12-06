@@ -20,6 +20,7 @@ body{
     height: 100vh; /* Make the body fill the entire viewport height */
 }
 
+/* SIDE NAV */
 .sidebar-toggle{
     position: fixed;
     top: 3rem;
@@ -30,7 +31,7 @@ body{
 }
 
 .nav{
-    width: 310px;
+    width: 250px;
     position: fixed;
     /* z-index: -1; */
     top: 0;
@@ -99,7 +100,32 @@ body{
     padding: 5px;
 }
 
-#past-sessions-table{
+/* Data Table Styles */
+
+.data-table-container{
+    margin-top: 80px;
+}
+
+.data-table{
     margin: 0 auto;
     width: 50%;
+    border-collapse: collapse;
+    border: 1px solid black;
+    padding: 8px; 
 }
+
+.data-table th, .data-table td {
+    border: 1px solid black; /* Add a border for better visibility */
+    padding: 8px; /* Adjust the padding as needed */
+    text-align: center;
+}
+
+.data-table th{
+    background-color: darkgrey;
+}
+
+.data-table td{
+    background-color: #f1f1f1;
+}
+
+

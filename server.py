@@ -145,8 +145,11 @@ def athlete(id, fname, lname):
     if session["id"]: 
         athlete = athlete_crud.get_athlete_by_id(id)
         past_events = athlete_crud.athlete_past_present_future_events(id)[0]
+        print(past_events)
         current_events = athlete_crud.athlete_past_present_future_events(id)[1]
+        print(current_events)
         future_events = athlete_crud.athlete_past_present_future_events(id)[2]
+        print(future_events)
         return render_template("athlete.html", 
                         athlete = athlete, 
                         past_events = past_events,
