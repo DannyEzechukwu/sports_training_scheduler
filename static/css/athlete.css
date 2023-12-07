@@ -20,6 +20,11 @@ body{
     height: 100vh; /* Make the body fill the entire viewport height */
 }
 
+h1{
+    margin-top: 60px;
+    text-align: center;
+}
+
 /* SIDE NAV */
 .sidebar-toggle{
     position: fixed;
@@ -47,7 +52,7 @@ body{
 
 .nav-open{
     left: 0;
-    z-index: 1;
+    z-index: 0;
 }
 
 .nav-closed{
@@ -127,5 +132,27 @@ body{
 .data-table td{
     background-color: #f1f1f1;
 }
+
+/* Event Selection Styles */
+#event-selection-container{
+    margin: 0 auto;
+    width: 50%;
+}
+
+#selected-date{
+    width: 80px;
+}
+
+#event-selection-form{
+    background-color: darkgrey;
+    border: 1px solid black;
+    margin: 0 auto;
+    width: 90%; /* Adjust as needed */
+    display: flex;
+    box-sizing: border-box;
+    padding: 10px;  
+}
+
+
 
 

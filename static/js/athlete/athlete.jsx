@@ -1,17 +1,19 @@
 function SideNav(){
+
     // State for athlete in session
     const[userName, setUserName] = React.useState("");
     // State for toggle symbol from Google
-    const[isNavOpen, setIsNavOpen] = React.useState(false);
+    const[isNavOpen, setIsNavOpen] = React.useState(true);
 
     React.useEffect(() => {
         fetch("/athlete_info/json")
-          .then((response) => response.json())
-          .then((data) => {
+            .then((response) => response.json())
+            .then((data) => {
             setUserName(data.username)
         });
-    }, [userName]);
-    
+    }, []);
+
+    //Ability for side-nav panel to fit to screen
     React.useEffect(() => {
         const handleResize = () => {
             if(window.innerWidth < 600 && isNavOpen){
@@ -21,6 +23,51 @@ function SideNav(){
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize",handleResize);
     }, [isNavOpen])
+
+    // h1 page header
+    const pageHeader = document.querySelector("#header")
+
+    //Data-containers for past, present, and future pastSessionsButton
+    const pastSessionsContainer = document.querySelector("#past-sessions-container");
+    const todaysSessionsContainer = document.querySelector("#current-sessions-container");
+    const futureSessionsContainer = document.querySelector("#future-sessions-container");
+    //Session container array
+    const sessionContainers = [pastSessionsContainer,
+    todaysSessionsContainer,
+    futureSessionsContainer
+    ];
+
+    //Add session container and output rendered
+    const addSessionContainer = document.querySelector("#event-selection-container")
+    const sessionOutput = document.querySelector("#event-output")
+
+    const handleClick = (event) => {
+        // Handle button clicks in side-nave based on ID
+        switch (event.target.id) {
+        // "log-out" is clicked
+          case "log-out":
+            sessionContainers.forEach((container) =>{
+                container.style.display = "none";
+            })
+            addSessionContainer.style.display = "none";
+            sessionOutput.style.display = "none";
+            window.location.href = `/`;
+            break;
+
+          case "todays-sessions":
+            // Handle today's sessions button click
+            console.log("Today's Sessions button clicked");
+            break;
+          // Add more cases for other buttons
+          default:
+            break;
+        }
+      };
+      
+      document.querySelectorAll(".sidebar-options").forEach((button) => {
+        button.addEventListener("click", handleClick);
+      });
+
 
     return (
         <>

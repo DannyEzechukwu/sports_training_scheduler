@@ -11,6 +11,9 @@ def create_coach(fname, lname, username, email, password):
 def get_coach_by_id(id): 
      return Coach.query.get(id)
 
+def all_coaches(): 
+     return Coach.query.all()
+
 def get_coach_by_email(email):
      return Coach.query.filter((Coach.email == email)).first()
 

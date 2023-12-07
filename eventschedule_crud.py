@@ -10,3 +10,9 @@ def schedule_event(event_id, month, date, year, start_time, end_time):
                 end_time = end_time)
     
     return scheduled_event
+
+def get_scheduled_event_by_id(id): 
+    return EventSchedule.query.get(id)
+
+def all_scheduled_events():
+    return EventSchedule.query.all()

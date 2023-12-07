@@ -7,3 +7,9 @@ def create_event(name, location, description):
                 description = description)
     
     return event
+
+def get_event_by_id(id): 
+    return Event.query.get(id)
+
+def all_events(): 
+    return Event.query.all()

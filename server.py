@@ -143,7 +143,12 @@ def identify_athlete_for_side_nav_bar():
 @app.route("/athlete/<int:id>/<fname><lname>")
 def athlete(id, fname, lname):
     if session["id"]: 
+        start_time_options =["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM"]
+        coaches = coach_crud.all_coaches()
         athlete = athlete_crud.get_athlete_by_id(id)
+        training_events = event_crud.all_events()
+
+
         past_events = athlete_crud.athlete_past_present_future_events(id)[0]
         print(past_events)
         current_events = athlete_crud.athlete_past_present_future_events(id)[1]
@@ -154,7 +159,10 @@ def athlete(id, fname, lname):
                         athlete = athlete, 
                         past_events = past_events,
                         current_events = current_events,
-                        future_events = future_events )
+                        future_events = future_events, 
+                        start_time_options = start_time_options,
+                        coaches = coaches,
+                        training_events = training_events)
     else: 
         return redirect("/")
 #***********************************************************************************   

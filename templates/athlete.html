@@ -5,13 +5,18 @@
 {% block head %}
 <link rel="stylesheet" href="/static/css/athlete.css"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock %}
 
 {% block body %}
 
-<div id = "side-nav"></div>
+<h1 id="header">Today's Sessions</h1>
 
-<div class="data-table-container" id="past-sessions">
+<div id = "side-nav">
+</div>
+
+<div class="data-table-container" id="past-sessions-container" style = "display: none;"> 
+    
     <table class="data-table" id="past-sessions-table">
 
         <thead>
@@ -37,7 +42,115 @@
         </tbody>
 
     </table>
+
 </div>
 
-<script src="/static/js/athlete/athlete.jsx" type="text/babel"></script>
+<div class="data-table-container" id="current-sessions-container"> 
+    
+    <table class="data-table" id="current-sessions-table">
+
+        <thead>
+            <tr> 
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Event</th>
+                <th>Description</th>
+                <th>Coach Feedback</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for dict in current_events %}
+            <tr>
+                <td>{{ dict["date"] }}</td>
+                <td>{{ dict["duration"] }}</td>
+                <td>{{ dict["event"] }}</td>
+                <td>{{ dict["description"] }}</td>
+                <td>{{ dict["feedback"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    
+</div>
+
+<div class="data-table-container" id="future-sessions-container" style="display: none;"> 
+    
+    <table class="data-table" id="future-sessions-table">
+
+        <thead>
+            <tr> 
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Event</th>
+                <th>Description</th>
+                <th>Coach Feedback</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for dict in future_events %}
+            <tr>
+                <td>{{ dict["date"] }}</td>
+                <td>{{ dict["duration"] }}</td>
+                <td>{{ dict["event"] }}</td>
+                <td>{{ dict["description"] }}</td>
+                <td>{{ dict["feedback"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+<div id = "event-selection-container" style = "display: none;">
+    
+    <form id = "event-selection-form">
+        
+        <div>
+            <label for="selected-date">Select Date:</label>
+            <input type="text" id="selected-date">
+        </div>
+        
+        <div>
+            <label for="selected-time">Select Start Time:</label>
+            <select name="start-times" id="start-selected-time">
+                {% for time in start_time_options %}
+                <option value="{{ time }}"> {{ time }} </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div>
+            <label for="selected-coach">Select Coach:</label>
+            <select name="selected-coach" id="selected-coach">
+                {% for coach in coaches %}
+                <option value="{{ coach.fname }}"> Coach {{ coach.fname }} </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div>
+            <label for="selected-event">Select Event:</label>
+            <select name="selected-event" id="selected-event">
+                {% for event in training_events %}
+                <option value="{{ event.name }}"> {{ event.name }} </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <input type="submit">
+
+    </form>
+</div>
+
+<div id="event-output">
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="/static/js/athlete/athlete.jsx" type="text/jsx"></script>
+<script src="/static/js/athlete/athlete.js"></script>
 {% endblock %}

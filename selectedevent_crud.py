@@ -7,3 +7,9 @@ def select_event(athlete_id, coach_id, event_schedule_id):
                event_schedule_id = event_schedule_id)
     
     return selected_event
+
+def get_selectedevent_by_id(id): 
+    return SelectedEvent.query.get(id)
+
+def all_selectedevents(): 
+    SelectedEvent.query.all()
