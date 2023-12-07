@@ -1,5 +1,7 @@
 function SideNav(){
 
+    flatpickr("#selected-date");
+    
     // State for athlete in session
     const[userName, setUserName] = React.useState("");
     // State for toggle symbol from Google
@@ -39,28 +41,60 @@ function SideNav(){
 
     //Add session container and output rendered
     const addSessionContainer = document.querySelector("#event-selection-container")
-    const sessionOutput = document.querySelector("#event-output")
+    const sessionsOutput = document.querySelector("#event-output")
 
     const handleClick = (event) => {
         // Handle button clicks in side-nave based on ID
         switch (event.target.id) {
-        // "log-out" is clicked
-          case "log-out":
-            sessionContainers.forEach((container) =>{
-                container.style.display = "none";
-            })
-            addSessionContainer.style.display = "none";
-            sessionOutput.style.display = "none";
-            window.location.href = `/`;
-            break;
+        //Log Out is clicked
+            case "log-out":
+                sessionContainers.forEach((container) =>{
+                    container.style.display = "none";
+                })
+                addSessionContainer.style.display = "none";
+                sessionsOutput.style.display = "none";
+                window.location.href = `/`;
+                break;
+        
+        //Past Sessions is clicked
+            case "past-sessions":
+        //Handle today's sessions button click
+                pageHeader.innerText = "Past Sessions";
+                todaysSessionsContainer.style.display = "none";
+                futureSessionsContainer.style.display = "none";
+                addSessionContainer.style.display = "none";
+                sessionsOutput.style.display = "none";
+                pastSessionsContainer.style.display = "block";
+                break;
 
-          case "todays-sessions":
-            // Handle today's sessions button click
-            console.log("Today's Sessions button clicked");
-            break;
-          // Add more cases for other buttons
-          default:
-            break;
+        //Today's Sessions is clicked
+            case "todays-sessions":
+                pageHeader.innerText = "Today's Sessions";
+                pastSessionsContainer.style.display = "none";
+                futureSessionsContainer.style.display = "none";
+                addSessionContainer.style.display = "none";
+                sessionsOutput.style.display = "none";
+                todaysSessionsContainer.style.display = "block";
+                break;
+        
+        //Upcoming Sessions is clicked
+                case "future-sessions":
+                    pageHeader.innerText = "Upcoming Sessions";
+                    pastSessionsContainer.style.display = "none";
+                    todaysSessionsContainer.style.display = "none";
+                    addSessionContainer.style.display = "none";
+                    sessionsOutput.style.display = "none";
+                    futureSessionsContainer.style.display = "block";
+                    break;
+        
+        //Add Sessions is clicked
+                case "add-sessions":
+                    pageHeader.innerText = "Add Sessions";
+                    sessionContainers.forEach((container) =>{
+                        container.style.display = "none";
+                    })
+                    addSessionContainer.style.display = "flex";
+                    break;
         }
       };
       
@@ -84,8 +118,8 @@ function SideNav(){
                 <ul> 
                     <li><button className="sidebar-options" id="past-sessions">Past Sessions</button></li>
                     <li><button className="sidebar-options" id="todays-sessions">Today's Sessions</button></li>
-                    <li><button className="sidebar-options" id="future-sessions">Future Sessions</button></li>
-                    <li><button className="sidebar-options" id="add-session">Add Session</button></li>
+                    <li><button className="sidebar-options" id="future-sessions">Upcoming Sessions</button></li>
+                    <li><button className="sidebar-options" id="add-sessions">Add Session</button></li>
                     <li><button className="sidebar-options" id="log-out">Log Out</button></li>
                 </ul>
             </nav>
