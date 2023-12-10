@@ -1,12 +1,14 @@
 function SideNav(){
+    //Header at the top of the page
+    const pageHeader = document.querySelector("#header");
+    const subHeader = document.querySelector("#subheader");
 
-    flatpickr("#selected-date");
-    
-    // State for athlete in session
+    //State for athlete in session
     const[userName, setUserName] = React.useState("");
-    // State for toggle symbol from Google
+    //State for toggle symbol from Google
     const[isNavOpen, setIsNavOpen] = React.useState(true);
 
+    // Update the state of userName by fetching the endpoint from the server
     React.useEffect(() => {
         fetch("/athlete_info/json")
             .then((response) => response.json())
@@ -26,9 +28,6 @@ function SideNav(){
         return () => window.removeEventListener("resize",handleResize);
     }, [isNavOpen])
 
-    // h1 page header
-    const pageHeader = document.querySelector("#header")
-
     //Data-containers for past, present, and future pastSessionsButton
     const pastSessionsContainer = document.querySelector("#past-sessions-container");
     const todaysSessionsContainer = document.querySelector("#current-sessions-container");
@@ -43,9 +42,10 @@ function SideNav(){
     const addSessionContainer = document.querySelector("#event-selection-container")
     const sessionsOutput = document.querySelector("#event-output")
 
+    //Event handler for buttons side-nav panel
     const handleClick = (event) => {
         // Handle button clicks in side-nave based on ID
-        switch (event.target.id) {
+        switch (event.target.id) {    
         //Log Out is clicked
             case "log-out":
                 sessionContainers.forEach((container) =>{
@@ -60,6 +60,7 @@ function SideNav(){
             case "past-sessions":
         //Handle today's sessions button click
                 pageHeader.innerText = "Past Sessions";
+                subHeader.style.display = "none";
                 todaysSessionsContainer.style.display = "none";
                 futureSessionsContainer.style.display = "none";
                 addSessionContainer.style.display = "none";
@@ -70,6 +71,7 @@ function SideNav(){
         //Today's Sessions is clicked
             case "todays-sessions":
                 pageHeader.innerText = "Today's Sessions";
+                subHeader.style.display = "none";
                 pastSessionsContainer.style.display = "none";
                 futureSessionsContainer.style.display = "none";
                 addSessionContainer.style.display = "none";
@@ -80,6 +82,7 @@ function SideNav(){
         //Upcoming Sessions is clicked
                 case "future-sessions":
                     pageHeader.innerText = "Upcoming Sessions";
+                    subHeader.style.display = "none";
                     pastSessionsContainer.style.display = "none";
                     todaysSessionsContainer.style.display = "none";
                     addSessionContainer.style.display = "none";
@@ -89,18 +92,16 @@ function SideNav(){
         
         //Add Sessions is clicked
                 case "add-sessions":
-                    pageHeader.innerText = "Add Sessions";
                     sessionContainers.forEach((container) =>{
                         container.style.display = "none";
                     })
-                    addSessionContainer.style.display = "flex";
+                    pageHeader.innerText = "Add Sessions";
+                    subHeader.style.display = "block";
+                    subHeader.innerHTML
+                    addSessionContainer.style.display = "block";
                     break;
         }
       };
-      
-      document.querySelectorAll(".sidebar-options").forEach((button) => {
-        button.addEventListener("click", handleClick);
-      });
 
 
     return (
@@ -116,15 +117,29 @@ function SideNav(){
             <nav className = {`nav ${isNavOpen ? "nav-open" : "nav-closed"}`}>
                 <div className="logo">GAINZ</div>
                 <ul> 
-                    <li><button className="sidebar-options" id="past-sessions">Past Sessions</button></li>
-                    <li><button className="sidebar-options" id="todays-sessions">Today's Sessions</button></li>
-                    <li><button className="sidebar-options" id="future-sessions">Upcoming Sessions</button></li>
-                    <li><button className="sidebar-options" id="add-sessions">Add Session</button></li>
-                    <li><button className="sidebar-options" id="log-out">Log Out</button></li>
+                    <li><button className="sidebar-options" id="past-sessions" onClick = {handleClick}>Past Sessions</button></li>
+                    <li><button className="sidebar-options" id="todays-sessions" onClick = {handleClick}>Today's Sessions</button></li>
+                    <li><button className="sidebar-options" id="future-sessions" onClick = {handleClick}>Upcoming Sessions</button></li>
+                    <li><button className="sidebar-options" id="add-sessions" onClick = {handleClick}>Add Sessions</button></li>
+                    <li><button className="sidebar-options" id="log-out" onClick = {handleClick}>Log Out</button></li>
                 </ul>
             </nav>
         </>
     );
 };
 
-ReactDOM.render(<SideNav/>, document.getElementById('side-nav'));
+function CalendarInput(){
+    const selectedDateInput = document.querySelector("#selected-date");
+    if (selectedDateInput) {
+      flatpickr(selectedDateInput, {
+        // Set the minimum date to today
+        // minDate: "today",
+      });
+    }
+    //Componnet does not return any JSX. Only sets flatpickr
+    //into correct input
+    return null;
+}
+
+ReactDOM.render(<SideNav/>, document.querySelector('#side-nav'));
+ReactDOM.render(<CalendarInput/>, document.querySelector('#selected-date'));

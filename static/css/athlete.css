@@ -8,7 +8,7 @@ body{
     /* background: hsl(201, 43%, 75%); */
    
     /* Set the background image */
-    background-image: url("../images/training5.jpeg");
+    background-image: url("../images/training7.avif");
 
     /* Specify background properties */
     background-size: cover; /* Cover the entire background */
@@ -20,7 +20,7 @@ body{
     height: 100vh; /* Make the body fill the entire viewport height */
 }
 
-h1{
+.header{
     margin-top: 60px;
     text-align: center;
 }
@@ -136,7 +136,7 @@ h1{
 /* Event Selection Styles */
 #event-selection-container{
     margin: 0 auto;
-    width: 50%;
+    width: 25%;
 }
 
 #selected-date{
@@ -147,12 +147,16 @@ h1{
     background-color: darkgrey;
     border: 1px solid black;
     margin: 0 auto;
-    width: 90%; /* Adjust as needed */
-    display: flex;
+    width: 40%; /* Adjust as needed */
+    display: block;
     box-sizing: border-box;
-    padding: 10px;  
+    padding: 10px;
 }
 
+#event-selection-form div{
+    padding-bottom: 10px;
+    display: block;
+}
 
 
 

@@ -133,38 +133,92 @@ def new_coach():
 
 #ATHLETE FEATURES
 
-#Side 
+#Side nav JSON panel
 @app.route("/athlete_info/json")
 def identify_athlete_for_side_nav_bar(): 
     if session["id"]:
        athlete = athlete_crud.get_athlete_by_id(session["id"])
        return jsonify({"username" : athlete.username })
 
+# Main Page
 @app.route("/athlete/<int:id>/<fname><lname>")
 def athlete(id, fname, lname):
     if session["id"]: 
         start_time_options =["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM"]
         coaches = coach_crud.all_coaches()
         athlete = athlete_crud.get_athlete_by_id(id)
-        training_events = event_crud.all_events()
-
 
         past_events = athlete_crud.athlete_past_present_future_events(id)[0]
-        print(past_events)
         current_events = athlete_crud.athlete_past_present_future_events(id)[1]
-        print(current_events)
         future_events = athlete_crud.athlete_past_present_future_events(id)[2]
-        print(future_events)
+        
         return render_template("athlete.html", 
-                        athlete = athlete, 
+                        athlete = athlete,
+                        coaches = coaches,
                         past_events = past_events,
                         current_events = current_events,
                         future_events = future_events, 
-                        start_time_options = start_time_options,
-                        coaches = coaches,
-                        training_events = training_events)
+                        start_time_options = start_time_options,)
     else: 
         return redirect("/")
+    
+#Route for athlete session selection form submission
+@app.route("/session_options/json", methods = ["POST"])
+def athlete_session_choices():
+    front_end_events = []
+    date_selection = request.form.get("selected-date")
+    start_time = request.form.get("selected-start-time")
+    coach_fname = request.form.get("selected-coach")
+
+    # Parse selected date
+    year_month_day = date_selection.split("-")
+    month = year_month_day[1]
+    date = year_month_day[2]
+    year = year_month_day[0]
+    #Get all the events on the calendar for that day
+    events_on_schedule = eventschedule_crud.events_by_month_date_year_start_time(month, date, year, start_time)
+
+    #Parse coach name to get the events that this 
+    #coach has already been selected for
+    coach_object = coach_crud.get_coach_by_fname(coach_fname)
+    coach_id = coach_object.id
+    coach_events = coach_object.events
+
+    for coach_event in coach_events: 
+        schedule_id = coach_event.event_schedule_id
+        event_selected_with_coach = eventschedule_crud.get_scheduled_event_by_id(schedule_id)
+        coach_month = event_selected_with_coach.month
+        coach_date = event_selected_with_coach.date
+        coach_year  = event_selected_with_coach.year
+        coach_start_time = event_selected_with_coach.start_time
+        print(coach_month, coach_date, coach_year, type(coach_start_time))
+        # Condition for if the minth, date, year, and start time the coach is
+        # chosen for is already taken
+        #Values from client must be converted to int
+        if coach_month == int(month) and coach_date == int(date) and coach_year == int(year) and coach_start_time == start_time:
+            return f"Coach {coach_fname} is unavailable on {date_selection} at {start_time}"
+        
+    return"available"
+            # return jsonify({"unavailable" : f"Coach {coach_fname} is unavailable on {date_selection} at {start_time}"})
+        
+        # else:   
+        #     for scheduled_event in events_on_schedule:
+        #         event_id = scheduled_event.event_id
+        #         event_object = event_crud.get_event_by_id(event_id)
+        #         front_end_events.append({"event_name" : event_object.name, 
+        #                             "event_descritpion" : event_object.description, 
+        #                             "event_duration" : f"{scheduled_event.start_time} - {scheduled_event.end_time}"})
+        
+
+        #         print("front_end_events:")
+        #         print(front_end_events)
+        #     return "Yes!"
+
+
+
+
+
+    
 #***********************************************************************************   
 
 #COACH FEATURES

@@ -10,7 +10,10 @@
 
 {% block body %}
 
-<h1 id="header">Today's Sessions</h1>
+<div  class ="header">
+    <h1 id ="header">Today's Sessions</h1>
+    <h2 id="subheader" style = "display: none;">Select up to 3 sessions</h2>
+</div>
 
 <div id = "side-nav">
 </div>
@@ -25,6 +28,7 @@
                 <th>Duration</th>
                 <th>Event</th>
                 <th>Description</th>
+                <th>Coach</th>
                 <th>Coach Feedback</th>
             </tr>
         </thead>
@@ -36,6 +40,7 @@
                 <td>{{ dict["duration"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
+                <td>{{ dict["coach"] }}</td>
                 <td>{{ dict["feedback"] }}</td>
             </tr>
             {% endfor %}
@@ -55,6 +60,7 @@
                 <th>Duration</th>
                 <th>Event</th>
                 <th>Description</th>
+                <th>Coach</th>
                 <th>Coach Feedback</th>
             </tr>
         </thead>
@@ -66,6 +72,7 @@
                 <td>{{ dict["duration"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
+                <td>{{ dict["coach"] }}</td>
                 <td>{{ dict["feedback"] }}</td>
             </tr>
             {% endfor %}
@@ -85,6 +92,7 @@
                 <th>Duration</th>
                 <th>Event</th>
                 <th>Description</th>
+                <th>Coach</th>
                 <th>Coach Feedback</th>
             </tr>
         </thead>
@@ -96,6 +104,7 @@
                 <td>{{ dict["duration"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
+                <td> {{ dict["coach"] }} </td>
                 <td>{{ dict["feedback"] }}</td>
             </tr>
             {% endfor %}
@@ -107,16 +116,17 @@
 
 <div id = "event-selection-container" style = "display: none;">
     
-    <form id = "event-selection-form">
+    <form action="/session_options/json" id = "event-selection-form" method = "POST">
         
         <div>
-            <label for="selected-date">Select Date:</label>
-            <input type="text" id="selected-date">
+            <label for="selected-date">Date:</label>
+            <br>
+            <input type="text" name ="selected-date" id="selected-date">
         </div>
         
         <div>
-            <label for="selected-time">Select Start Time:</label>
-            <select name="start-times" id="start-selected-time">
+            <label for="selected-start-time">Start Time:</label>
+            <select name="selected-start-time" id="selected-start-time">
                 {% for time in start_time_options %}
                 <option value="{{ time }}"> {{ time }} </option>
                 {% endfor %}
@@ -124,26 +134,19 @@
         </div>
         
         <div>
-            <label for="selected-coach">Select Coach:</label>
+            <label for="selected-coach">Preferred Coach:</label>
             <select name="selected-coach" id="selected-coach">
                 {% for coach in coaches %}
                 <option value="{{ coach.fname }}"> Coach {{ coach.fname }} </option>
                 {% endfor %}
             </select>
         </div>
-        
-        <div>
-            <label for="selected-event">Select Event:</label>
-            <select name="selected-event" id="selected-event">
-                {% for event in training_events %}
-                <option value="{{ event.name }}"> {{ event.name }} </option>
-                {% endfor %}
-            </select>
+        <div id="submit">
+            <input  type="submit">
         </div>
-        
-        <input type="submit">
 
     </form>
+
 </div>
 
 <div id="event-output">

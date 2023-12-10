@@ -20,5 +20,8 @@ def get_coach_by_email(email):
 def get_coach_by_username(username): 
      return Coach.query.filter((Coach.username == username)).first()
 
+def get_coach_by_fname(fname):
+     return Coach.query.filter((Coach.fname == fname)).first()
+
 def get_coach_by_username_and_password(username, password): 
      return Coach.query.filter((Coach.username == username) & (Coach.password == password)).first()

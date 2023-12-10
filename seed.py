@@ -263,7 +263,7 @@ for date in date_list:
 
     #Gather date info for each date
     individual_date_list = date.split("/")
-    month = individual_date_list[0]
+    month = int(individual_date_list[0])
     date = individual_date_list[1]
     year = individual_date_list[2]
     

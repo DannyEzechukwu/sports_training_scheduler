@@ -16,3 +16,9 @@ def get_scheduled_event_by_id(id):
 
 def all_scheduled_events():
     return EventSchedule.query.all()
+
+def events_by_month_date_year_start_time(month, date, year, start_time):
+    return EventSchedule.query.filter((EventSchedule.month == month) &
+                               (EventSchedule.date == date) &
+                               (EventSchedule.year == year) &
+                               (EventSchedule.start_time == start_time)).all()
