@@ -26,6 +26,7 @@
             <tr> 
                 <th>Date</th>
                 <th>Duration</th>
+                <th>Location</th>
                 <th>Event</th>
                 <th>Description</th>
                 <th>Coach</th>
@@ -38,6 +39,7 @@
             <tr>
                 <td>{{ dict["date"] }}</td>
                 <td>{{ dict["duration"] }}</td>
+                <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
                 <td>{{ dict["coach"] }}</td>
@@ -58,6 +60,7 @@
             <tr> 
                 <th>Date</th>
                 <th>Duration</th>
+                <th>Location</th>
                 <th>Event</th>
                 <th>Description</th>
                 <th>Coach</th>
@@ -70,6 +73,7 @@
             <tr>
                 <td>{{ dict["date"] }}</td>
                 <td>{{ dict["duration"] }}</td>
+                <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
                 <td>{{ dict["coach"] }}</td>
@@ -90,6 +94,7 @@
             <tr> 
                 <th>Date</th>
                 <th>Duration</th>
+                <th>Location</th>
                 <th>Event</th>
                 <th>Description</th>
                 <th>Coach</th>
@@ -102,6 +107,7 @@
             <tr>
                 <td>{{ dict["date"] }}</td>
                 <td>{{ dict["duration"] }}</td>
+                <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
                 <td> {{ dict["coach"] }} </td>
@@ -116,11 +122,10 @@
 
 <div id = "event-selection-container" style = "display: none;">
     
-    <form action="/session_options/json" id = "event-selection-form" method = "POST">
+    <form action="/training_session_options/json" id = "event-selection-form" method = "GET">
         
         <div>
             <label for="selected-date">Date:</label>
-            <br>
             <input type="text" name ="selected-date" id="selected-date">
         </div>
         
@@ -153,6 +158,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src ="/static/js/athlete/athlete.js"></script>
 <script src="/static/js/athlete/athlete.jsx" type="text/jsx"></script>
+<script src ="/static/js/athlete/athlete.js"></script>
 {% endblock %}

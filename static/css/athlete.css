@@ -108,15 +108,25 @@ body{
 /* Data Table Styles */
 
 .data-table-container{
-    margin-top: 80px;
+    /* height: 500px; */
+    margin: 20px auto; /* Adjust margin as needed */
+    width: 75%; /* Adjust width as needed */
+    overflow-y: scroll;
 }
 
 .data-table{
-    margin: 0 auto;
-    width: 50%;
+    width : 75%;
+    margin: auto;
     border-collapse: collapse;
     border: 1px solid black;
-    padding: 8px; 
+}
+
+.data-table th {
+    background-color: darkgrey;
+    position: sticky;
+    top: 0; /* Stick the header at the top */
+    z-index: 1; /* Ensure the header appears above other elements */
+    
 }
 
 .data-table th, .data-table td {
@@ -125,8 +135,9 @@ body{
     text-align: center;
 }
 
-.data-table th{
-    background-color: darkgrey;
+tbody {
+    max-height: 300px; /* Set a maximum height to enable vertical scrolling */
+    overflow-y: scroll; /* Enable vertical scrollbar when the content exceeds the maximum height */
 }
 
 .data-table td{
@@ -134,9 +145,9 @@ body{
 }
 
 /* Event Selection Styles */
-#event-selection-container{
-    margin: 0 auto;
-    width: 25%;
+#event-selection-container {
+    margin: 20px auto; /* Adjust margin as needed */
+    width: 40%; /* Adjust width as needed */
 }
 
 #selected-date{

@@ -48,7 +48,7 @@ def athlete_past_present_future_events(id):
           # Get the EventSchedule object using the selection relationship variable
           event_on_schedule = event.selection
           # Set a condition for if match is found
-          if event_on_schedule: 
+          if event_on_schedule:
                # Use necessary attributes from class to create a date
                # object that will be compared to today
                year = event_on_schedule.year
@@ -62,6 +62,7 @@ def athlete_past_present_future_events(id):
                          "athlete": get_athlete_by_id(event.athlete_id).fname,
                          "coach" : f"Coach {event.coach.fname}",
                          "event" : Event.query.get(event_on_schedule.event_id).name,
+                         "location" : Event.query.get(event_on_schedule.event_id).location,
                          "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
                          "start_time" : f"{event_on_schedule.start_time}",
@@ -74,6 +75,7 @@ def athlete_past_present_future_events(id):
                          "athlete": get_athlete_by_id(event.athlete_id).fname,
                          "coach" : f"Coach {event.coach.fname}",
                          "event" : Event.query.get(event_on_schedule.event_id).name,
+                         "location" : Event.query.get(event_on_schedule.event_id).location,
                          "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
                          "start_time" : f"{event_on_schedule.start_time}",
@@ -85,6 +87,7 @@ def athlete_past_present_future_events(id):
                          "athlete": get_athlete_by_id(event.athlete_id).fname,
                          "coach" : f"Coach {event.coach.fname}",
                          "event" : Event.query.get(event_on_schedule.event_id).name,
+                         "location" : Event.query.get(event_on_schedule.event_id).location,
                          "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
                          "start_time" : f"{event_on_schedule.start_time}",
