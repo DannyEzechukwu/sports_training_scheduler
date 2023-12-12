@@ -128,18 +128,4 @@ function SideNav(){
     );
 };
 
-function CalendarInput(){
-    const selectedDateInput = document.querySelector("#selected-date");
-    if (selectedDateInput) {
-      flatpickr(selectedDateInput, {
-        // Set the minimum date to today
-        // minDate: "today",
-      });
-    }
-    //Componnet does not return any JSX. Only sets flatpickr
-    //into correct input
-    return null;
-}
-
 ReactDOM.render(<SideNav/>, document.querySelector('#side-nav'));
-ReactDOM.render(<CalendarInput/>, document.querySelector('#selected-date'));

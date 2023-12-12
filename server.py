@@ -168,19 +168,20 @@ def athlete(id, fname, lname):
 def athlete_session_choices():
     if session["id"]:
         front_end_events = []
-        date_selection = request.args.get("selected-date")
-        print(date_selection)
+        date_selection = request.args.get("selected-date") # selected-date
+        print("date_selection :",  date_selection)
         start_time = request.args.get("selected-start-time")
         coach_fname = request.args.get("selected-coach")
 
-
         # Parse selected date into month, date, year
         #Make them integers
-        year_month_day = date_selection.split("-")
-        month = int(year_month_day[1])
-        print(type(month), month)
-        date = int(year_month_day[2])
-        year = int(year_month_day[0])
+        month_date_year = date_selection.split("-")
+        print(month_date_year)
+        month = int(month_date_year[1])
+        date = int(month_date_year[2])
+        year = int(month_date_year[0])
+
+        print(month, date, year)
         
         #Get all the events on the calendar for that day
         events_on_schedule = eventschedule_crud.events_by_month_date_year_start_time(month, 
@@ -188,12 +189,10 @@ def athlete_session_choices():
                                                     year, 
                                                     start_time)
         
-
         #1 Check if there are any events scheduled for this day and time to begin with
         if not events_on_schedule: 
             return jsonify({"response" : "no events", 
-                            "message" : f"No sessions scheduled on {date_selection} at {start_time}"})
-
+                            "message" : f"No sessions scheduled on {month}/{date}/{year} at {start_time}"})
 
         #Get the events this athlete has already selected
         athlete = athlete_crud.get_athlete_by_id(session["id"])
@@ -211,7 +210,7 @@ def athlete_session_choices():
             # chooses is already has an existing event
             if athlete_month == month and athlete_date == date and athlete_year == year and athlete_start_time == start_time:
                 return jsonify({"response" : "athlete unavailable",
-                                "message" : f"{athlete.fname}, you have a session scheuled on {date_selection} at {start_time}"})
+                                "message" : f"{athlete.fname}, you have a session scheuled on {month}/{date}/{year} at {start_time}"})
         
         #Parse coach name to get the events that this 
         #coach has already been selected for
@@ -229,8 +228,8 @@ def athlete_session_choices():
             # Condition for if the minth, date, year, and start time the coach is
             # chosen for is already taken
             if coach_month == month and coach_date == date and coach_year == year and coach_start_time == start_time:
-                return jsonify({"response" : "coach unavilable",
-                                "message" : f"Coach {coach_fname} already has a session on {date_selection} at {start_time}"})
+                return jsonify({"response" : "coach unavailable",
+                                "message" : f"Coach {coach_fname} already has a session on {month}/{date}/{year} at {start_time}"})
             
         #Condition for if there is an event available for this day and time,
         #coach is available and athlete is available
@@ -240,7 +239,6 @@ def athlete_session_choices():
             front_end_events.append({"event_name" : event_object.name, 
                                 "event_descritpion" : event_object.description, 
                                 "event_duration" : f"{scheduled_event.start_time} - {scheduled_event.end_time}"})
-
 
         print("front_end_events:")
         print(front_end_events)
