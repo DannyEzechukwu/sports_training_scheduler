@@ -147,7 +147,7 @@ tbody {
 /* Event Selection Styles */
 #event-selection-container {
     margin: 20px auto; /* Adjust margin as needed */
-    width: 40%; /* Adjust width as needed */
+    width: 30%; /* Adjust width as needed */
 }
 
 #selected-date{
@@ -167,6 +167,7 @@ tbody {
 #event-selection-form div{
     padding-bottom: 10px;
     display: block;
+    text-align: center;
 }
 
 

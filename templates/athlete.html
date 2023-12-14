@@ -124,28 +124,29 @@
     
     <form action="/training_session_options/json" id = "event-selection-form" method = "GET">
         
-        <div>
-            <label for="selected-date">Date:</label>
-            <input type="date" name ="selected-date" id="selected-date">
-        </div>
-        
-        <div>
-            <label for="selected-start-time">Start Time:</label>
-            <select name="selected-start-time" id="selected-start-time">
-                {% for time in start_time_options %}
-                <option value="{{ time }}"> {{ time }} </option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div>
+        <!-- <div>
             <label for="selected-coach">Preferred Coach:</label>
             <select name="selected-coach" id="selected-coach">
                 {% for coach in coaches %}
                 <option value="{{ coach.fname }}"> Coach {{ coach.fname }} </option>
                 {% endfor %}
             </select>
+        </div> -->
+
+        <div>
+            <label for="selected-date">Date:</label>
+            <input type="date" name ="selected-date" id="selected-date">
         </div>
+        
+        <!-- <div>
+            <label for="selected-start-time">Start Time:</label>
+            <select name="selected-start-time" id="selected-start-time">
+                {% for time in start_time_options %}
+                <option value="{{ time }}"> {{ time }} </option>
+                {% endfor %}
+            </select>
+        </div> -->
+        
         <div id="submit">
             <input  type="submit">
         </div>

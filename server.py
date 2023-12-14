@@ -163,90 +163,89 @@ def athlete(id, fname, lname):
     else: 
         return redirect("/")
     
-#Route for athlete session selection form submission
+# JSON Endpoint for athletes to make event selection
+# and select coach for that event
 @app.route("/training_session_options/json")
-def athlete_session_choices():
+def sessions_for_selected_date():
     if session["id"]:
-        front_end_events = []
-        date_selection = request.args.get("selected-date") # selected-date
-        print("date_selection :",  date_selection)
-        start_time = request.args.get("selected-start-time")
-        coach_fname = request.args.get("selected-coach")
+        #Empty list that will hold available events and coaches to
+        # send to front end
+        front_end_events_and_coaches = []
+
+        #Date input from form
+        date_selection = request.args.get("selected-date")
 
         # Parse selected date into month, date, year
-        #Make them integers
+        # Make them integers for valid database comparisons
         month_date_year = date_selection.split("-")
-        print(month_date_year)
         month = int(month_date_year[1])
         date = int(month_date_year[2])
         year = int(month_date_year[0])
 
-        print(month, date, year)
-        
-        #Get all the events on the calendar for that day
-        events_on_schedule = eventschedule_crud.events_by_month_date_year_start_time(month, 
-                                                    date, 
-                                                    year, 
-                                                    start_time)
-        
-        #1 Check if there are any events scheduled for this day and time to begin with
-        if not events_on_schedule: 
-            return jsonify({"response" : "no events", 
-                            "message" : f"No sessions scheduled on {month}/{date}/{year} at {start_time}"})
+        # Get all events scheduled for the date selected by athlete
+        all_events_for_date = eventschedule_crud.events_by_month_date_year(month, date, year)
 
-        #Get the events this athlete has already selected
-        athlete = athlete_crud.get_athlete_by_id(session["id"])
-        athlete_events = athlete.selected_events
+        # Condition for if there are no events available for that day
+        # due to them all being selected by other athletes 
+        if all_events_for_date == []:
+            return jsonify({
+                "response" : "unsuccessful", 
+                "output" : "All events have been selected"}) 
         
-        #2 Check for athlete's availability
-        for athlete_event in athlete_events: 
-            schedule_id = athlete_event.event_schedule_id
-            event_selected_by_athlete = eventschedule_crud.get_scheduled_event_by_id(schedule_id)
-            athlete_month = event_selected_by_athlete.month
-            athlete_date = event_selected_by_athlete.date
-            athlete_year  = event_selected_by_athlete.year
-            athlete_start_time = event_selected_by_athlete.start_time
-            # Condition for if the month, date, year, and start time the athlete
-            # chooses is already has an existing event
-            if athlete_month == month and athlete_date == date and athlete_year == year and athlete_start_time == start_time:
-                return jsonify({"response" : "athlete unavailable",
-                                "message" : f"{athlete.fname}, you have a session scheuled on {month}/{date}/{year} at {start_time}"})
+        # List comprehension to get the available events for the date
+        # An avalable event is an event that appears in the Event Schedule class
+        # but does not appear in the SelectedEvent class
+        available_events_for_date = [event for event in all_events_for_date if not selectedevent_crud.get_selectedevent_by_event_schedule_id(event.id)]
         
-        #Parse coach name to get the events that this 
-        #coach has already been selected for
-        coach_object = coach_crud.get_coach_by_fname(coach_fname)
-        coach_events = coach_object.events
-        
-        #3 Check for coach's availability
-        for coach_event in coach_events: 
-            schedule_id = coach_event.event_schedule_id
-            event_selected_with_coach = eventschedule_crud.get_scheduled_event_by_id(schedule_id)
-            coach_month = event_selected_with_coach.month
-            coach_date = event_selected_with_coach.date
-            coach_year  = event_selected_with_coach.year
-            coach_start_time = event_selected_with_coach.start_time
-            # Condition for if the minth, date, year, and start time the coach is
-            # chosen for is already taken
-            if coach_month == month and coach_date == date and coach_year == year and coach_start_time == start_time:
-                return jsonify({"response" : "coach unavailable",
-                                "message" : f"Coach {coach_fname} already has a session on {month}/{date}/{year} at {start_time}"})
+        # Loop through the EventSchedule objects in all available events
+        # scheduled for the day selected by athlete
+        for available_event in available_events_for_date:
+            available_coaches = set()
+
+            # Get the object from the Event class for each event
+            # that is available using the event_id attribute
+            # Define the attributes in understandable variables
+            event_object = event_crud.get_event_by_id(available_event.event_id)
+            event_name = event_object.name
+            event_location = event_object.location
+            event_description = event_object.description
             
-        #Condition for if there is an event available for this day and time,
-        #coach is available and athlete is available
-        for scheduled_event in events_on_schedule:
-            event_id = scheduled_event.event_id
-            event_object = event_crud.get_event_by_id(event_id)
-            front_end_events.append({"event_name" : event_object.name, 
-                                "event_descritpion" : event_object.description, 
-                                "event_duration" : f"{scheduled_event.start_time} - {scheduled_event.end_time}"})
+            # Loop through each coach in the database
+            for coach in coach_crud.all_coaches():
 
-        print("front_end_events:")
-        print(front_end_events)
-        return jsonify({"response" : "events available",
-                                "message" : front_end_events})
+                # Loop through each event the coach has been selected for
+                for coach_event in coach.events:
+                    # Get the object from the EventSchedule class for each event the coach
+                    # has been selected for using the event_schedule_id attribute
+                    event_on_coach_schedule = eventschedule_crud.get_scheduled_event_by_id(coach_event.event_schedule_id)
 
+                    # Condition for if coach is unavailable for this specific event
+                    if (
+                        event_on_coach_schedule.month == available_event.month
+                        and event_on_coach_schedule.date == available_event.date
+                        and event_on_coach_schedule.year == available_event.year
+                        and event_on_coach_schedule.start_time == available_event.start_time
+                    ):
+                        break
+                    else:
+                        available_coaches.add(f"Coach {coach.fname}")
+
+            front_end_events_and_coaches.append(
+                {
+                    "month": available_event.month,
+                    "date": available_event.date,
+                    "year": available_event.year,
+                    "duration": f"{available_event.start_time} - {available_event.end_time}",
+                    "name": event_name,
+                    "event_location": event_location,
+                    "event_description": event_description,
+                    "available_coaches": list(available_coaches),
+                })
+                    
+        return jsonify({
+                    "respomse" : "success",
+                    "output": front_end_events_and_coaches})
     return redirect("/")
-        
 #***********************************************************************************   
 
 #COACH FEATURES

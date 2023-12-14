@@ -13,3 +13,6 @@ def get_selectedevent_by_id(id):
 
 def all_selectedevents(): 
     SelectedEvent.query.all()
+
+def get_selectedevent_by_event_schedule_id(event_schedule_id): 
+    return SelectedEvent.query.filter(SelectedEvent.event_schedule_id == event_schedule_id).first()
