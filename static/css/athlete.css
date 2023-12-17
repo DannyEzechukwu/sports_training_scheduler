@@ -108,14 +108,13 @@ body{
 /* Data Table Styles */
 
 .data-table-container{
-    /* height: 500px; */
-    margin: 20px auto; /* Adjust margin as needed */
-    width: 75%; /* Adjust width as needed */
-    overflow-y: scroll;
+    height: 100%; 
+    margin: 0 auto; /* Adjust margin as needed */
+    width: 50%; /* Adjust width as needed */
 }
 
 .data-table{
-    width : 75%;
+    width : 50%;
     margin: auto;
     border-collapse: collapse;
     border: 1px solid black;
@@ -135,9 +134,9 @@ body{
     text-align: center;
 }
 
-tbody {
-    max-height: 300px; /* Set a maximum height to enable vertical scrolling */
-    overflow-y: scroll; /* Enable vertical scrollbar when the content exceeds the maximum height */
+.data-table tbody {
+    max-height: 200px; /*Set a maximum height to enable vertical scrolling  */
+    overflow-y: scroll; /*Enable vertical scrollbar when the content exceeds the maximum height */
 }
 
 .data-table td{
@@ -146,15 +145,17 @@ tbody {
 
 /* Event Selection Styles */
 #event-selection-container {
-    margin: 20px auto; /* Adjust margin as needed */
+    margin: auto; /* Adjust margin as needed */
     width: 30%; /* Adjust width as needed */
+    margin-bottom: 15px;
 }
 
-#selected-date{
+.date-input-form{
     width: 110px;
+    padding: 10px;
 }
 
-#event-selection-form{
+#date-selection-form{
     background-color: darkgrey;
     border: 1px solid black;
     margin: 0 auto;
@@ -164,11 +165,19 @@ tbody {
     padding: 10px;
 }
 
-#event-selection-form div{
+#athlete-form-submit-1{
     padding-bottom: 10px;
+    padding-top: 10px;
     display: block;
     text-align: center;
 }
 
+#athlete-form-submit-2{
+    padding-bottom: 10px;
+    padding-top: 10px;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
 
 

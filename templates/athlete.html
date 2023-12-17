@@ -12,7 +12,6 @@
 
 <div  class ="header">
     <h1 id ="header">Today's Sessions</h1>
-    <h2 id="subheader" style = "display: none;">Select up to 3 sessions</h2>
 </div>
 
 <div id = "side-nav">
@@ -64,7 +63,6 @@
                 <th>Event</th>
                 <th>Description</th>
                 <th>Coach</th>
-                <th>Coach Feedback</th>
             </tr>
         </thead>
 
@@ -77,7 +75,6 @@
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
                 <td>{{ dict["coach"] }}</td>
-                <td>{{ dict["feedback"] }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -98,7 +95,6 @@
                 <th>Event</th>
                 <th>Description</th>
                 <th>Coach</th>
-                <th>Coach Feedback</th>
             </tr>
         </thead>
 
@@ -111,7 +107,6 @@
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
                 <td> {{ dict["coach"] }} </td>
-                <td>{{ dict["feedback"] }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -122,40 +117,55 @@
 
 <div id = "event-selection-container" style = "display: none;">
     
-    <form action="/training_session_options/json" id = "event-selection-form" method = "GET">
-        
-        <!-- <div>
-            <label for="selected-coach">Preferred Coach:</label>
-            <select name="selected-coach" id="selected-coach">
-                {% for coach in coaches %}
-                <option value="{{ coach.fname }}"> Coach {{ coach.fname }} </option>
-                {% endfor %}
-            </select>
-        </div> -->
+    <form action="/training_session_options/json" id = "date-selection-form" method = "GET">
 
-        <div>
-            <label for="selected-date">Date:</label>
-            <input type="date" name ="selected-date" id="selected-date">
+        <div class="date-input-form">
+            <label for="selected-start-date">Start:</label>
+            <input type="date" name ="selected-start-date" id="selected-start-date">
+        </div>
+
+        <div class="date-input-form">
+            <label for="selected-end-date">Date:</label>
+            <input type="date" name ="selected-end-date" id="selected-end-date">
         </div>
         
-        <!-- <div>
-            <label for="selected-start-time">Start Time:</label>
-            <select name="selected-start-time" id="selected-start-time">
-                {% for time in start_time_options %}
-                <option value="{{ time }}"> {{ time }} </option>
-                {% endfor %}
-            </select>
-        </div> -->
-        
-        <div id="submit">
-            <input  type="submit">
+        <div id ="athlete-form-submit-1">
+            <input type="submit">
         </div>
 
     </form>
 
 </div>
 
-<div id="event-output">
+<div id="events-output" style = "display: none;">
+   
+    <form id = "events-output-form"> 
+        
+        <table class="data-table" id = "events-output-table">
+            
+            <thead>
+                <tr>
+                    <th>Selection</th>
+                    <th>Date</th>
+                    <th>Duration</th>
+                    <th>Location</th>
+                    <th>Event</th>
+                    <th>Description</th>
+                    <th>Available Coaches</th>
+                </tr>
+            </thead>
+            
+            <tbody id="events-output-body">
+            </tbody>
+    
+        </table>
+
+        <div id ="athlete-form-submit-2">
+            <input type="submit">
+        </div>
+        
+    </form>
+   
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

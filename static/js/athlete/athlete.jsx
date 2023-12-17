@@ -1,7 +1,6 @@
 function SideNav(){
     //Header at the top of the page
     const pageHeader = document.querySelector("#header");
-    const subHeader = document.querySelector("#subheader");
 
     //State for athlete in session
     const[userName, setUserName] = React.useState("");
@@ -39,8 +38,9 @@ function SideNav(){
     ];
 
     //Add session container and output rendered
-    const addSessionContainer = document.querySelector("#event-selection-container")
-    const sessionsOutput = document.querySelector("#event-output")
+    const addSessionContainer = document.querySelector("#event-selection-container");
+    const sessionsOutput = document.querySelector("#events-output");
+    const eventsOutputBody = document.querySelector("#events-output-body");
 
     //Event handler for buttons side-nav panel
     const handleClick = (event) => {
@@ -60,34 +60,34 @@ function SideNav(){
             case "past-sessions":
         //Handle today's sessions button click
                 pageHeader.innerText = "Past Sessions";
-                subHeader.style.display = "none";
                 todaysSessionsContainer.style.display = "none";
                 futureSessionsContainer.style.display = "none";
                 addSessionContainer.style.display = "none";
                 sessionsOutput.style.display = "none";
                 pastSessionsContainer.style.display = "block";
+                eventsOutputBody.innerHTML = "";
                 break;
 
         //Today's Sessions is clicked
             case "todays-sessions":
                 pageHeader.innerText = "Today's Sessions";
-                subHeader.style.display = "none";
                 pastSessionsContainer.style.display = "none";
                 futureSessionsContainer.style.display = "none";
                 addSessionContainer.style.display = "none";
                 sessionsOutput.style.display = "none";
                 todaysSessionsContainer.style.display = "block";
+                eventsOutputBody.innerHTML = "";
                 break;
         
         //Upcoming Sessions is clicked
                 case "future-sessions":
                     pageHeader.innerText = "Upcoming Sessions";
-                    subHeader.style.display = "none";
                     pastSessionsContainer.style.display = "none";
                     todaysSessionsContainer.style.display = "none";
                     addSessionContainer.style.display = "none";
                     sessionsOutput.style.display = "none";
                     futureSessionsContainer.style.display = "block";
+                    eventsOutputBody.innerHTML = "";
                     break;
         
         //Add Sessions is clicked
@@ -95,10 +95,10 @@ function SideNav(){
                     sessionContainers.forEach((container) =>{
                         container.style.display = "none";
                     })
-                    pageHeader.innerText = "Add Sessions";
-                    subHeader.style.display = "block";
-                    subHeader.innerHTML
+                    pageHeader.innerText = "Add Up to 3 Sessions";
                     addSessionContainer.style.display = "block";
+                    sessionsOutput.style.display = "none";
+                    eventsOutputBody.innerHTML = "";
                     break;
         }
       };
