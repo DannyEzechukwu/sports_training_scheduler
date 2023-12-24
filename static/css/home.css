@@ -55,11 +55,15 @@ body{
 }
 
 .asterisk{
-    color: red;
+    color: rgb(239, 97, 97);
 }
 
 form label, form input, form button {
     display: block;
     margin-top: 10px;
     margin-bottom: 10px; /* Adjust the margin as needed */
+}
+
+.modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.7); 
 }

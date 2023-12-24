@@ -120,13 +120,13 @@
     <form action="/training_session_options/json" id = "date-selection-form" method = "GET">
 
         <div class="date-input-form">
-            <label for="selected-start-date">Start:</label>
-            <input type="date" name ="selected-start-date" id="selected-start-date">
+            <label for="selected-start-date"><span class="asterisk">*</span>Start:</label>
+            <input type="date" name ="selected-start-date" id="selected-start-date" required>
         </div>
 
         <div class="date-input-form">
-            <label for="selected-end-date">Date:</label>
-            <input type="date" name ="selected-end-date" id="selected-end-date">
+            <label for="selected-end-date"><span class="asterisk">*</span>End:</label>
+            <input type="date" name ="selected-end-date" id="selected-end-date" required>
         </div>
         
         <div id ="athlete-form-submit-1">
@@ -137,36 +137,44 @@
 
 </div>
 
-<div id="events-output" style = "display: none;">
-   
-    <form id = "events-output-form"> 
-        
-        <table class="data-table" id = "events-output-table">
-            
-            <thead>
-                <tr>
-                    <th>Selection</th>
-                    <th>Date</th>
-                    <th>Duration</th>
-                    <th>Location</th>
-                    <th>Event</th>
-                    <th>Description</th>
-                    <th>Available Coaches</th>
-                </tr>
-            </thead>
-            
-            <tbody id="events-output-body">
-            </tbody>
-    
-        </table>
+<dialog athlete-choices-modal class = "modal">
 
-        <div id ="athlete-form-submit-2">
-            <input type="submit">
-        </div>
+    <div class="modal-header" id="athlete-choices-header">
+        <div class="modal-title" id="modal-title"><strong>Schedule up to 3 Sessions</strong></div>
+        <button modal-closer class="closer">&times;</button>
+    </div>
+
+    <div id="events-output">
+    
+        <form action="/training_session_selections/json" id = "events-output-form" method="POST"> 
+            
+            <table class="data-table" id = "events-output-table">
+                
+                <thead>
+                    <tr>
+                        <th>Selection</th>
+                        <th>Date</th>
+                        <th>Duration</th>
+                        <th>Location</th>
+                        <th>Event</th>
+                        <th>Description</th>
+                        <th>Available Coaches</th>
+                    </tr>
+                </thead>
+                
+                <tbody id="events-output-body">
+                </tbody>
         
-    </form>
-   
-</div>
+            </table>
+
+            <div id ="athlete-form-submit-2">
+                <input type="submit">
+            </div>
+            
+        </form>
+    
+    </div>
+</dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="/static/js/athlete/athlete.jsx" type="text/jsx"></script>

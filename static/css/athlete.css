@@ -18,6 +18,7 @@ body{
     /* Set additional styles for the body if needed */
     margin: 0; /* Remove default margin */
     height: 100vh; /* Make the body fill the entire viewport height */
+    overflow: hidden;
 }
 
 .header{
@@ -108,13 +109,15 @@ body{
 /* Data Table Styles */
 
 .data-table-container{
-    height: 100%; 
+    max-height: 620px; 
     margin: 0 auto; /* Adjust margin as needed */
     width: 50%; /* Adjust width as needed */
+    overflow-y: scroll;
+    transition: max-height 0.3s ease; 
 }
 
 .data-table{
-    width : 50%;
+    width : 100%;
     margin: auto;
     border-collapse: collapse;
     border: 1px solid black;
@@ -134,13 +137,14 @@ body{
     text-align: center;
 }
 
-.data-table tbody {
-    max-height: 200px; /*Set a maximum height to enable vertical scrolling  */
-    overflow-y: scroll; /*Enable vertical scrollbar when the content exceeds the maximum height */
-}
+/* .data-table tbody {
+    max-height: 200px; /*Set a maximum height to enable vertical scrolling  
+    overflow-y: scroll; /*Enable vertical scrollbar when the content exceeds the maximum height 
+} */
 
 .data-table td{
     background-color: #f1f1f1;
+    height: 20px;
 }
 
 /* Event Selection Styles */
@@ -177,7 +181,47 @@ body{
     padding-top: 10px;
     display: block;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 0px;
+    background-color: #f1f1f1;
 }
 
+.asterisk{
+    color: rgb(239, 97, 97);
+}
 
+/* Athlete Session Options Modal */
+.modal {
+    background: transparent;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+    /* Center the modal horizontally and vertically */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-header{
+    background-color: darkgrey;
+    display: flex; /* Puts elements side by side */
+    justify-content: space-between; /* Puts space between elements*/
+    align-items: center; /*Seperates elements completely, and aligns them in the center */
+    font-size: 1.5em;
+    padding: 5px;
+}
+
+.closer{
+    cursor: pointer; /* let's user know that they can click on button */
+    border: none;
+    outline: none;
+    background: none;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+}

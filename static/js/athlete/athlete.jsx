@@ -39,8 +39,8 @@ function SideNav(){
 
     //Add session container and output rendered
     const addSessionContainer = document.querySelector("#event-selection-container");
-    const sessionsOutput = document.querySelector("#events-output");
-    const eventsOutputBody = document.querySelector("#events-output-body");
+    // const sessionsOutput = document.querySelector("#events-output");
+    // const eventsOutputBody = document.querySelector("#events-output-body");
 
     //Event handler for buttons side-nav panel
     const handleClick = (event) => {
@@ -52,7 +52,6 @@ function SideNav(){
                     container.style.display = "none";
                 })
                 addSessionContainer.style.display = "none";
-                sessionsOutput.style.display = "none";
                 window.location.href = `/`;
                 break;
         
@@ -63,9 +62,7 @@ function SideNav(){
                 todaysSessionsContainer.style.display = "none";
                 futureSessionsContainer.style.display = "none";
                 addSessionContainer.style.display = "none";
-                sessionsOutput.style.display = "none";
                 pastSessionsContainer.style.display = "block";
-                eventsOutputBody.innerHTML = "";
                 break;
 
         //Today's Sessions is clicked
@@ -74,9 +71,7 @@ function SideNav(){
                 pastSessionsContainer.style.display = "none";
                 futureSessionsContainer.style.display = "none";
                 addSessionContainer.style.display = "none";
-                sessionsOutput.style.display = "none";
                 todaysSessionsContainer.style.display = "block";
-                eventsOutputBody.innerHTML = "";
                 break;
         
         //Upcoming Sessions is clicked
@@ -85,9 +80,7 @@ function SideNav(){
                     pastSessionsContainer.style.display = "none";
                     todaysSessionsContainer.style.display = "none";
                     addSessionContainer.style.display = "none";
-                    sessionsOutput.style.display = "none";
                     futureSessionsContainer.style.display = "block";
-                    eventsOutputBody.innerHTML = "";
                     break;
         
         //Add Sessions is clicked
@@ -95,10 +88,8 @@ function SideNav(){
                     sessionContainers.forEach((container) =>{
                         container.style.display = "none";
                     })
-                    pageHeader.innerText = "Add Up to 3 Sessions";
+                    pageHeader.innerText = "Schedule Sessions";
                     addSessionContainer.style.display = "block";
-                    sessionsOutput.style.display = "none";
-                    eventsOutputBody.innerHTML = "";
                     break;
         }
       };
@@ -120,7 +111,7 @@ function SideNav(){
                     <li><button className="sidebar-options" id="past-sessions" onClick = {handleClick}>Past Sessions</button></li>
                     <li><button className="sidebar-options" id="todays-sessions" onClick = {handleClick}>Today's Sessions</button></li>
                     <li><button className="sidebar-options" id="future-sessions" onClick = {handleClick}>Upcoming Sessions</button></li>
-                    <li><button className="sidebar-options" id="add-sessions" onClick = {handleClick}>Add Sessions</button></li>
+                    <li><button className="sidebar-options" id="add-sessions" onClick = {handleClick}>Schedule Sessions</button></li>
                     <li><button className="sidebar-options" id="log-out" onClick = {handleClick}>Log Out</button></li>
                 </ul>
             </nav>
