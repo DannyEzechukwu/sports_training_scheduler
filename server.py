@@ -288,10 +288,16 @@ def options_for_selected_date():
 # JSON Endpoint to handle events selected by by athlete
 @app.route("/training_session_selections/json", methods = ["POST"])
 def sessions_for_selected_date():
+    
+    # Get all elements from form sent back to the server
     selected_session_form_data = request.form
 
-    for key,value in selected_session_form_data.items(): 
-        print(key, value)
+    
+
+    # Loop through each key where data is present
+    for key in selected_session_form_data: 
+        if "event-schedule-" in key: 
+            print(key)
 
     return jsonify({"response" : "mid"})
 

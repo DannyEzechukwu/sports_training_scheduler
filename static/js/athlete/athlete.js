@@ -1,28 +1,26 @@
+// FRONTEND OUTPUT
+
 // Obtain form from HTML within the eventsOutputContainer
-const form = document.querySelector("#date-selection-form");
+const dateForm = document.querySelector("#date-selection-form");
 // Modal output for available sessions based on dates
 const athleteSessionsModal = document.querySelector("[athlete-choices-modal]");
 // Get element in HTML that will contain the output of available events
 const eventsOutputBody = document.querySelector("#events-output-body");
 // Button to close modal
 const athleteSessionsModalCloser = document.querySelector("[modal-closer]")
-
-form.addEventListener("submit", (evt) => {
+dateForm.addEventListener("submit", (evt) => {
     evt.preventDefault();
 
     //Make athleteSessionsModal appear
     athleteSessionsModal.showModal();
     
     //Construct object using FormData Constructor
-    const formData = new FormData(form);
-    for (const entry of formData.entries()) {
-        console.log(entry);
-    }
+    const formData = new FormData(dateForm);
     
     // Convert object to query string that will appear after end point
     // for successful GET request
     const queryString = new URLSearchParams(formData).toString();
-    console.log(queryString);
+    // console.log(queryString);
 
     // Fetch endpoint, handle response
     fetch(`/training_session_options/json?${queryString}`)
@@ -44,12 +42,12 @@ form.addEventListener("submit", (evt) => {
                 // Create radio buttons for each coach in the available_coaches list
                 const coachRadioButtons = session.available_coaches.map((coach, index) => `
                 <div>
-                    <input type="radio" name="event-coach-${session.id}" value="${coach}" id="coach-${session.id}-${index}">
+                    <input type="radio" class="event-radio-${session.id}" name="event-coach-${session.id}" value="${coach}" id="coach-${session.id}-${index}" disabled>
                     <label for="coach-${session.id}-${index}">Coach ${coach}</label>
                 </div>
             `).join("");
-                   htmlContent += `
-                   <tr>
+                htmlContent += `
+                <tr>
                         <td><input type="checkbox" name="event-schedule-${session.id}" value="${session.id}"></td>
                         <td>${session.month}/${session.date}/${session.year}</td>
                         <td>${session.duration}</td>
@@ -58,13 +56,32 @@ form.addEventListener("submit", (evt) => {
                         <td>${session.description}</td>
                         <td id="coaches">${coachRadioButtons}</td>
                     </tr>
-                   `;
+                `;
                 }) 
                 eventsOutputBody.innerHTML = htmlContent;
+                const checkboxes = eventsOutputBody.querySelectorAll('input[type="checkbox"]');
+                console.log("Checkboxes:", checkboxes);
+                checkboxes.forEach((checkbox) => {
+                    checkbox.addEventListener("change", () => {
+                        // Find the parent row of the checkbox
+                        const row = checkbox.closest('tr');
+                        const radioButtons = row.querySelectorAll('input[type="radio"]');
+                        // Enable or disable radio buttons based on checkbox state
+                        radioButtons.forEach((radioButton) => {
+                            // radio button is disabled in initial state 
+                            // checkbox is unchecked in it's initisal state
+                            // true = not false
+                            radioButton.disabled = !checkbox.checked;
+                        })
+                    })
+                })
                 break;
         }
     });
 });
+// ************************************************************************
+
+// ADD SESSIONS MODAL
 
 //Close the modal that appears with all the events
 athleteSessionsModalCloser.addEventListener("click", () => {
@@ -96,11 +113,17 @@ athleteSessionsModal.querySelectorAll('div').forEach((element) => {
         e.stopPropagation();
     });
 });
+// ********************************************************************************
 
-//Minimize the amount of sessions an athlete can schedule at one time
+// ADD SESSIONS MODAL FORM HANDLING
+
+// Maximize the amount of sessions an athlete can schedule at one time
+// Max is 3 sessions
 const eventsOutputForm = document.querySelector("#events-output-form");
 const maxAllowedCheckboxes = 3;
 
+// Change event listener to monitor number of checkedboxes
+// as they are selected to ensure there ar not more than 3
 eventsOutputForm.addEventListener("change", (evt) => {
     evt.preventDefault();
 
@@ -113,7 +136,7 @@ eventsOutputForm.addEventListener("change", (evt) => {
     }
 });
 
-// Submit the entire form to the corresponding route on teh server 
+// Submit the entire form to the corresponding route on the server 
 // to handle the submission
 eventsOutputForm.addEventListener("submit", (evt) =>{
     evt.preventDefault();
@@ -121,7 +144,7 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
     // Check if at least 1 checkbox is selected
     const checkedCheckBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
     if (checkedCheckBoxes.length == 0){
-        alert("You must select at least 1 session");
+        alert("You must select at least 1 session.");
     }
 
     const formData = new FormData(eventsOutputForm);
@@ -134,4 +157,4 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
     .then((data) =>{
         console.log(data.response)
     })
-})
+}
