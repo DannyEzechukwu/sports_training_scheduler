@@ -127,20 +127,16 @@ body{
     background-color: darkgrey;
     position: sticky;
     top: 0; /* Stick the header at the top */
-    z-index: 1; /* Ensure the header appears above other elements */
-    
+    z-index: 1; /* Ensure the header appears above other elements */ 
 }
 
 .data-table th, .data-table td {
     border: 1px solid black; /* Add a border for better visibility */
     padding: 8px; /* Adjust the padding as needed */
     text-align: center;
+    width: 100px; /* Adjust the width as needed */
 }
 
-/* .data-table tbody {
-    max-height: 200px; /*Set a maximum height to enable vertical scrolling  
-    overflow-y: scroll; /*Enable vertical scrollbar when the content exceeds the maximum height 
-} */
 
 .data-table td{
     background-color: #f1f1f1;

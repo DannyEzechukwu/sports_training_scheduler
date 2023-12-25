@@ -134,7 +134,6 @@ def new_coach():
             "message" : "Email is taken. Please enter a different email."})
 
 #***********************************************************************************   
-
 #ATHLETE FEATURES
 
 #Side nav JSON panel
@@ -282,26 +281,44 @@ def options_for_selected_date():
     return jsonify({
                 "response" : "successful",
                 "output": front_end_events_and_coaches})
-    
-
 
 # JSON Endpoint to handle events selected by by athlete
 @app.route("/training_session_selections/json", methods = ["POST"])
 def sessions_for_selected_date():
-    
-    # Get all elements from form sent back to the server
-    selected_session_form_data = request.form
+    if "id" in session:
+        # Get athlete in session
+        athlete_object = athlete_crud.get_athlete_by_id(session["id"])
 
-    
+        # Get all elements from form sent back to the server
+        selected_session_form_data = request.form
+        print(selected_session_form_data)
 
-    # Loop through each key where data is present
-    for key in selected_session_form_data: 
-        if "event-schedule-" in key: 
-            print(key)
+        # Container for event_schedule ids selected by athlete
+        event_schedule_ids_from_athlete = []
 
-    return jsonify({"response" : "mid"})
+        #Container for coaches to hold events selected
+        coach_id_selected_by_athlete = []
 
-
+        # Loop through each key where data is present
+        for key in selected_session_form_data: 
+            if "event-schedule-" in key: 
+                value = selected_session_form_data[key]
+                event_schedule_ids_from_athlete.append(value)
+            if "event-coach-" in key:
+                value = selected_session_form_data[key]
+                coach_object = coach_crud.get_coach_by_fname(value)
+                coach_id_selected_by_athlete.append(coach_object.id)
+        
+        for i in range(len(event_schedule_ids_from_athlete)):
+            coach_id = coach_id_selected_by_athlete[i]
+            event_schedule_id = event_schedule_ids_from_athlete[i]
+            selected_event = selectedevent_crud.select_event(athlete_object.id, 
+                                coach_id,
+                                event_schedule_id)
+            db.session.add(selected_event)
+            db.session.commit()
+        
+        return jsonify({"response" : "Sessions added!"})
 #***********************************************************************************   
 
 #COACH FEATURES

@@ -78,7 +78,7 @@ app_athletes = [
         {"fname" : "Aubrey", 
         "lname": "Adams",
         "username" : "aadams",
-        "email" : "aadmas",
+        "email" : "aadams@gmail.com",
         "password" : "test"} 
 ]
 
@@ -240,7 +240,7 @@ for i in range (9, 14):
     
 # print(time_intervals)
 
-start_date = datetime.datetime(2023, 11,  27)
+start_date = datetime.datetime(2023, 12, 11)
 end_date = datetime.datetime(2024, 6, 30)
 delta = datetime.timedelta(days = 1)
 

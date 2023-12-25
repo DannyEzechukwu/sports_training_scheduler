@@ -2,12 +2,9 @@
 
 // Obtain form from HTML within the eventsOutputContainer
 const dateForm = document.querySelector("#date-selection-form");
-// Modal output for available sessions based on dates
-const athleteSessionsModal = document.querySelector("[athlete-choices-modal]");
 // Get element in HTML that will contain the output of available events
 const eventsOutputBody = document.querySelector("#events-output-body");
-// Button to close modal
-const athleteSessionsModalCloser = document.querySelector("[modal-closer]")
+
 dateForm.addEventListener("submit", (evt) => {
     evt.preventDefault();
 
@@ -37,23 +34,23 @@ dateForm.addEventListener("submit", (evt) => {
             
             case "successful":
                 let htmlContent ="";
-                data.output.forEach((session)=>{
+                data.output.forEach((event)=>{
                 
                 // Create radio buttons for each coach in the available_coaches list
-                const coachRadioButtons = session.available_coaches.map((coach, index) => `
+                const coachRadioButtons = event.available_coaches.map((coach, index) => `
                 <div>
-                    <input type="radio" class="event-radio-${session.id}" name="event-coach-${session.id}" value="${coach}" id="coach-${session.id}-${index}" disabled>
-                    <label for="coach-${session.id}-${index}">Coach ${coach}</label>
+                    <input type="radio" name="event-coach-${event.id}" value="${coach}" id="coach-${event.id}-${index}" required disabled>
+                    <label for="coach-${event.id}-${index}">Coach ${coach}</label>
                 </div>
             `).join("");
                 htmlContent += `
-                <tr>
-                        <td><input type="checkbox" name="event-schedule-${session.id}" value="${session.id}"></td>
-                        <td>${session.month}/${session.date}/${session.year}</td>
-                        <td>${session.duration}</td>
-                        <td>${session.location}</td>
-                        <td>${session.event_name}</td>
-                        <td>${session.description}</td>
+                    <tr>
+                        <td><input type="checkbox" name="event-schedule-${event.id}" value="${event.id}"></td>
+                        <td>${event.month}/${event.date}/${event.year}</td>
+                        <td>${event.duration}</td>
+                        <td>${event.location}</td>
+                        <td>${event.event_name}</td>
+                        <td>${event.description}</td>
                         <td id="coaches">${coachRadioButtons}</td>
                     </tr>
                 `;
@@ -83,6 +80,11 @@ dateForm.addEventListener("submit", (evt) => {
 
 // ADD SESSIONS MODAL
 
+// Modal output for available sessions based on dates
+const athleteSessionsModal = document.querySelector("[athlete-choices-modal]");
+// Button to close modal
+const athleteSessionsModalCloser = document.querySelector("[modal-closer]")
+
 //Close the modal that appears with all the events
 athleteSessionsModalCloser.addEventListener("click", () => {
     athleteSessionsModal.close();
@@ -104,7 +106,6 @@ athleteSessionsModal.addEventListener("click", (evt) => {
         athleteSessionsModal.close();
     }
 });
-
 // Prevent modal close when clicking inside the form fields
 // Without this the event listener above will propogate down the DOM
 // to the form in the modal
@@ -155,6 +156,7 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
     })
     .then((response) => response.json())
     .then((data) =>{
-        console.log(data.response)
+        alert(data.response);
+        athleteSessionsModal.close();
     })
-}
+})
