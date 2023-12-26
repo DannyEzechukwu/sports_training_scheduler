@@ -43,7 +43,7 @@ def athlete_past_present_future_events_by_id(id):
      # Get the list of events the athlete has selected using the
      # selected_events relationship variable
      athlete_selected_events = athlete.selected_events
-     # Loop[ through the events in the athlete has selected]
+     # Loop through the events in the athlete has selected
      for event in athlete_selected_events: 
           # Get the EventSchedule object using the selection relationship variable
           event_on_schedule = event.selection

@@ -8,7 +8,7 @@ body{
     /* background: hsl(201, 43%, 75%); */
    
     /* Set the background image */
-    background-image: url("../images/training7.avif");
+    background-image: url("../images/training11.jpeg");
 
     /* Specify background properties */
     background-size: cover; /* Cover the entire background */
@@ -120,6 +120,7 @@ body{
     margin-left: 10px;
     padding: 5px;
 }
+
 /* Data Table Styles */
 
 .data-table-container{
@@ -158,7 +159,7 @@ body{
 }
 
 /* Event Selection Styles */
-#event-selection-container {
+#add-event-container {
     margin: auto; /* Adjust margin as needed */
     width: 30%; /* Adjust width as needed */
     margin-bottom: 15px;
@@ -179,59 +180,13 @@ body{
     padding: 10px;
 }
 
-#athlete-form-submit-1{
+#coach-form-submit-1{
     padding-bottom: 10px;
     padding-top: 10px;
     display: block;
     text-align: center;
-}
-
-#athlete-form-submit-2{
-    padding-bottom: 10px;
-    padding-top: 10px;
-    display: block;
-    text-align: center;
-    margin-top: 0px;
-    background-color: #f1f1f1;
 }
 
 .asterisk{
     color: rgb(239, 97, 97);
-}
-
-/* Athlete Session Options Modal */
-.modal {
-    background: transparent;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    
-    /* Center the modal horizontally and vertically */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.modal-header{
-    background-color: darkgrey;
-    display: flex; /* Puts elements side by side */
-    justify-content: space-between; /* Puts space between elements*/
-    align-items: center; /*Seperates elements completely, and aligns them in the center */
-    font-size: 1.5em;
-    padding: 5px;
-}
-
-.closer{
-    cursor: pointer; /* let's user know that they can click on button */
-    border: none;
-    outline: none;
-    background: none;
-    font-weight: bold;
-    font-size: 1.5em;
-}
-
-.modal::backdrop {
-    background-color: rgba(0, 0, 0, 0.7);
 }

@@ -3,7 +3,7 @@
 {% block title %}Athlete Profile{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="/static/css/athlete.css"/>
+<link rel="stylesheet" href="/static/css/coach.css"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock %}
@@ -28,7 +28,7 @@
                 <th>Location</th>
                 <th>Event</th>
                 <th>Description</th>
-                <th>Coach</th>
+                <th>Athlete</th>
                 <th>Coach Feedback</th>
             </tr>
         </thead>
@@ -41,7 +41,7 @@
                 <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
-                <td>{{ dict["coach"] }}</td>
+                <td>{{ dict["athlete"] }}</td>
                 <td>{{ dict["feedback"] }}</td>
             </tr>
             {% endfor %}
@@ -62,7 +62,7 @@
                 <th>Location</th>
                 <th>Event</th>
                 <th>Description</th>
-                <th>Coach</th>
+                <th>Athlete</th>
             </tr>
         </thead>
 
@@ -74,7 +74,7 @@
                 <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
-                <td>{{ dict["coach"] }}</td>
+                <td>{{ dict["athlete"] }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -94,7 +94,7 @@
                 <th>Location</th>
                 <th>Event</th>
                 <th>Description</th>
-                <th>Coach</th>
+                <th>Athlete</th>
             </tr>
         </thead>
 
@@ -106,7 +106,7 @@
                 <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
-                <td> {{ dict["coach"] }} </td>
+                <td> {{ dict["athlete"] }} </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -115,9 +115,9 @@
 
 </div>
 
-<div id = "event-selection-container" style = "display: none;">
+<div id = "add-event-container" style = "display: none;">
     
-    <form action="/training_session_options/json" id = "date-selection-form" method = "GET">
+    <form id = "date-selection-form" method = "GET">
 
         <div class="date-input-form">
             <label for="selected-start-date"><span class="asterisk">*</span>Start:</label>
@@ -129,7 +129,7 @@
             <input type="date" name ="selected-end-date" id="selected-end-date" required>
         </div>
         
-        <div id ="athlete-form-submit-1">
+        <div id ="coach-form-submit-1">
             <input type="submit">
         </div>
 
@@ -137,45 +137,27 @@
 
 </div>
 
-<dialog athlete-choices-modal class = "modal">
-
-    <div class="modal-header" id="athlete-choices-header">
-        <div class="modal-title" id="modal-title"><strong>Schedule up to 3 Sessions</strong></div>
-        <button modal-closer class="closer">&times;</button>
-    </div>
-
-    <div id="events-output">
+<div class="data-table-container" id="added-events-container" style="display: none;"> 
     
-        <form action="/training_session_selections/json" id = "events-output-form" method="POST"> 
-            
-            <table class="data-table" id = "events-output-table">
-                
-                <thead>
-                    <tr>
-                        <th>Selection</th>
-                        <th>Date</th>
-                        <th>Duration</th>
-                        <th>Location</th>
-                        <th>Event</th>
-                        <th>Description</th>
-                        <th>Available Coaches</th>
-                    </tr>
-                </thead>
-                
-                <tbody id="events-output-body">
-                </tbody>
-        
-            </table>
+    <table class="data-table" id="added-events-table">
 
-            <div id ="athlete-form-submit-2">
-                <input type="submit">
-            </div>
-            
-        </form>
-    
-    </div>
-</dialog>
+        <thead>
+            <tr> 
+                <th>Event</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>Available Dates</th>
+                <th>Time</th>
+            </tr>
+        </thead>
 
-<script src="/static/js/athlete/athlete.jsx" type="text/jsx"></script>
-<script src ="/static/js/athlete/athlete.js"></script>
+        <tbody id="added-events-body">
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="/static/js/coach/coach.jsx" type="text/jsx"></script>
+<script src ="/static/js/coach/coach.js"></script>
 {% endblock %}

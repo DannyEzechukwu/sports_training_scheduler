@@ -99,8 +99,7 @@ def new_athlete():
     if email_validation: 
         return jsonify({"response" : "invalid email", 
             "message" : "Email is taken. Please enter a different email."})
-
-        
+     
 #New Coach Account Creation
 @app.route("/new_coach_account/json", methods = ["POST"])
 def new_coach(): 
@@ -143,13 +142,11 @@ def identify_athlete_for_side_nav_bar():
        athlete = athlete_crud.get_athlete_by_id(session["id"])
        return jsonify({"username" : athlete.username })
 
-# Main Page
+# Main Athlete Page
 @app.route("/athlete/<int:id>/<fname><lname>")
 def athlete(id, fname, lname):
-    if "id" in session: 
-
-        start_time_options =["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM"]
-        coaches = coach_crud.all_coaches()
+    if "id" in session:
+    
         athlete = athlete_crud.get_athlete_by_id(id)
 
         past_events = athlete_crud.athlete_past_present_future_events_by_id(id)[0]
@@ -158,11 +155,9 @@ def athlete(id, fname, lname):
         
         return render_template("athlete.html", 
                         athlete = athlete,
-                        coaches = coaches,
                         past_events = past_events,
                         current_events = current_events,
-                        future_events = future_events, 
-                        start_time_options = start_time_options,)
+                        future_events = future_events, )
     else: 
         return redirect("/")
     
@@ -334,9 +329,29 @@ def sessions_for_selected_date():
 #***********************************************************************************   
 
 #COACH FEATURES
+#Side nav JSON panel
+@app.route("/coach_info/json")
+def identify_coach_for_side_nav_bar(): 
+    if session["id"]:
+       coach = coach_crud.get_coach_by_id(session["id"])
+       return jsonify({"username" : coach.username })
+
+
+# Main Coach Page
 @app.route("/coach/<int:id>/<fname><lname>")
-def coach(id, fname, lname): 
-    return "gettin money too"
+def coach(id, fname, lname):
+    if "id" in session: 
+
+        past_events = coach_crud.coach_past_present_future_events_by_id(id)[0]
+        current_events = coach_crud.coach_past_present_future_events_by_id(id)[1]
+        future_events = coach_crud.coach_past_present_future_events_by_id(id)[2]
+        
+        return render_template("coach.html", 
+                        past_events = past_events,
+                        current_events = current_events,
+                        future_events = future_events)
+    else: 
+        return redirect("/")
 
 
 if __name__ == "__main__":

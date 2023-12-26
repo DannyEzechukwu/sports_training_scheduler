@@ -9,7 +9,7 @@ function SideNav(){
 
     // Update the state of userName by fetching the endpoint from the server
     React.useEffect(() => {
-        fetch("/athlete_info/json")
+        fetch("/coach_info/json")
             .then((response) => response.json())
             .then((data) => {
             setUserName(data.username)
@@ -37,8 +37,11 @@ function SideNav(){
     futureSessionsContainer
     ];
 
-    //Add session container
-    const addSessionContainer = document.querySelector("#event-selection-container");
+    //Add event container
+    const addEventContainer = document.querySelector("#add-event-container");
+
+    // Added event container
+    const addedEventContainer = document.querySelector("#added-events-container");
 
     //Event handler for buttons side-nav panel
     const handleClick = (event) => {
@@ -49,17 +52,18 @@ function SideNav(){
                 sessionContainers.forEach((container) =>{
                     container.style.display = "none";
                 })
-                addSessionContainer.style.display = "none";
+                addEventContainer.style.display = "none";
+                addedEventContainer.style.display = "none";
                 window.location.href = `/`;
                 break;
         
         //Past Sessions is clicked
             case "past-sessions":
-        //Handle today's sessions button click
                 pageHeader.innerText = "Past Sessions";
                 todaysSessionsContainer.style.display = "none";
                 futureSessionsContainer.style.display = "none";
-                addSessionContainer.style.display = "none";
+                addEventContainer.style.display = "none";
+                addedEventContainer.style.display = "none";
                 pastSessionsContainer.style.display = "block";
                 break;
 
@@ -68,7 +72,8 @@ function SideNav(){
                 pageHeader.innerText = "Today's Sessions";
                 pastSessionsContainer.style.display = "none";
                 futureSessionsContainer.style.display = "none";
-                addSessionContainer.style.display = "none";
+                addEventContainer.style.display = "none";
+                addedEventContainer.style.display = "none";
                 todaysSessionsContainer.style.display = "block";
                 break;
         
@@ -77,18 +82,30 @@ function SideNav(){
                     pageHeader.innerText = "Upcoming Sessions";
                     pastSessionsContainer.style.display = "none";
                     todaysSessionsContainer.style.display = "none";
-                    addSessionContainer.style.display = "none";
+                    addEventContainer.style.display = "none";
+                    addedEventContainer.style.display = "none";
                     futureSessionsContainer.style.display = "block";
                     break;
         
-        //Add Sessions is clicked
-                case "add-sessions":
+        //Add Event is clicked
+                case "add-event":
                     sessionContainers.forEach((container) =>{
                         container.style.display = "none";
                     })
-                    pageHeader.innerText = "Schedule Sessions";
-                    addSessionContainer.style.display = "block";
+                    addedEventContainer.style.display = "none";
+                    pageHeader.innerText = "Add An Event";
+                    addEventContainer.style.display = "block";
                     break;
+        //Events Added is clicked
+                case "events-added":
+                    sessionContainers.forEach((container) =>{
+                        container.style.display = "none";
+                    })
+                    addEventContainer.style.display = "none";
+                    pageHeader.innerText = "Events You've Added";
+                    addedEventContainer.style.display = "block";
+                    break;
+                    
         }
       };
 
@@ -110,7 +127,8 @@ function SideNav(){
                     <li><button className="sidebar-options" id="past-sessions" onClick = {handleClick}>Past Sessions</button></li>
                     <li><button className="sidebar-options" id="todays-sessions" onClick = {handleClick}>Today's Sessions</button></li>
                     <li><button className="sidebar-options" id="future-sessions" onClick = {handleClick}>Upcoming Sessions</button></li>
-                    <li><button className="sidebar-options" id="add-sessions" onClick = {handleClick}>Schedule Sessions</button></li>
+                    <li><button className="sidebar-options" id="add-event" onClick = {handleClick}>Add Event</button></li>
+                    <li><button className="sidebar-options" id="events-added" onClick = {handleClick}>Events Added</button></li>
                     <li><button className="sidebar-options" id="log-out" onClick = {handleClick}>Log Out</button></li>
                 </ul>
             </nav>
