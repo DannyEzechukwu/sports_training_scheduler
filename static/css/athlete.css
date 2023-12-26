@@ -109,7 +109,7 @@ body{
 /* Data Table Styles */
 
 .data-table-container{
-    max-height: 620px; 
+    max-height: 568px; 
     margin: 0 auto; /* Adjust margin as needed */
     width: 50%; /* Adjust width as needed */
     overflow-y: scroll;

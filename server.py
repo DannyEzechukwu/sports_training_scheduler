@@ -152,9 +152,9 @@ def athlete(id, fname, lname):
         coaches = coach_crud.all_coaches()
         athlete = athlete_crud.get_athlete_by_id(id)
 
-        past_events = athlete_crud.athlete_past_present_future_events(id)[0]
-        current_events = athlete_crud.athlete_past_present_future_events(id)[1]
-        future_events = athlete_crud.athlete_past_present_future_events(id)[2]
+        past_events = athlete_crud.athlete_past_present_future_events_by_id(id)[0]
+        current_events = athlete_crud.athlete_past_present_future_events_by_id(id)[1]
+        future_events = athlete_crud.athlete_past_present_future_events_by_id(id)[2]
         
         return render_template("athlete.html", 
                         athlete = athlete,
@@ -296,8 +296,11 @@ def sessions_for_selected_date():
         # Container for event_schedule ids selected by athlete
         event_schedule_ids_from_athlete = []
 
-        #Container for coaches to hold events selected
+        # Container for coaches to hold events selected
         coach_id_selected_by_athlete = []
+
+        # Container to hold selected event objects
+        selected_event_objects = []
 
         # Loop through each key where data is present
         for key in selected_session_form_data: 
@@ -317,8 +320,17 @@ def sessions_for_selected_date():
                                 event_schedule_id)
             db.session.add(selected_event)
             db.session.commit()
+            selected_event_objects.append(selected_event)
         
-        return jsonify({"response" : "Sessions added!"})
+        # Get updated future events list for athlete in session
+        athlete_future_events = athlete_crud.athlete_past_present_future_events_by_id(athlete_object.id)[2]
+
+        if len(selected_event_objects) == 1:
+            return jsonify({"response" : "Session added!",
+                            "output": athlete_future_events  })
+        
+        return jsonify({"response" : "Sessions added!", 
+                        "output" : athlete_future_events })
 #***********************************************************************************   
 
 #COACH FEATURES

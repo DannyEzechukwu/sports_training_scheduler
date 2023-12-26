@@ -5,11 +5,14 @@ const dateForm = document.querySelector("#date-selection-form");
 // Get element in HTML that will contain the output of available events
 const eventsOutputBody = document.querySelector("#events-output-body");
 
+// Declare checkedCheckBoxes array
+// Use let keyword for the ability to overwrite the array later in the code
+let checkedCheckBoxes = [];
+
+// EventListener for when athlete selects dates to choose 
+// events between
 dateForm.addEventListener("submit", (evt) => {
     evt.preventDefault();
-
-    //Make athleteSessionsModal appear
-    athleteSessionsModal.showModal();
     
     //Construct object using FormData Constructor
     const formData = new FormData(dateForm);
@@ -24,25 +27,34 @@ dateForm.addEventListener("submit", (evt) => {
     .then((response) => response.json())
     .then((data) => {
         switch(data.response){
+            // Dates not in chronilogical order
             case "start date not after end date":
                 alert(data.output);
                 break;
-
-            case "no events avaialble":
+            
+            // No events within selected dates
+            case "no events available":
                 alert(data.output);
                 break;
             
+            // Events returned to front end successfully
             case "successful":
+                //Make athleteSessionsModal appear
+                athleteSessionsModal.showModal();
+                
                 let htmlContent ="";
                 data.output.forEach((event)=>{
                 
-                // Create radio buttons for each coach in the available_coaches list
+                // Create radio buttons for each coach in array returned from 
+                // the available_coaches key for each element of array we have 
+                // named "event"
                 const coachRadioButtons = event.available_coaches.map((coach, index) => `
                 <div>
                     <input type="radio" name="event-coach-${event.id}" value="${coach}" id="coach-${event.id}-${index}" required disabled>
                     <label for="coach-${event.id}-${index}">Coach ${coach}</label>
                 </div>
             `).join("");
+                // Create rows for each element in array we named "event"
                 htmlContent += `
                     <tr>
                         <td><input type="checkbox" name="event-schedule-${event.id}" value="${event.id}"></td>
@@ -56,22 +68,69 @@ dateForm.addEventListener("submit", (evt) => {
                 `;
                 }) 
                 eventsOutputBody.innerHTML = htmlContent;
-                const checkboxes = eventsOutputBody.querySelectorAll('input[type="checkbox"]');
-                console.log("Checkboxes:", checkboxes);
-                checkboxes.forEach((checkbox) => {
-                    checkbox.addEventListener("change", () => {
+                
+                // Get all checkBoxes that appear in the form
+                // to create condition to enable radio buttons
+                const checkBoxes = eventsOutputBody.querySelectorAll('input[type="checkbox"]');
+                checkBoxes.forEach((checkBox) => {
+                    // Change event listener as a checkbox is selected
+                    //  or deselected
+                    checkBox.addEventListener("change", () => {
                         // Find the parent row of the checkbox
-                        const row = checkbox.closest('tr');
+                        const row = checkBox.closest('tr');
+                        // Get radio buttons in this row
                         const radioButtons = row.querySelectorAll('input[type="radio"]');
                         // Enable or disable radio buttons based on checkbox state
                         radioButtons.forEach((radioButton) => {
                             // radio button is disabled in initial state 
                             // checkbox is unchecked in it's initisal state
                             // true = not false
-                            radioButton.disabled = !checkbox.checked;
+                            radioButton.disabled = !checkBox.checked;
                         })
+                        // Update the checkedCheckBoxes array to be the NodeList
+                        // returned fronm the querySelector of checked checkboxes
+                        checkedCheckBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
                     })
                 })
+                
+                // Get the form that holds the table returned for evemnts
+                const eventsOutputForm = document.querySelector("#events-output-form");
+                // Extablish the maximum amount of checkboxes that can be selected
+                // at one time
+                const maxAllowedCheckboxes = 3;
+
+                // Change event listener to monitor number of checked check boxes
+                // as they are selected to ensure there are not more than 3
+                // at a time
+                eventsOutputForm.addEventListener("change", (evt) => {
+                    evt.preventDefault();
+
+                    // Get the Array object from the checkBoxes NodeList
+                    const checkBoxesArray = Array.from(checkBoxes);
+                    // Get the Array object from the checkedCheckBoxes NodeList
+                    const checkedCheckBoxesArray = Array.from(checkedCheckBoxes);
+
+                    // Condition for if maxAllowedCheckboxes have been selected
+                    if (checkedCheckBoxesArray.length == maxAllowedCheckboxes) {
+                        // Loop through each possible checkBox with forEach
+                        checkBoxesArray.forEach((checkBox) =>{
+                            // Condition for if a checkBox has not been selected
+                            // !Array.includes = "does not include/is not in"
+                            if (!checkedCheckBoxesArray.includes(checkBox)){
+                                // Disable checkBox
+                                checkBox.disabled = true;
+                            }
+                        })
+                    } else{
+                        checkBoxesArray.forEach((checkBox) =>{
+                            if (!checkedCheckBoxesArray.includes(checkBox)){
+                                // Enable checkBox
+                                checkBox.disabled = false;
+                            }
+                        })
+                    }
+
+                });
                 break;
         }
     });
@@ -116,26 +175,10 @@ athleteSessionsModal.querySelectorAll('div').forEach((element) => {
 });
 // ********************************************************************************
 
-// ADD SESSIONS MODAL FORM HANDLING
+// ADD SESSIONS MODAL FORM SUBMISSION
 
-// Maximize the amount of sessions an athlete can schedule at one time
-// Max is 3 sessions
+// Get form for event outputs
 const eventsOutputForm = document.querySelector("#events-output-form");
-const maxAllowedCheckboxes = 3;
-
-// Change event listener to monitor number of checkedboxes
-// as they are selected to ensure there ar not more than 3
-eventsOutputForm.addEventListener("change", (evt) => {
-    evt.preventDefault();
-
-    const checkedCheckBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
-
-    if (checkedCheckBoxes.length > maxAllowedCheckboxes) {
-        // If more than the allowed checkboxes are checked, uncheck the last checkbox
-        checkedCheckBoxes[3].checked = false;
-        alert(`You can only select a maximum ${maxAllowedCheckboxes} sessions at a time.`);
-    }
-});
 
 // Submit the entire form to the corresponding route on the server 
 // to handle the submission
@@ -148,6 +191,7 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
         alert("You must select at least 1 session.");
     }
 
+    // Establish the object that will be passed in the body
     const formData = new FormData(eventsOutputForm);
 
     fetch("/training_session_selections/json", {
@@ -156,7 +200,14 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
     })
     .then((response) => response.json())
     .then((data) =>{
+        // Adjust the front end for the proper display
+        const addSessionContainer = document.querySelector("#event-selection-container");
+        const pageHeader = document.querySelector("#header");
+        const futureSessionsContainer = document.querySelector("#future-sessions-container");
         alert(data.response);
         athleteSessionsModal.close();
+        addSessionContainer.style.display = "none";
+        pageHeader.innerText = "Upcoming Sessions"
+        futureSessionsContainer.style.display = "block";
     })
 })

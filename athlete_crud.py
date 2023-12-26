@@ -34,7 +34,7 @@ def get_athlete_by_email(email):
 def get_athlete_by_username(username): 
      return Athlete.query.filter((Athlete.username == username)).first()
 
-def athlete_past_present_future_events(id): 
+def athlete_past_present_future_events_by_id(id): 
      past_events = []
      current_events = []
      future_events = []

@@ -39,8 +39,6 @@ function SideNav(){
 
     //Add session container and output rendered
     const addSessionContainer = document.querySelector("#event-selection-container");
-    // const sessionsOutput = document.querySelector("#events-output");
-    // const eventsOutputBody = document.querySelector("#events-output-body");
 
     //Event handler for buttons side-nav panel
     const handleClick = (event) => {
