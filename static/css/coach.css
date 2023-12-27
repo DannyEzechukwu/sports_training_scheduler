@@ -152,35 +152,48 @@ body{
     width: 100px; /* Adjust the width as needed */
 }
 
-
 .data-table td{
     background-color: #f1f1f1;
     height: 20px;
 }
 
-/* Event Selection Styles */
+/* Add Event Styles */
 #add-event-container {
     margin: auto; /* Adjust margin as needed */
-    width: 30%; /* Adjust width as needed */
+    width: 50%; /* Adjust width as needed */
     margin-bottom: 15px;
+    height: 300px;
 }
 
-.date-input-form{
-    width: 110px;
-    padding: 10px;
-}
-
-#date-selection-form{
+#add-event-form{
     background-color: darkgrey;
     border: 1px solid black;
     margin: 0 auto;
     width: 40%; /* Adjust as needed */
-    display: block;
     box-sizing: border-box;
     padding: 10px;
 }
 
-#coach-form-submit-1{
+.add-event-form-option{
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.add-event-form-input{
+    height: 50px;
+    width: 250px;
+    max-height: 50px;
+    max-width: 250px;
+}
+
+#event-description{
+    height: 100px;
+    width: 250px;
+    max-height: 100px;
+    max-width: 250px;
+}
+
+#coach-form-submit{
     padding-bottom: 10px;
     padding-top: 10px;
     display: block;

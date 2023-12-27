@@ -117,19 +117,34 @@
 
 <div id = "add-event-container" style = "display: none;">
     
-    <form id = "date-selection-form" method = "GET">
+    <form id = "add-event-form" method = "POST">
 
-        <div class="date-input-form">
-            <label for="selected-start-date"><span class="asterisk">*</span>Start:</label>
-            <input type="date" name ="selected-start-date" id="selected-start-date" required>
+        <div class="add-event-form-option">
+            <label for="event-name"><span class="asterisk">*</span>Event Name:</label>
+            <input type="text" name ="event-name" id="event-name" style="width: 100%;" required></textarea>
         </div>
 
-        <div class="date-input-form">
-            <label for="selected-end-date"><span class="asterisk">*</span>End:</label>
-            <input type="date" name ="selected-end-date" id="selected-end-date" required>
+        <div class="add-event-form-option">
+            <label for="event-location"><span class="asterisk">*</span>Event Location:</label>
+            <textarea class="add-event-form-input" name="event-location" id="event-location"  required></textarea>
+        </div>
+
+        <div class="add-event-form-option">
+            <label for="event-description"><span class="asterisk">*</span>Event Description<br>(200 Character Max):</label>
+            <textarea name="event-description" id="event-description" maxlength="200" required></textarea>
+        </div>
+
+        <div class="add-event-form-option">
+            <label for="event-start-date"><span class="asterisk">*</span>Event Start Date:</label>
+            <input type="date" name="event-start-date" id="event-start-date" required>
+        </div>
+
+        <div class="add-event-form-option">
+            <label for="event-end-date"><span class="asterisk">*</span>Event End Date:</label>
+            <input type="date" name="event-end-date" id="event-end-date" required>
         </div>
         
-        <div id ="coach-form-submit-1">
+        <div id ="coach-form-submit">
             <input type="submit">
         </div>
 
@@ -146,7 +161,7 @@
                 <th>Event</th>
                 <th>Location</th>
                 <th>Description</th>
-                <th>Available Dates</th>
+                <th>Date</th>
                 <th>Time</th>
             </tr>
         </thead>

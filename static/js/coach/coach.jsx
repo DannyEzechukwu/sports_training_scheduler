@@ -93,16 +93,17 @@ function SideNav(){
                         container.style.display = "none";
                     })
                     addedEventContainer.style.display = "none";
-                    pageHeader.innerText = "Add An Event";
+                    pageHeader.innerText = "Add A Training";
                     addEventContainer.style.display = "block";
                     break;
+                    
         //Events Added is clicked
                 case "events-added":
                     sessionContainers.forEach((container) =>{
                         container.style.display = "none";
                     })
                     addEventContainer.style.display = "none";
-                    pageHeader.innerText = "Events You've Added";
+                    pageHeader.innerText = "Trainings You've Added";
                     addedEventContainer.style.display = "block";
                     break;
                     
@@ -122,13 +123,13 @@ function SideNav(){
             
             <nav className = {`nav ${isNavOpen ? "nav-open" : "nav-closed"}`}>
                 <div className="logo">GAINZ</div>
-                <div className="baby-logo">Let's work {userName}</div>
+                <div className="baby-logo">Let's work {userName}!</div>
                 <ul> 
                     <li><button className="sidebar-options" id="past-sessions" onClick = {handleClick}>Past Sessions</button></li>
                     <li><button className="sidebar-options" id="todays-sessions" onClick = {handleClick}>Today's Sessions</button></li>
                     <li><button className="sidebar-options" id="future-sessions" onClick = {handleClick}>Upcoming Sessions</button></li>
-                    <li><button className="sidebar-options" id="add-event" onClick = {handleClick}>Add Event</button></li>
-                    <li><button className="sidebar-options" id="events-added" onClick = {handleClick}>Events Added</button></li>
+                    <li><button className="sidebar-options" id="add-event" onClick = {handleClick}>Add Training</button></li>
+                    <li><button className="sidebar-options" id="events-added" onClick = {handleClick}>Trainings Added</button></li>
                     <li><button className="sidebar-options" id="log-out" onClick = {handleClick}>Log Out</button></li>
                 </ul>
             </nav>

@@ -105,7 +105,7 @@ function SideNav(){
             
             <nav className = {`nav ${isNavOpen ? "nav-open" : "nav-closed"}`}>
                 <div className="logo">GAINZ</div>
-                <div className="baby-logo">Let's work {userName}</div>
+                <div className="baby-logo">Let's work {userName}!</div>
                 <ul> 
                     <li><button className="sidebar-options" id="past-sessions" onClick = {handleClick}>Past Sessions</button></li>
                     <li><button className="sidebar-options" id="todays-sessions" onClick = {handleClick}>Today's Sessions</button></li>

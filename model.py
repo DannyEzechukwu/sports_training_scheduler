@@ -88,6 +88,8 @@ class Coach(db.Model):
     feedback_messages = db.relationship("Feedback", back_populates = "coach")
     #A coach can be scheduled for MANY selected events
     events = db.relationship("SelectedEvent", back_populates = "coach")
+    # A coach can create MANY events
+    created_events = db.relationship("Event", back_populates = "coach")
 
     def __repr__(self): 
         return f"<Coach ID : {self.id},  Username : {self.username},  Email : {self.email}>"
@@ -112,8 +114,15 @@ class Event(db.Model):
                         nullable = False,
                         index = True)
     
-    #An event can be appear on the Schedule MANY times
+    coach_id = db.Column(db.Integer,
+                        db.ForeignKey("coaches.id"), 
+                        nullable = True,
+                        index =True)
+    
+    # An event can be appear on the Schedule MANY times
     schedule_appearances = db.relationship("EventSchedule", back_populates = "specific_event_scheduled")
+    # An event can be created by ONLY 1 coach
+    coach = db.relationship("Coach", back_populates = "created_events")
 
     def __repr__(self): 
         return f"<Event ID : {self.id}, Event Name : {self.name}, Event Description : {self.description}>"
