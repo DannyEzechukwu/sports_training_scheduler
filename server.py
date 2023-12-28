@@ -154,7 +154,8 @@ def athlete(id, fname, lname):
         future_events = athlete_crud.athlete_past_present_future_events_by_id(id)[2]
         
         return render_template("athlete.html", 
-                        athlete = athlete,
+                        athlete_fname = athlete.fname,
+                        athlete_lname = athlete.lname,
                         past_events = past_events,
                         current_events = current_events,
                         future_events = future_events, )
@@ -286,7 +287,6 @@ def sessions_for_selected_date():
 
         # Get all elements from form sent back to the server
         selected_session_form_data = request.form
-        print(selected_session_form_data)
 
         # Container for event_schedule ids selected by athlete
         event_schedule_ids_from_athlete = []
@@ -321,10 +321,10 @@ def sessions_for_selected_date():
         athlete_future_events = athlete_crud.athlete_past_present_future_events_by_id(athlete_object.id)[2]
 
         if len(selected_event_objects) == 1:
-            return jsonify({"response" : "Session added!",
+            return jsonify({"response" : "Session added! Refresh page to view newest session.",
                             "output": athlete_future_events  })
         
-        return jsonify({"response" : "Sessions added!", 
+        return jsonify({"response" : "Sessions added! Refresh page to view newest sessions.", 
                         "output" : athlete_future_events })
 #***********************************************************************************   
 
@@ -340,18 +340,56 @@ def identify_coach_for_side_nav_bar():
 # Main Coach Page
 @app.route("/coach/<int:id>/<fname><lname>")
 def coach(id, fname, lname):
-    if "id" in session: 
+    if "id" in session:
+
+        coach = coach_crud.get_coach_by_id(session["id"])
+
+        times = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM"] 
 
         past_events = coach_crud.coach_past_present_future_events_by_id(id)[0]
         current_events = coach_crud.coach_past_present_future_events_by_id(id)[1]
         future_events = coach_crud.coach_past_present_future_events_by_id(id)[2]
         
-        return render_template("coach.html", 
+        return render_template("coach.html",
+                        coach_fname = coach.fname,
+                        coach_lname = coach.lname, 
+                        times = times,
                         past_events = past_events,
                         current_events = current_events,
                         future_events = future_events)
     else: 
         return redirect("/")
+    
+@app.route("/added_event/json", methods = ["POST"])
+def new_coach_event(): 
+    if "id" in session:
+        new_event = request.form.get("event-name").strip()
+        new_event_location = request.form.get("event-location").strip()
+        new_event_description = request.form.get("event-description").strip()
+        
+        # New event start date  handled
+        new_event_start_date  = request.form.get("event-start-date").strip()
+        new_event_start_month_date_year = new_event_start_date.split("-")
+        new_event_start_month = int(new_event_start_month_date_year[1])
+        new_event_start_date = int(new_event_start_month_date_year[2])
+        new_event_start_year = int(new_event_start_month_date_year[0])
+        new_event_start_date_object = datetime.datetime(new_event_start_year,
+                                                new_event_start_month,
+                                                new_event_start_date)
+        
+        new_event_end_date  = request.form.get("event-end-date").strip()
+        new_event_end_month_date_year = new_event_start_date.split("-")
+        new_event_end_month = int(new_event_end_month_date_year[1])
+        new_event_end_date = int(new_event_end_month_date_year[2])
+        new_event_end_year = int(new_event_end_month_date_year[0])
+        new_event_end_date_object = datetime.datetime(new_event_end_year,
+                                                new_event_end_month,
+                                                new_event_end_date)
+    
+   
+    return redirect("/")
+
+
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Athlete Profile{% endblock %}
+{% block title %}{{ coach_fname }} {{ coach_lname }} | Profile{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/coach.css"/>
@@ -12,6 +12,7 @@
 
 <div  class ="header">
     <h1 id ="header">Today's Sessions</h1>
+    <h2 id="subheader"></h2>
 </div>
 
 <div id = "side-nav">
@@ -117,7 +118,7 @@
 
 <div id = "add-event-container" style = "display: none;">
     
-    <form id = "add-event-form" method = "POST">
+    <form action="/added_event/json" id = "add-event-form" method = "POST">
 
         <div class="add-event-form-option">
             <label for="event-name"><span class="asterisk">*</span>Event Name:</label>
@@ -142,6 +143,20 @@
         <div class="add-event-form-option">
             <label for="event-end-date"><span class="asterisk">*</span>Event End Date:</label>
             <input type="date" name="event-end-date" id="event-end-date" required>
+        </div>
+
+        <div class="add-event-form-option">
+            <label for="event-start-time"><span class="asterisk">*</span>Event Start Time:</label>
+            <select class="time-option" name="event-start-time" id="event-start-time" required>
+                {% for time in times[ :-1] %}
+                <option value="{{ time }}">{{ time }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="add-event-form-option">
+            <label for="event-end-time"><span class="asterisk">*</span>Event End Time:</label>
+            <input class="time-option" type="text" name="event-end-time" id="event-end-time" value="10:00 AM" readonly required>
         </div>
         
         <div id ="coach-form-submit">

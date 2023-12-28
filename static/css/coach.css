@@ -5,10 +5,8 @@
 }
 
 body{
-    /* background: hsl(201, 43%, 75%); */
-   
     /* Set the background image */
-    background-image: url("../images/training11.jpeg");
+    background-image: url("../images/training10.jpeg");
 
     /* Specify background properties */
     background-size: cover; /* Cover the entire background */
@@ -124,9 +122,9 @@ body{
 /* Data Table Styles */
 
 .data-table-container{
-    max-height: 568px; 
+    max-height: 570px; 
     margin: 0 auto; /* Adjust margin as needed */
-    width: 50%; /* Adjust width as needed */
+    width: 60%; /* Adjust width as needed */
     overflow-y: scroll;
     transition: max-height 0.3s ease; 
 }
@@ -199,6 +197,10 @@ body{
     display: block;
     text-align: center;
 }
+
+ .time-option{
+    width: 90px;
+ }
 
 .asterisk{
     color: rgb(239, 97, 97);

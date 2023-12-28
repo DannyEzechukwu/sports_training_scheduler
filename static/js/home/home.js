@@ -112,7 +112,7 @@ function handleCurrentAccountFormSubmission(event, formID){
                 alert("Username or password incorrect. Please try again");
             }else if(data.response == "valid coach"){
                 //Go to correct endpoint if coach response is valid
-                window.location.href = `/coach/${data.id}/${data.fname}${data.lname}`;
+                window.location.replace(`/coach/${data.id}/${data.fname}${data.lname}`);
             }
             else{
                 //Go to correct endpoint if athlete response is valid

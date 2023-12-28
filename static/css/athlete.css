@@ -120,12 +120,12 @@ body{
     margin-left: 10px;
     padding: 5px;
 }
-/* Data Table Styles */
 
+/* Data Table Styles */
 .data-table-container{
-    max-height: 568px; 
+    max-height: 570px; 
     margin: 0 auto; /* Adjust margin as needed */
-    width: 50%; /* Adjust width as needed */
+    width: 60%; /* Adjust width as needed */
     overflow-y: scroll;
     transition: max-height 0.3s ease; 
 }
