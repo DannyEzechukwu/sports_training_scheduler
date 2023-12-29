@@ -21,3 +21,6 @@ def events_by_month_date_year(month, date, year):
     return EventSchedule.query.filter((EventSchedule.month == month) &
                                (EventSchedule.date == date) &
                                (EventSchedule.year == year)).all()
+
+def get_scheduled_event_by_event_id(event_id): 
+    return EventSchedule.query.filter(EventSchedule.event_id == event_id).first()

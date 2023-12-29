@@ -189,6 +189,8 @@ const eventsOutputForm = document.querySelector("#events-output-form");
 eventsOutputForm.addEventListener("submit", (evt) =>{
     evt.preventDefault();
 
+    const futureBody = document.querySelector("#future-body");
+
     // Check if at least 1 checkbox is selected
     const checkedCheckBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
     if (checkedCheckBoxes.length == 0){
@@ -208,6 +210,16 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
         const addSessionContainer = document.querySelector("#event-selection-container");
         const pageHeader = document.querySelector("#header");
         const futureSessionsContainer = document.querySelector("#future-sessions-container");
+        data.output.forEach((event) => {futureBody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td>${event.date}</td>
+                <td>${event.duration}</td>
+                <td>${event.location}</td>
+                <td>${event.event}</td>
+                <td>${event.description}</td>
+                <td>${event.coach}</td>
+            </tr>`)
+        })
         alert(data.response);
         athleteSessionsModal.close();
         addSessionContainer.style.display = "none";

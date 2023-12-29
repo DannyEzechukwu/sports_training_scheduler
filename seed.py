@@ -212,7 +212,8 @@ events = []
 for event in app_events:
     event_type = event_crud.create_event(event['name'], 
             event["location"], 
-            event["description"]) 
+            event["description"], 
+            None) 
     
     events.append(event_type)
     model.db.session.add_all(events)

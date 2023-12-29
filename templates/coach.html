@@ -173,15 +173,23 @@
 
         <thead>
             <tr> 
-                <th>Date</th>
-                <th>Duration</th>
+
                 <th>Location</th>
                 <th>Event</th>
                 <th>Description</th>
+                <th>Aailable Sessions Remaining</th>
             </tr>
         </thead>
 
         <tbody id="added-events-body">
+            {% for dict in coach_created_events_frontend %}
+                <tr> 
+                    <td>{{ dict["location"] }}</td>
+                    <td>{{ dict["event"] }}</td>
+                    <td>{{ dict["description"] }}</td>
+                    <td>{{ dict["available"] }}</td>
+                </tr>
+            {% endfor %}
         </tbody>
 
     </table>

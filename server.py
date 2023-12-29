@@ -202,28 +202,30 @@ def options_for_selected_date():
     end_date = int(end_month_date_year[2])
     end_year = int(end_month_date_year[0])
 
+    all_events_for_end_date = eventschedule_crud.events_by_month_date_year(end_month, end_date, end_year)
+
+    all_events_for_end_date_ordered_by_start_time = sorted(all_events_for_end_date, key = lambda x: datetime.datetime.strptime(x.start_time, "%I:%M %p"))
+
     # Condition for if start date is before today
-    if (datetime.datetime(start_year, start_month, start_date) < 
-        datetime.datetime.now()): 
+    if (datetime.datetime(start_year, start_month, start_date).date() < 
+        datetime.datetime.now().date()): 
         return jsonify({"response" : "event in the past", 
                     "output" : f"Start date must be after {formatted_date_string}."})
     
     #Condition for if end date is before start date
-    if (datetime.datetime(start_year, start_month, start_date) > 
-        datetime.datetime(end_year, end_month, end_date)): 
+    if (datetime.datetime(start_year, start_month, start_date).date() > 
+        datetime.datetime(end_year, end_month, end_date).date()): 
         return jsonify({
             "response" : "start date not after end date", 
             "output" : f"End date must be after start date"})
-
-    all_events_for_end_date = eventschedule_crud.events_by_month_date_year(end_month, end_date, end_year)
-
-    all_events_for_end_date_ordered_by_start_time = sorted(all_events_for_end_date, key = lambda x: datetime.datetime.strptime(x.start_time, "%I:%M %p"))
     
     # Getting indexes for first event from the start date selected
     # and the last event from the end date selected
     # Generating list of events between those indexes
     first_event_index = eventschedule_crud.all_scheduled_events().index(all_events_for_start_date_ordered_by_start_time[0])
+    print(first_event_index)
     final_event_index = eventschedule_crud.all_scheduled_events().index(all_events_for_end_date_ordered_by_start_time[-1])
+    print(final_event_index)
     events = eventschedule_crud.all_scheduled_events()[first_event_index : final_event_index + 1]
     
     # List comprehension to get the available events for the date
@@ -239,7 +241,7 @@ def options_for_selected_date():
             "output" : f"No available events between {start_month}/{start_date}/{start_year} and {end_month}/{end_date}/{end_year}  "})
     
     # Loop through the EventSchedule objects in all available events
-    # scheduled for the day selected by athlete
+    # scheduled for the interval selected by athlete
     for available_event in available_events:
         available_coaches = set()
 
@@ -256,10 +258,14 @@ def options_for_selected_date():
 
             # Loop through each event the coach has been selected for
             for coach_event in coach.events:
+
                 # Get the object from the EventSchedule class for each event the coach
                 # has been selected for using the event_schedule_id attribute
                 event_on_coach_schedule = eventschedule_crud.get_scheduled_event_by_id(coach_event.event_schedule_id)
 
+                if coach: 
+                    available_coaches.add(coach.fname)
+                
                 # Condition for if coach is unavailable for this specific event
                 if (
                     event_on_coach_schedule.month == available_event.month
@@ -267,9 +273,8 @@ def options_for_selected_date():
                     and event_on_coach_schedule.year == available_event.year
                     and event_on_coach_schedule.start_time == available_event.start_time
                 ):
-                    break
-                else:
-                    available_coaches.add(coach.fname)
+                    available_coaches.discard(coach.fname)
+                
 
         front_end_events_and_coaches.append(
             {
@@ -331,10 +336,10 @@ def sessions_for_selected_date():
         athlete_future_events = athlete_crud.athlete_past_present_future_events_by_id(athlete_object.id)[2]
 
         if len(selected_event_objects) == 1:
-            return jsonify({"response" : "Session added! Refresh page to view newest session.",
+            return jsonify({"response" : "Session added!",
                             "output": athlete_future_events  })
         
-        return jsonify({"response" : "Sessions added! Refresh page to view newest sessions.", 
+        return jsonify({"response" : "Sessions added!", 
                         "output" : athlete_future_events })
 #***********************************************************************************   
 
@@ -352,9 +357,36 @@ def identify_coach_for_side_nav_bar():
 def coach(id, fname, lname):
     if "id" in session:
 
+        times = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM"]
+        
+        # Get the coach in the session
         coach = coach_crud.get_coach_by_id(session["id"])
+        # Get the events this coach has created using the created)_events
+        # relatiosnhip variable in the Coach class
+        coach_created_events = coach.created_events
 
-        times = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM"] 
+        # Container to hold the events the coach has created in the frontend
+        coach_created_events_frontend = []
+
+        # Create a count varible to compare selected vs scheduled events
+        count = 0
+
+        # Loop through the events created by this coach
+        for event in coach_created_events:
+            # Get the EventSchedule id of the event created by the coach 
+            event_on_schedule = eventschedule_crud.get_scheduled_event_by_event_id(event.id)
+
+            if event_on_schedule.specific_event_selected:
+                count += 1
+
+            available_sessions_remaining = len(event.schedule_appearances) - count 
+
+            coach_created_events_frontend.append({"location" : event.location,
+                                                  "event" : event.name,
+                                                  "description" : event.description,
+                                                  "available" : available_sessions_remaining 
+                                                })
+
 
         past_events = coach_crud.coach_past_present_future_events_by_id(id)[0]
         current_events = coach_crud.coach_past_present_future_events_by_id(id)[1]
@@ -366,10 +398,12 @@ def coach(id, fname, lname):
                         times = times,
                         past_events = past_events,
                         current_events = current_events,
-                        future_events = future_events)
+                        future_events = future_events,
+                        coach_created_events_frontend = coach_created_events_frontend)
     else: 
         return redirect("/")
     
+# JSON Endpoint to handle events added by coaches
 @app.route("/add_event/json", methods = ["POST"])
 def new_coach_event(): 
     if "id" in session:
@@ -400,19 +434,20 @@ def new_coach_event():
                                                 new_event_end_date)
         
         # Condition if start date is before today
-        if new_event_start_date_object < datetime.datetime.now(): 
+        if new_event_start_date_object.date() < datetime.datetime.now().date(): 
             return jsonify({"response" : "event in the past", 
-                        "output" : f"Start date must be after {formatted_date_string}."})
+                        "output" : f"Start date must no earlier than {formatted_date_string}."})
         
         # Condition if start date is after end date
-        if new_event_start_date_object > new_event_end_date_object : 
+        if new_event_start_date_object.date() > new_event_end_date_object.date(): 
             return jsonify({"response" : "start date not after end date", 
                         "output" : "End date must be after start date."})
     
         # Create event object 
         event_object = event_crud.create_event(new_event,
                                             new_event_location, 
-                                            new_event_description)
+                                            new_event_description, 
+                                            coach_id = session["id"])
         
         db.session.add(event_object)
         db.session.commit()
@@ -465,17 +500,15 @@ def new_coach_event():
 
             event_schedule_objects.append(event_schedule_object)
 
-        front_end_event_schedule = [] 
         
-        for event in event_schedule_objects:
-            front_end_event_schedule.append({"date" : f"{event.month}/{event.date}/{event.year}",
-                                        "duration" : {event.new_event_start_time} - {event.new_event_end_time},
-                                        "location" : event_object.location, 
-                                        "event" : event_object.name, 
-                                        "description" : event_object.description,})
+        front_end_event_data = {"location" : event_object.location,
+                                            "event" : event_object.name,
+                                            "description" : event_object.description,
+                                            "available" : len(event_object.schedule_appearances)}
+        
 
         return jsonify({"response" : "successful",
-                        "output" : front_end_event_schedule})
+                        "output" : front_end_event_data})
     
     return redirect("/")
 
