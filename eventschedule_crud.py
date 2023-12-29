@@ -24,3 +24,15 @@ def events_by_month_date_year(month, date, year):
 
 def get_scheduled_event_by_event_id(event_id): 
     return EventSchedule.query.filter(EventSchedule.event_id == event_id).first()
+
+def filter_events(start_month, start_date, start_year, end_month, end_date, end_year): 
+    return EventSchedule.query.filter(
+        (EventSchedule.month >= start_month) & 
+        (EventSchedule.month <= end_month) &
+        (EventSchedule.date >= start_date) &
+        (EventSchedule.date <= end_date) &
+        (EventSchedule.year >= start_year) &
+        (EventSchedule.year <= end_year) 
+    )
+    
+    

@@ -185,14 +185,6 @@ def options_for_selected_date():
     start_date = int(start_month_date_year[2])
     start_year = int(start_month_date_year[0])
 
-    # Get all events scheduled for the start date selected by athlete
-    all_events_for_start_date = eventschedule_crud.events_by_month_date_year(start_month, start_date, start_year)
-    # Put events gathered from the date selected in order by start time
-    # %I: Hour (12-hour clock, zero-padded)
-    # %M: Minute (zero-padded)
-    # %p: AM or PM.
-    all_events_for_start_date_ordered_by_start_time = sorted(all_events_for_start_date, key = lambda x: datetime.datetime.strptime(x.start_time, "%I:%M %p"))
-
     #Repeat same process above for end date
     end_date_selection = request.args.get("selected-end-date")
 
@@ -202,10 +194,6 @@ def options_for_selected_date():
     end_date = int(end_month_date_year[2])
     end_year = int(end_month_date_year[0])
 
-    all_events_for_end_date = eventschedule_crud.events_by_month_date_year(end_month, end_date, end_year)
-
-    all_events_for_end_date_ordered_by_start_time = sorted(all_events_for_end_date, key = lambda x: datetime.datetime.strptime(x.start_time, "%I:%M %p"))
-
     # Condition for if start date is before today
     if (datetime.datetime(start_year, start_month, start_date).date() < 
         datetime.datetime.now().date()): 
@@ -213,25 +201,25 @@ def options_for_selected_date():
                     "output" : f"Start date must be after {formatted_date_string}."})
     
     #Condition for if end date is before start date
-    if (datetime.datetime(start_year, start_month, start_date).date() > 
+    elif (datetime.datetime(start_year, start_month, start_date).date() > 
         datetime.datetime(end_year, end_month, end_date).date()): 
         return jsonify({
             "response" : "start date not after end date", 
-            "output" : f"End date must be after start date"})
-    
-    # Getting indexes for first event from the start date selected
-    # and the last event from the end date selected
-    # Generating list of events between those indexes
-    first_event_index = eventschedule_crud.all_scheduled_events().index(all_events_for_start_date_ordered_by_start_time[0])
-    print(first_event_index)
-    final_event_index = eventschedule_crud.all_scheduled_events().index(all_events_for_end_date_ordered_by_start_time[-1])
-    print(final_event_index)
-    events = eventschedule_crud.all_scheduled_events()[first_event_index : final_event_index + 1]
+            "output" : f"End date must be after start date"})  
+
+    # Filter for all the ebvents in the given time frame 
+    # entered by the athlete
+    events_filtered_by_date = eventschedule_crud.filter_events(start_month, start_date, start_year, end_month, end_date, end_year)
+    # Put events gathered from the date selected in order by start time
+    # %I: Hour (12-hour clock, zero-padded)
+    # %M: Minute (zero-padded)
+    # %p: AM or PM.
+    filtered_events_ordered_by_start_time = sorted(events_filtered_by_date, key = lambda x: datetime.datetime.strptime(x.start_time, "%I:%M %p"))
     
     # List comprehension to get the available events for the date
     # An avalable event is an event that appears in the Event Schedule class
     # but does not appear in the SelectedEvent class
-    available_events = [event for event in events if not selectedevent_crud.get_selectedevent_by_event_schedule_id(event.id)]
+    available_events = [event for event in filtered_events_ordered_by_start_time if not selectedevent_crud.get_selectedevent_by_event_schedule_id(event.id)]
     
     # Condition for if there are no events available for that day
     # due to them all being selected by other athletes 
