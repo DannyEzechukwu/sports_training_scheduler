@@ -1,4 +1,4 @@
-// ADD TRAINING FORM SUBMISSION
+// ADD TRAINING FORM
 
 // Update the end time when the start time is slected
 const startTime = document.querySelector("#event-start-time");
@@ -30,4 +30,34 @@ startTime.addEventListener("change", (event) => {
             endTime.value = "3:00 PM";  
             break;
     }
+})
+
+// Handle the submission of form
+const addEventForm = document.querySelector("#add-event-form");
+
+// Get the table body where data will be contained upon the form being  
+// submitted
+const addedEventsBody = document.querySelector("#added-events-body")
+
+addEventForm.addEventListener("submit" , (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(addEventForm);
+
+    fetch("/add_event/json", {
+        method: "POST",
+        body: formData,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        switch(data.response){
+            case "event in the past": 
+                alert(data.output);
+                break;
+            
+            case "start date not after end date":
+                alert(data.output);
+                break;
+        }
+    })
 })

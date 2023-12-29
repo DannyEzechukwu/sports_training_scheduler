@@ -264,8 +264,8 @@ for date in date_list:
     #Gather date info for each date
     individual_date_list = date.split("/")
     month = int(individual_date_list[0])
-    date = individual_date_list[1]
-    year = individual_date_list[2]
+    date = int(individual_date_list[1])
+    year = int(individual_date_list[2])
     
     for i in range(3):
         #Get a random event object and its id

@@ -25,6 +25,10 @@ app.static_folder = 'static'
 app.secret_key = os.environ["APP_KEY"]
 app.jinja_env.undefined = StrictUndefined
 
+today = datetime.datetime.now().date()
+parsed_date = datetime.datetime.strptime(str(today), "%Y-%m-%d")
+formatted_date_string = parsed_date.strftime("%m/%d/%Y")
+
 @app.route("/")
 def homepage():
     if "id" in session:
@@ -198,6 +202,19 @@ def options_for_selected_date():
     end_date = int(end_month_date_year[2])
     end_year = int(end_month_date_year[0])
 
+    # Condition for if start date is before today
+    if (datetime.datetime(start_year, start_month, start_date) < 
+        datetime.datetime.now()): 
+        return jsonify({"response" : "event in the past", 
+                    "output" : f"Start date must be after {formatted_date_string}."})
+    
+    #Condition for if end date is before start date
+    if (datetime.datetime(start_year, start_month, start_date) > 
+        datetime.datetime(end_year, end_month, end_date)): 
+        return jsonify({
+            "response" : "start date not after end date", 
+            "output" : f"End date must be after start date"})
+
     all_events_for_end_date = eventschedule_crud.events_by_month_date_year(end_month, end_date, end_year)
 
     all_events_for_end_date_ordered_by_start_time = sorted(all_events_for_end_date, key = lambda x: datetime.datetime.strptime(x.start_time, "%I:%M %p"))
@@ -213,13 +230,6 @@ def options_for_selected_date():
     # An avalable event is an event that appears in the Event Schedule class
     # but does not appear in the SelectedEvent class
     available_events = [event for event in events if not selectedevent_crud.get_selectedevent_by_event_schedule_id(event.id)]
-
-    #Condition for if end date is before start date
-    if (datetime.datetime(start_year, start_month, start_date) >= 
-        datetime.datetime(end_year, end_month, end_date)): 
-        return jsonify({
-            "response" : "start date not after end date", 
-            "output" : f"End date must be after start date"})
     
     # Condition for if there are no events available for that day
     # due to them all being selected by other athletes 
@@ -360,15 +370,17 @@ def coach(id, fname, lname):
     else: 
         return redirect("/")
     
-@app.route("/added_event/json", methods = ["POST"])
+@app.route("/add_event/json", methods = ["POST"])
 def new_coach_event(): 
     if "id" in session:
         new_event = request.form.get("event-name").strip()
         new_event_location = request.form.get("event-location").strip()
         new_event_description = request.form.get("event-description").strip()
+        new_event_start_time = request.form.get("event-start-time").strip()
+        new_event_end_time = request.form.get("event-end-time").strip()
         
-        # New event start date  handled
-        new_event_start_date  = request.form.get("event-start-date").strip()
+        # New event start date datetime object
+        new_event_start_date = request.form.get("event-start-date").strip()
         new_event_start_month_date_year = new_event_start_date.split("-")
         new_event_start_month = int(new_event_start_month_date_year[1])
         new_event_start_date = int(new_event_start_month_date_year[2])
@@ -377,20 +389,95 @@ def new_coach_event():
                                                 new_event_start_month,
                                                 new_event_start_date)
         
+        # New event end date datetime object
         new_event_end_date  = request.form.get("event-end-date").strip()
-        new_event_end_month_date_year = new_event_start_date.split("-")
+        new_event_end_month_date_year = new_event_end_date.split("-")
         new_event_end_month = int(new_event_end_month_date_year[1])
         new_event_end_date = int(new_event_end_month_date_year[2])
         new_event_end_year = int(new_event_end_month_date_year[0])
         new_event_end_date_object = datetime.datetime(new_event_end_year,
                                                 new_event_end_month,
                                                 new_event_end_date)
+        
+        # Condition if start date is before today
+        if new_event_start_date_object < datetime.datetime.now(): 
+            return jsonify({"response" : "event in the past", 
+                        "output" : f"Start date must be after {formatted_date_string}."})
+        
+        # Condition if start date is after end date
+        if new_event_start_date_object > new_event_end_date_object : 
+            return jsonify({"response" : "start date not after end date", 
+                        "output" : "End date must be after start date."})
     
-   
+        # Create event object 
+        event_object = event_crud.create_event(new_event,
+                                            new_event_location, 
+                                            new_event_description)
+        
+        db.session.add(event_object)
+        db.session.commit()
+
+        # Function to create a list of dates from
+        # dates entered by coach
+        # Will loop through the list to create objects of 
+        # the EventSchedule class
+        def generate_date_list(start_date, 
+                            end_date,
+                            separator = "/"):
+            
+            delta = datetime.timedelta(days = 1)
+            
+            date_container = []
+
+            current_date = start_date
+            while current_date <= end_date:
+                formatted_date = current_date.strftime(f'%m{separator}%d{separator}%Y')
+                date_container.append(formatted_date)
+                current_date += delta
+    
+            return date_container
+
+        # Create date list with the function defined above
+        date_list = generate_date_list(new_event_start_date_object,
+                                new_event_end_date_object)
+        
+        event_schedule_objects = [] 
+        
+        for date in date_list:
+
+            # Gather date info for each date
+            individual_date_list = date.split("/")
+            month = int(individual_date_list[0])
+            date = int(individual_date_list[1])
+            year = int(individual_date_list[2])
+
+            # Create EventSchedule object, append it to list,
+            #  add it to database
+            event_schedule_object = eventschedule_crud.schedule_event(event_object.id,
+                                                            month, 
+                                                            date, 
+                                                            year,
+                                                            new_event_start_time, 
+                                                            new_event_end_time)
+            
+            db.session.add(event_schedule_object)
+            db.session.commit()
+
+            event_schedule_objects.append(event_schedule_object)
+
+        front_end_event_schedule = [] 
+        
+        for event in event_schedule_objects:
+            front_end_event_schedule.append({"date" : f"{event.month}/{event.date}/{event.year}",
+                                        "duration" : {event.new_event_start_time} - {event.new_event_end_time},
+                                        "location" : event_object.location, 
+                                        "event" : event_object.name, 
+                                        "description" : event_object.description,})
+
+        return jsonify({"response" : "successful",
+                        "output" : front_end_event_schedule})
+    
     return redirect("/")
-
-
-
 
 if __name__ == "__main__":
     connect_to_db(app)

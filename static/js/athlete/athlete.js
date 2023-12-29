@@ -28,6 +28,10 @@ dateForm.addEventListener("submit", (evt) => {
     .then((data) => {
         switch(data.response){
             // Dates not in chronilogical order
+            case "event in the past":
+                alert(data.output);
+                break;
+
             case "start date not after end date":
                 alert(data.output);
                 break;
