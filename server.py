@@ -210,17 +210,14 @@ def options_for_selected_date():
     # Filter for all the ebvents in the given time frame 
     # entered by the athlete
     events_filtered_by_date = eventschedule_crud.filter_events(start_month, start_date, start_year, end_month, end_date, end_year)
-    # Put events gathered from the date selected in order by start time
-    # %I: Hour (12-hour clock, zero-padded)
-    # %M: Minute (zero-padded)
-    # %p: AM or PM.
-    filtered_events_ordered_by_start_time = sorted(events_filtered_by_date, key = lambda x: datetime.datetime.strptime(x.start_time, "%I:%M %p"))
+    print(events_filtered_by_date)
     
     # List comprehension to get the available events for the date
     # An avalable event is an event that appears in the Event Schedule class
     # but does not appear in the SelectedEvent class
-    available_events = [event for event in filtered_events_ordered_by_start_time if not selectedevent_crud.get_selectedevent_by_event_schedule_id(event.id)]
-    
+    available_events = [event for event in events_filtered_by_date if not selectedevent_crud.get_selectedevent_by_event_schedule_id(event.id)]
+    print(available_events)
+
     # Condition for if there are no events available for that day
     # due to them all being selected by other athletes 
     if available_events == []:
@@ -301,15 +298,23 @@ def sessions_for_selected_date():
         selected_event_objects = []
 
         # Loop through each key where data is present
-        for key in selected_session_form_data: 
-            if "event-schedule-" in key: 
+        # Max keys will be 6 (3 schedule ids, 3 coach names)
+        for key in selected_session_form_data:
+            # If the key is for an event_schedule ID 
+            if "event-schedule-" in key:
+                # Get the value and append it to correct list
                 value = selected_session_form_data[key]
                 event_schedule_ids_from_athlete.append(value)
+            # If the key is for a coach name
             if "event-coach-" in key:
+                # Get the value, get the object from the Coach class, 
+                # append it to correct list
                 value = selected_session_form_data[key]
                 coach_object = coach_crud.get_coach_by_fname(value)
                 coach_id_selected_by_athlete.append(coach_object.id)
         
+        # Loop through the selected events from the schedule
+        # Add the selectons to the database
         for i in range(len(event_schedule_ids_from_athlete)):
             coach_id = coach_id_selected_by_athlete[i]
             event_schedule_id = event_schedule_ids_from_athlete[i]
@@ -320,15 +325,21 @@ def sessions_for_selected_date():
             db.session.commit()
             selected_event_objects.append(selected_event)
         
-        # Get updated future events list for athlete in session
+        # Get updated future events list and current events list
+        #  for athlete in session
+        athlete_current_events = athlete_crud.athlete_past_present_future_events_by_id(athlete_object.id)[1]
         athlete_future_events = athlete_crud.athlete_past_present_future_events_by_id(athlete_object.id)[2]
-
+        
         if len(selected_event_objects) == 1:
             return jsonify({"response" : "Session added!",
-                            "output": athlete_future_events  })
+                            "currentOutput": athlete_current_events, 
+                            "futureOutput" : athlete_future_events})
         
         return jsonify({"response" : "Sessions added!", 
-                        "output" : athlete_future_events })
+                        "currentOutput": athlete_current_events, 
+                        "futureOutput" : athlete_future_events})
+    
+    return redirect("/")
 #***********************************************************************************   
 
 #COACH FEATURES

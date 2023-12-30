@@ -189,7 +189,9 @@ const eventsOutputForm = document.querySelector("#events-output-form");
 eventsOutputForm.addEventListener("submit", (evt) =>{
     evt.preventDefault();
 
+    // Get the body of the current and future containers
     const futureBody = document.querySelector("#future-body");
+    const currentBody = document.querySelector("#current-body");
 
     // Check if at least 1 checkbox is selected
     const checkedCheckBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -210,7 +212,14 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
         const addSessionContainer = document.querySelector("#event-selection-container");
         const pageHeader = document.querySelector("#header");
         const futureSessionsContainer = document.querySelector("#future-sessions-container");
-        data.output.forEach((event) => {futureBody.insertAdjacentHTML("beforeend", `
+        const currentSessionsContainer = document.querySelector("#current-sessions-container");
+
+        // Only events selected for today
+        if (data.currentOutput != [] && data.futureOutput == []){ 
+            console.log("First Current :", data.currentOutput);
+            console.log("First Future", data.futureOutput);
+
+            data.currentOutput.forEach((event) => {currentBody.insertAdjacentHTML("beforeend", `
             <tr>
                 <td>${event.date}</td>
                 <td>${event.duration}</td>
@@ -218,12 +227,69 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
                 <td>${event.event}</td>
                 <td>${event.description}</td>
                 <td>${event.coach}</td>
-            </tr>`)
-        })
-        alert(data.response);
-        athleteSessionsModal.close();
-        addSessionContainer.style.display = "none";
-        pageHeader.innerText = "Upcoming Sessions"
-        futureSessionsContainer.style.display = "block";
+            </tr>`)})
+
+            // alert(data.response);
+            athleteSessionsModal.close();
+            addSessionContainer.style.display = "none";
+            pageHeader.innerText = "Today's Sessions"
+            currentSessionsContainer.style.display = "block";
+        }
+        
+        // Only events selected after today
+        if(data.futureOutput != [] && data.currentOutput ==[]){   
+            console.log("Second Current :", data.currentOutput);
+            console.log("Second Future", data.futureOutput);
+
+            data.futureOutput.forEach((event) => {futureBody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td>${event.date}</td>
+                <td>${event.duration}</td>
+                <td>${event.location}</td>
+                <td>${event.event}</td>
+                <td>${event.description}</td>
+                <td>${event.coach}</td>
+            </tr>`)})
+
+            // alert(data.response);
+            athleteSessionsModal.close();
+            addSessionContainer.style.display = "none";
+            pageHeader.innerText = "Upcoming Sessions"
+            futureSessionsContainer.style.display = "block";
+        }
+
+        // Events selected for today and after today
+        else {
+            
+            console.log("Second Current :", data.currentOutput);
+            console.log("Second Future", data.futureOutput); 
+
+            data.currentOutput.forEach((event) => {currentBody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td>${event.date}</td>
+                <td>${event.duration}</td>
+                <td>${event.location}</td>
+                <td>${event.event}</td>
+                <td>${event.description}</td>
+                <td>${event.coach}</td>
+            </tr>`)})
+
+            data.futureOutput.forEach((event) => {futureBody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td>${event.date}</td>
+                <td>${event.duration}</td>
+                <td>${event.location}</td>
+                <td>${event.event}</td>
+                <td>${event.description}</td>
+                <td>${event.coach}</td>
+            </tr>`)})
+
+            // alert(data.response);
+            athleteSessionsModal.close();
+            addSessionContainer.style.display = "none";
+            pageHeader.innerText = "Today's Sessions"
+            currentSessionsContainer.style.display = "block";
+
+        }
     })
 })
