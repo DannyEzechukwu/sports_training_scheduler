@@ -210,14 +210,23 @@ def options_for_selected_date():
     # Filter for all the ebvents in the given time frame 
     # entered by the athlete
     events_filtered_by_date = eventschedule_crud.filter_events(start_month, start_date, start_year, end_month, end_date, end_year)
-    print(events_filtered_by_date)
     
-    # List comprehension to get the available events for the date
-    # An avalable event is an event that appears in the Event Schedule class
+    # List comprehensions to get the available events for the date range entered
+    # An avalable event is an event that appears in the EventSchedule class
     # but does not appear in the SelectedEvent class
-    available_events = [event for event in events_filtered_by_date if not selectedevent_crud.get_selectedevent_by_event_schedule_id(event.id)]
-    print(available_events)
-
+    # and does not conflict with an existing event that the ethlete in th sesession 
+    # has already selected
+    available_events_first_pass = [
+        event for event in events_filtered_by_date 
+        if not selectedevent_crud.get_selectedevent_by_event_schedule_id(event.id)
+    ]
+    
+    available_events = [
+        event for event in available_events_first_pass
+        if not
+        athlete_crud.athlete_rejected_events(session["id"], event.month, event.date, event.year, event.start_time)
+    ]
+  
     # Condition for if there are no events available for that day
     # due to them all being selected by other athletes 
     if available_events == []:
@@ -325,19 +334,9 @@ def sessions_for_selected_date():
             db.session.commit()
             selected_event_objects.append(selected_event)
         
-        # Get updated future events list and current events list
-        #  for athlete in session
-        athlete_current_events = athlete_crud.athlete_past_present_future_events_by_id(athlete_object.id)[1]
-        athlete_future_events = athlete_crud.athlete_past_present_future_events_by_id(athlete_object.id)[2]
-        
         if len(selected_event_objects) == 1:
-            return jsonify({"response" : "Session added!",
-                            "currentOutput": athlete_current_events, 
-                            "futureOutput" : athlete_future_events})
-        
-        return jsonify({"response" : "Sessions added!", 
-                        "currentOutput": athlete_current_events, 
-                        "futureOutput" : athlete_future_events})
+            return jsonify({"response" : "Session added! Refresh the app to view the session you added!"})
+        return jsonify({"response" : "Sessions added! Refresh the app view the sessions you added!"})
     
     return redirect("/")
 #***********************************************************************************   

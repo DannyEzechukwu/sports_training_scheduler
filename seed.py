@@ -241,7 +241,7 @@ for i in range (9, 14):
     
 # print(time_intervals)
 
-start_date = datetime.datetime(2023, 12, 11)
+start_date = datetime.datetime(2023, 12, 20)
 end_date = datetime.datetime(2024, 6, 30)
 delta = datetime.timedelta(days = 1)
 

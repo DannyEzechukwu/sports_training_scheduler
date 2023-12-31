@@ -1,4 +1,4 @@
-from model import db, connect_to_db, Athlete, Event, Feedback
+from model import db, connect_to_db, Athlete, Event, Feedback, EventSchedule, SelectedEvent
 
 import datetime
 
@@ -7,7 +7,6 @@ import datetime
 # Output is in YYYY-MM-DD
 current_date = datetime.datetime.now().date()
 # print(current_date)
-
 
 def create_athlete(fname, lname, username, email, password):
     
@@ -33,6 +32,42 @@ def get_athlete_by_email(email):
 
 def get_athlete_by_username(username): 
      return Athlete.query.filter((Athlete.username == username)).first()
+
+def athlete_rejected_events(athlete_id : int, month : int, date : int, year : int, start_time : str): 
+    
+     
+     # Container to hold all rejected events that conflict with athletes schedule
+     rejected = []
+
+     # Get the athlete using the id passed in as paremeter
+     # and get all of the events the athlete has selected
+     athlete = get_athlete_by_id(athlete_id)
+     athlete_selected_events = athlete.selected_events
+     
+     
+     # Loop through the vents the athlete has selected
+     for event in athlete_selected_events:
+          
+          # Get the EventSchedule object for each event the athlete selected
+          selected_event_object = SelectedEvent.query.get(event.id)
+          
+          event_on_schedule = EventSchedule.query.filter(EventSchedule.id == selected_event_object.event_schedule_id).first()
+
+          # Condition for if a elected event for athlete is
+          # on the same date and starts at the same time as an 
+          # event rendered from the schedule on the client
+          if (
+          event_on_schedule.month == month and
+          event_on_schedule.date == date and
+          event_on_schedule.year == year and
+          event_on_schedule.start_time == start_time
+          ):
+               rejected.append(event_on_schedule)
+     
+     print("Rejected: ", rejected)
+     return rejected
+
+
 
 def athlete_past_present_future_events_by_id(id): 
      past_events = []
@@ -66,7 +101,7 @@ def athlete_past_present_future_events_by_id(id):
                          "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
                          "start_time" : f"{event_on_schedule.start_time}",
-                         "end_time" : f"{event_on_schedule.start_time}",
+                         "end_time" : f"{event_on_schedule.end_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}",
                          "feedback" : f"{Feedback.query.filter(Feedback.selected_event_id == event.id).first().feedback}"
                     })
@@ -79,7 +114,7 @@ def athlete_past_present_future_events_by_id(id):
                          "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
                          "start_time" : f"{event_on_schedule.start_time}",
-                         "end_time" : f"{event_on_schedule.start_time}",
+                         "end_time" : f"{event_on_schedule.end_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}"
                     })
                else: 
@@ -91,7 +126,7 @@ def athlete_past_present_future_events_by_id(id):
                          "description": Event.query.get(event_on_schedule.event_id).description, 
                          "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
                          "start_time" : f"{event_on_schedule.start_time}",
-                         "end_time" : f"{event_on_schedule.start_time}",
+                         "end_time" : f"{event_on_schedule.end_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}"
                     })
 

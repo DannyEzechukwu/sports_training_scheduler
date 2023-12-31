@@ -1,4 +1,4 @@
-""""Models for app"""
+"""Models for app"""
 
 from flask_sqlalchemy import SQLAlchemy
 

@@ -189,11 +189,11 @@ const eventsOutputForm = document.querySelector("#events-output-form");
 eventsOutputForm.addEventListener("submit", (evt) =>{
     evt.preventDefault();
 
-    // Get the body of the current and future containers
-    const futureBody = document.querySelector("#future-body");
-    const currentBody = document.querySelector("#current-body");
+    // Get start date and end date entered to clear form once submitted 
+    const startDate = document.querySelector("#selected-start-date");
+    const endDate = document.querySelector("#selected-end-date");
 
-    // Check if at least 1 checkbox is selected
+    // Condition for if no selections are made
     const checkedCheckBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
     if (checkedCheckBoxes.length == 0){
         alert("You must select at least 1 session.");
@@ -208,88 +208,10 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
     })
     .then((response) => response.json())
     .then((data) =>{
-        // Adjust the front end for the proper display
-        const addSessionContainer = document.querySelector("#event-selection-container");
-        const pageHeader = document.querySelector("#header");
-        const futureSessionsContainer = document.querySelector("#future-sessions-container");
-        const currentSessionsContainer = document.querySelector("#current-sessions-container");
-
-        // Only events selected for today
-        if (data.currentOutput != [] && data.futureOutput == []){ 
-            console.log("First Current :", data.currentOutput);
-            console.log("First Future", data.futureOutput);
-
-            data.currentOutput.forEach((event) => {currentBody.insertAdjacentHTML("beforeend", `
-            <tr>
-                <td>${event.date}</td>
-                <td>${event.duration}</td>
-                <td>${event.location}</td>
-                <td>${event.event}</td>
-                <td>${event.description}</td>
-                <td>${event.coach}</td>
-            </tr>`)})
-
-            // alert(data.response);
-            athleteSessionsModal.close();
-            addSessionContainer.style.display = "none";
-            pageHeader.innerText = "Today's Sessions"
-            currentSessionsContainer.style.display = "block";
-        }
         
-        // Only events selected after today
-        if(data.futureOutput != [] && data.currentOutput ==[]){   
-            console.log("Second Current :", data.currentOutput);
-            console.log("Second Future", data.futureOutput);
-
-            data.futureOutput.forEach((event) => {futureBody.insertAdjacentHTML("beforeend", `
-            <tr>
-                <td>${event.date}</td>
-                <td>${event.duration}</td>
-                <td>${event.location}</td>
-                <td>${event.event}</td>
-                <td>${event.description}</td>
-                <td>${event.coach}</td>
-            </tr>`)})
-
-            // alert(data.response);
-            athleteSessionsModal.close();
-            addSessionContainer.style.display = "none";
-            pageHeader.innerText = "Upcoming Sessions"
-            futureSessionsContainer.style.display = "block";
-        }
-
-        // Events selected for today and after today
-        else {
-            
-            console.log("Second Current :", data.currentOutput);
-            console.log("Second Future", data.futureOutput); 
-
-            data.currentOutput.forEach((event) => {currentBody.insertAdjacentHTML("beforeend", `
-            <tr>
-                <td>${event.date}</td>
-                <td>${event.duration}</td>
-                <td>${event.location}</td>
-                <td>${event.event}</td>
-                <td>${event.description}</td>
-                <td>${event.coach}</td>
-            </tr>`)})
-
-            data.futureOutput.forEach((event) => {futureBody.insertAdjacentHTML("beforeend", `
-            <tr>
-                <td>${event.date}</td>
-                <td>${event.duration}</td>
-                <td>${event.location}</td>
-                <td>${event.event}</td>
-                <td>${event.description}</td>
-                <td>${event.coach}</td>
-            </tr>`)})
-
-            // alert(data.response);
-            athleteSessionsModal.close();
-            addSessionContainer.style.display = "none";
-            pageHeader.innerText = "Today's Sessions"
-            currentSessionsContainer.style.display = "block";
-
-        }
+        alert(data.response);
+        startDate.value = "";
+        endDate.value = "";
+        athleteSessionsModal.close();
     })
 })
