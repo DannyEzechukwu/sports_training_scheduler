@@ -199,7 +199,7 @@ class SelectedEvent(db.Model):
     #ONLY 1 selection can be made for a scheduled event
     selection = db.relationship('EventSchedule', uselist = False, back_populates = "specific_event_selected")
     #1 selected event can ONLY have 1 feedback message
-    feedback_message = db.relationship("Feedback", back_populates = "event")
+    feedback_message = db.relationship("Feedback", uselist = False, back_populates = "event")
     #ONLY 1 coach can be chosen by an athlete for a selected event
     coach = db.relationship("Coach", back_populates = "events")
 
@@ -230,7 +230,7 @@ class Feedback(db.Model):
     #1 coach can provide a feedback message
     coach = db.relationship("Coach", back_populates = "feedback_messages")
     #1 feedback message can only be tied to 1 selected event
-    event = db.relationship("SelectedEvent", uselist = False, back_populates = "feedback_message")
+    event = db.relationship("SelectedEvent", back_populates = "feedback_message")
     
     def __repr__(self): 
         return f'<Feedback ID : {self.id}, Coach ID : {self.coach_id}, Feedback : {self.feedback}>'

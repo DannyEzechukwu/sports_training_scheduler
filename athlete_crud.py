@@ -1,4 +1,4 @@
-from model import db, connect_to_db, Athlete, Event, Feedback, EventSchedule, SelectedEvent
+from model import db, connect_to_db, Athlete, Coach, Event, Feedback, EventSchedule, SelectedEvent
 
 import datetime
 
@@ -68,7 +68,6 @@ def athlete_rejected_events(athlete_id : int, month : int, date : int, year : in
      return rejected
 
 
-
 def athlete_past_present_future_events_by_id(id): 
      past_events = []
      current_events = []
@@ -79,7 +78,8 @@ def athlete_past_present_future_events_by_id(id):
      # selected_events relationship variable
      athlete_selected_events = athlete.selected_events
      # Loop through the events in the athlete has selected
-     for event in athlete_selected_events: 
+     for event in athlete_selected_events:
+          print(event.feedback_message)
           # Get the EventSchedule object using the selection relationship variable
           event_on_schedule = event.selection
           # Set a condition for if match is found
@@ -103,7 +103,8 @@ def athlete_past_present_future_events_by_id(id):
                          "start_time" : f"{event_on_schedule.start_time}",
                          "end_time" : f"{event_on_schedule.end_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}",
-                         "feedback" : f"{Feedback.query.filter(Feedback.selected_event_id == event.id).first().feedback}"
+                         "no_feedback": f"Awaiting feedback from Coach {event.coach.fname}",
+                         "feedback" : event.feedback_message.feedback
                     })
                elif current_date < date_for_event_on_schedule: 
                     future_events.append({

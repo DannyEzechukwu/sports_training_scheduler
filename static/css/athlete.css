@@ -121,7 +121,7 @@ body{
     padding: 5px;
 }
 
-/* Data Table Styles */
+/* DATA TABLES */
 .data-table-container{
     max-height: 570px; 
     margin: 0 auto; /* Adjust margin as needed */
@@ -157,7 +157,7 @@ body{
     height: 20px;
 }
 
-/* Event Selection Styles */
+/* EVENT SELECTION */
 #event-selection-container {
     margin: auto; /* Adjust margin as needed */
     width: 30%; /* Adjust width as needed */
@@ -199,7 +199,7 @@ body{
     color: rgb(239, 97, 97);
 }
 
-/* Athlete Session Options Modal */
+/* ATHLETE SESSION OPTIONS MODAL */
 .modal {
     background: transparent;
     width: 100%;

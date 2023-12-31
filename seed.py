@@ -241,7 +241,7 @@ for i in range (9, 14):
     
 # print(time_intervals)
 
-start_date = datetime.datetime(2023, 12, 20)
+start_date = datetime.datetime(2023, 12, 1)
 end_date = datetime.datetime(2024, 6, 30)
 delta = datetime.timedelta(days = 1)
 
@@ -298,7 +298,7 @@ selected_events = []
 # the EventSchedule class
 for scheduled_event in event_schedule:
     #Identify today's date (MM/DD/YY)
-    today = datetime.datetime.now().date()
+    today = datetime.datetime(2023, 12, 15).date()
     #identify the date of each object from the event_schedule list
     event_date = datetime.datetime(scheduled_event.year, scheduled_event.month, scheduled_event.date).date()
     
@@ -326,7 +326,7 @@ for athlete_selection in selected_events:
     feedback = feedback_crud.create_feedback_message(
         athlete_selection.id, 
         athlete_selection.coach_id,
-        random.choice(coach_feedback_messages)
+        feedback = random.choice(coach_feedback_messages)
     ) 
 
     feedback_container.append(feedback)

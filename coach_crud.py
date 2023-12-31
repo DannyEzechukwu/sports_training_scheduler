@@ -45,7 +45,7 @@ def coach_past_present_future_events_by_id(id):
      coach_selected_events = coach.events
     
      # Loop through the events the coach has been selected for
-     for event in coach_selected_events: 
+     for event in coach_selected_events:
           # Get the EventSchedule object using the event_schedule_id attribute
           event_on_schedule_id = event.event_schedule_id
           # Apply filter for the first eevent returned from EventSchedule class
@@ -72,7 +72,8 @@ def coach_past_present_future_events_by_id(id):
                          "start_time" : f"{event_on_schedule.start_time}",
                          "end_time" : f"{event_on_schedule.start_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}",
-                         "feedback" : f"{Feedback.query.filter(Feedback.selected_event_id == event.id).first().feedback}"
+                         "feedback" : event.feedback_message.feedback,
+                         "feedback_id" : event.feedback_message.id
                     })
                elif current_date < date_for_event_on_schedule: 
                     future_events.append({

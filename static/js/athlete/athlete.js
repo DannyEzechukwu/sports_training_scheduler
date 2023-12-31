@@ -146,7 +146,7 @@ dateForm.addEventListener("submit", (evt) => {
 // Modal output for available sessions based on dates
 const athleteSessionsModal = document.querySelector("[athlete-choices-modal]");
 // Button to close modal
-const athleteSessionsModalCloser = document.querySelector("[modal-closer]")
+const athleteSessionsModalCloser = document.querySelector("[modal-closer]");
 
 //Close the modal that appears with all the events
 athleteSessionsModalCloser.addEventListener("click", () => {

@@ -43,7 +43,16 @@
                 <td>{{ dict["event"] }}</td>
                 <td>{{ dict["description"] }}</td>
                 <td>{{ dict["athlete"] }}</td>
-                <td>{{ dict["feedback"] }}</td>
+                {% set phrase = "Awaiting feedback from Coach" %}
+                {% if phrase in dict["feedback"] %}
+                <td class = "update">
+                    <button class = "feedback-adder" id ="{{ dict['feedback_id'] }}">
+                        {{ dict["feedback"] }}
+                    </button>
+                </td>
+                {%else%}
+                <td id = "{{ dict['feedback_id'] }}" >{{ dict["feedback"] }}</td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
@@ -51,6 +60,29 @@
     </table>
 
 </div>
+
+<dialog coach-feedback-modal class = "modal">
+
+    <div class="modal-header" id="athlete-choices-header">
+        <div class="modal-title" id="modal-title"><strong>Provide Feedback<br>(100 Character Max):</strong></div>
+        <button modal-closer class="closer">&times;</button>
+    </div>
+
+    <div id="feedback-form-container">
+    
+        <form action="/add_feedback/json" id = "feedback-form" method="POST"> 
+            <input type="hidden" id = "feedback-id" name="feedback-id"  value=0>
+            <textarea name="feedback-text" id="feedback-text" maxlength="100" required></textarea>
+            
+            <div id ="coach-form-submit">
+                <input type="submit">
+            </div>  
+        </form>
+    
+    </div>
+
+</dialog>
+
 
 <div class="data-table-container" id="current-sessions-container"> 
     
@@ -131,8 +163,8 @@
         </div>
 
         <div class="add-event-form-option">
-            <label for="event-description"><span class="asterisk">*</span>Event Description<br>(200 Character Max):</label>
-            <textarea name="event-description" id="event-description" maxlength="200" required></textarea>
+            <label for="event-description"><span class="asterisk">*</span>Event Description<br>(100 Character Max):</label>
+            <textarea name="event-description" id="event-description" maxlength="100" required></textarea>
         </div>
 
         <div class="add-event-form-option">

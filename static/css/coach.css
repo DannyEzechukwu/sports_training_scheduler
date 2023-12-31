@@ -119,8 +119,55 @@ body{
     padding: 5px;
 }
 
-/* Data Table Styles */
+/* FEEDBACK MODAL */
+.modal {
+    background: transparent;
+    width: 30%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+    /* Center the modal horizontally and vertically */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
+.modal-header{
+    background-color: darkgrey;
+    display: flex; /* Puts elements side by side */
+    justify-content: space-between; /* Puts space between elements*/
+    align-items: center; /*Seperates elements completely, and aligns them in the center */
+    padding: 5px;
+}
+
+.closer{
+    cursor: pointer; /* let's user know that they can click on button */
+    border: none;
+    outline: none;
+    background: none;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* FEEDBACK FORM */
+
+#feedback-form{
+    background-color: darkgrey;
+    height: 140px;
+}
+
+#feedback-text{
+    width: 100%;
+    height: 90px;
+}
+
+/* DATA TABLES */
 .data-table-container{
     max-height: 570px; 
     margin: 0 auto; /* Adjust margin as needed */
@@ -155,7 +202,25 @@ body{
     height: 20px;
 }
 
-/* Add Event Styles */
+.feedback-adder{
+    background: none;
+    border: none;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline;
+    display: block;
+    padding: 1rem 1.5rem;
+    color: rgb(239, 97, 97);
+    cursor: pointer;
+}
+
+.feedback-adder:hover{
+    background: hsl(205, 86%, 81%);
+    color: hsl(205, 78%, 60%);
+}
+
+/* ADD EVENT */
 #add-event-container {
     margin: auto; /* Adjust margin as needed */
     width: 50%; /* Adjust width as needed */
