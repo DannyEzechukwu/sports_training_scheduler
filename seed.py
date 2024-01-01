@@ -330,8 +330,7 @@ for athlete_selection in selected_events:
     ) 
 
     feedback_container.append(feedback)
-
-
+    
 model.db.session.add_all(feedback_container)
 model.db.session.commit()
 

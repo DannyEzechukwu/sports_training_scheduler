@@ -63,8 +63,7 @@ def athlete_rejected_events(athlete_id : int, month : int, date : int, year : in
           event_on_schedule.start_time == start_time
           ):
                rejected.append(event_on_schedule)
-     
-     print("Rejected: ", rejected)
+
      return rejected
 
 
@@ -79,7 +78,7 @@ def athlete_past_present_future_events_by_id(id):
      athlete_selected_events = athlete.selected_events
      # Loop through the events in the athlete has selected
      for event in athlete_selected_events:
-          print(event.feedback_message)
+          
           # Get the EventSchedule object using the selection relationship variable
           event_on_schedule = event.selection
           # Set a condition for if match is found

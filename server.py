@@ -526,12 +526,24 @@ def new_coach_event():
 # JSON Endpoint to handle feedback added by coaches
 @app.route("/add_feedback/json", methods = ["POST"])
 def add_feedback():
+    # Get feedback message and id from the frontend
     feed_back_id = int(request.form.get("feedback-id"))
     feed_back_text = request.form.get("feedback-text")
+    
+    # Get the feedback_object corresponding to the feed_back_id
+    feedback_object = feedback_crud.feedback_by_id(feed_back_id)
 
-    print(feed_back_id, feed_back_text)
+    # Update the feedback attribute in tfor the feedback_object
+    # commit change to data base
+    feedback_object.feedback = feed_back_text
+    db.session.commit()
+    
 
-    return "Walla, Walla"
+    return jsonify({"response" : "Feedback added!",
+                    "output" : feedback_object.feedback})
+
+    
+    
 
 
 

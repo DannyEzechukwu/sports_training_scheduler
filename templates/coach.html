@@ -45,7 +45,7 @@
                 <td>{{ dict["athlete"] }}</td>
                 {% set phrase = "Awaiting feedback from Coach" %}
                 {% if phrase in dict["feedback"] %}
-                <td class = "update">
+                <td id= "update{{ dict['feedback_id'] }}">
                     <button class = "feedback-adder" id ="{{ dict['feedback_id'] }}">
                         {{ dict["feedback"] }}
                     </button>

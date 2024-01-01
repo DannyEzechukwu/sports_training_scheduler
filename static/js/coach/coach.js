@@ -87,9 +87,6 @@ addEventForm.addEventListener("submit" , (event) => {
 
 // FEEDBACK SUBMISSION MODAL
 
-// Get all cells that will be updated upon feedback being added
-const tableDataUpdates = document.querySelectorAll(".update");
-
 // Get all buttons where a coach needs to add feedback
 const feedBackAdders = document.querySelectorAll(".feedback-adder");
 
@@ -107,8 +104,6 @@ for(let i = 0; i < feedBackAdders.length; i++){
     feedBackAdders[i].addEventListener("click", (event) => {
         event.preventDefault();
 
-        const tableDataUpdates = document.querySelectorAll(".update")
-
         // Get the hidden element in the feedback form and adjust
         // its value with the id of the feedBackAdder that was clicked
         // The value will be a string so need to convert to int on backend
@@ -118,20 +113,42 @@ for(let i = 0; i < feedBackAdders.length; i++){
         // Open the modal
         modal.showModal();
     })
-
-    feedbackForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(feedbackForm); 
-
-        fetch("/add_feedback/json", {
-            method: "POST", 
-            body: formData
-        })
-
-
-    })
 }
+
+// Feedback form submission
+feedbackForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    // Get the id of the element in the table that will be updated upon
+    // submitting the form
+    //  Use template literals
+    // const tableDataToUpdate = document.querySelector(`update${hiddenFeedBack.value}`)
+    const formData = new FormData(feedbackForm); 
+
+    fetch("/add_feedback/json", {
+        method: "POST", 
+        body: formData
+    })
+
+    .then((response) => response.json())
+    .then((data) => {
+        // Get the hiddenFeedback element so that it's value can be used
+        //  to access the correct cell inm table
+        const hiddenFeedBack = document.querySelector("#feedback-id");
+        // Get the cell
+        const tableDataToUpdate = document.querySelector(`#update${hiddenFeedBack.value}`);
+        // Alert the response from the JSON object
+        // Close modal
+        alert(data.response);
+        modal.close();
+        // Clear the feedback from the form
+        document.querySelector("#feedback-text").value="";
+        // Clear the inner HTML of tableDataToUpdate
+        // Place the output of the JSON object in the 
+        // within tableDataToUpdate
+        tableDataToUpdate.innerHTML = "";
+        tableDataToUpdate.innerText = data.output;
+})
 
 // Close Modal
 modalCloser.addEventListener("click", () => {
