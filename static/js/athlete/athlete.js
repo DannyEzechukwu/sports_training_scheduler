@@ -213,5 +213,6 @@ eventsOutputForm.addEventListener("submit", (evt) =>{
         startDate.value = "";
         endDate.value = "";
         athleteSessionsModal.close();
+        location.reload();
     })
 })

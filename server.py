@@ -346,8 +346,8 @@ def sessions_for_selected_date():
             db.session.commit()
         
         if len(selected_event_objects) == 1:
-            return jsonify({"response" : "Session added! Refresh the app to view the session you added!"})
-        return jsonify({"response" : "Sessions added! Refresh the app view the sessions you added!"})
+            return jsonify({"response" : "Session added!"})
+        return jsonify({"response" : "Sessions added!"})
     
     return redirect("/")
 #***********************************************************************************   
