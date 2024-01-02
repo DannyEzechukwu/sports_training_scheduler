@@ -111,7 +111,7 @@ app_coaches = [
         "lname": "Burgess",
         "username" : "rburgess",
         "email" : "rburgess@gmail.com",
-        "password" : "test"} 
+        "password" : "test"},
 
         {"fname" : "Ernest", 
         "lname": "Black",

@@ -54,14 +54,28 @@ dateForm.addEventListener("submit", (evt) => {
                 // named "event"
                 const coachRadioButtons = event.available_coaches.map((coach, index) => `
                 <div>
-                    <input type="radio" name="event-coach-${event.id}" value="${coach}" id="coach-${event.id}-${index}" required disabled>
+                    <input 
+                        type="radio" 
+                        name="event-coach-${event.id}" 
+                        value="${coach}" 
+                        id="coach-${event.id}-${index}" 
+                        required 
+                        disabled
+                    >
                     <label for="coach-${event.id}-${index}">Coach ${coach}</label>
                 </div>
             `).join("");
                 // Create rows for each element in array we named "event"
                 htmlContent += `
                     <tr>
-                        <td><input type="checkbox" name="event-schedule-${event.id}" value="${event.id}"></td>
+                        <td>
+                            <input 
+                                type="checkbox" 
+                                id="event-schedule-${event.id}" 
+                                name="event-schedule-${event.id}" 
+                                value="${event.id}"
+                            >
+                        </td>
                         <td>${event.month}/${event.date}/${event.year}</td>
                         <td>${event.duration}</td>
                         <td>${event.location}</td>

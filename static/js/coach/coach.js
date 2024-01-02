@@ -148,6 +148,7 @@ feedbackForm.addEventListener("submit", (event) => {
         // within tableDataToUpdate
         tableDataToUpdate.innerHTML = "";
         tableDataToUpdate.innerText = data.output;
+    })
 })
 
 // Close Modal
@@ -182,5 +183,3 @@ modal.querySelectorAll('div').forEach((element) => {
         e.stopPropagation();
     });
 });
-
-
