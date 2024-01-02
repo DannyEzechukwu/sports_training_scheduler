@@ -154,9 +154,9 @@ def athlete(id, fname, lname):
     
         athlete = athlete_crud.get_athlete_by_id(id)
 
-        past_events = athlete_crud.athlete_past_present_future_events_by_id(id)[0]
-        current_events = athlete_crud.athlete_past_present_future_events_by_id(id)[1]
-        future_events = athlete_crud.athlete_past_present_future_events_by_id(id)[2]
+        past_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[0], key = lambda k: k["date"])
+        current_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[1], key = lambda k: k["date"] )
+        future_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[2], key = lambda k: k["date"])
         
         return render_template("athlete.html", 
                         athlete_fname = athlete.fname,
@@ -399,9 +399,9 @@ def coach(id, fname, lname):
                                                 })
 
 
-        past_events = coach_crud.coach_past_present_future_events_by_id(id)[0]
-        current_events = coach_crud.coach_past_present_future_events_by_id(id)[1]
-        future_events = coach_crud.coach_past_present_future_events_by_id(id)[2]
+        past_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[0], key = lambda k: k["date"])
+        current_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[1], key = lambda k: k["date"])
+        future_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[2], key = lambda k: k["date"])
         
         return render_template("coach.html",
                         coach_fname = coach.fname,

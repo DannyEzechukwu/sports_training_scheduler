@@ -88,7 +88,7 @@ def athlete_past_present_future_events_by_id(id):
                year = event_on_schedule.year
                month = event_on_schedule.month
                date = event_on_schedule.date
-               date_for_event_on_schedule = datetime.date(year, month, date)
+               date_for_event_on_schedule = datetime.datetime(year, month, date).date()
                # Check if current date is greater than the date of the
                # event we found
                if current_date > date_for_event_on_schedule: 
@@ -98,7 +98,8 @@ def athlete_past_present_future_events_by_id(id):
                          "event" : Event.query.get(event_on_schedule.event_id).name,
                          "location" : Event.query.get(event_on_schedule.event_id).location,
                          "description": Event.query.get(event_on_schedule.event_id).description, 
-                         "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
+                         "date": date_for_event_on_schedule,
+                         "display_date" : date_for_event_on_schedule.strftime("%m/%d/%Y"),
                          "start_time" : f"{event_on_schedule.start_time}",
                          "end_time" : f"{event_on_schedule.end_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}",
@@ -112,7 +113,8 @@ def athlete_past_present_future_events_by_id(id):
                          "event" : Event.query.get(event_on_schedule.event_id).name,
                          "location" : Event.query.get(event_on_schedule.event_id).location,
                          "description": Event.query.get(event_on_schedule.event_id).description, 
-                         "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
+                         "date": date_for_event_on_schedule, 
+                         "display_date" : date_for_event_on_schedule.strftime("%m/%d/%Y"),
                          "start_time" : f"{event_on_schedule.start_time}",
                          "end_time" : f"{event_on_schedule.end_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}"
@@ -124,7 +126,8 @@ def athlete_past_present_future_events_by_id(id):
                          "event" : Event.query.get(event_on_schedule.event_id).name,
                          "location" : Event.query.get(event_on_schedule.event_id).location,
                          "description": Event.query.get(event_on_schedule.event_id).description, 
-                         "date": f"{event_on_schedule.month}/{event_on_schedule.date}/{event_on_schedule.year}", 
+                         "date": date_for_event_on_schedule, 
+                         "display_date" : date_for_event_on_schedule.strftime("%m/%d/%Y"),
                          "start_time" : f"{event_on_schedule.start_time}",
                          "end_time" : f"{event_on_schedule.end_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}"

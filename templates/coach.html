@@ -37,7 +37,7 @@
         <tbody>
             {% for dict in past_events %}
             <tr>
-                <td>{{ dict["date"] }}</td>
+                <td>{{ dict["display_date"] }}</td>
                 <td>{{ dict["duration"] }}</td>
                 <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>
@@ -102,7 +102,7 @@
         <tbody>
             {% for dict in current_events %}
             <tr>
-                <td>{{ dict["date"] }}</td>
+                <td>{{ dict["display_date"] }}</td>
                 <td>{{ dict["duration"] }}</td>
                 <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>
@@ -134,7 +134,7 @@
         <tbody id="future-body">
             {% for dict in future_events %}
             <tr>
-                <td>{{ dict["date"] }}</td>
+                <td>{{ dict["display_date"] }}</td>
                 <td>{{ dict["duration"] }}</td>
                 <td>{{ dict["location"] }}</td>
                 <td>{{ dict["event"] }}</td>

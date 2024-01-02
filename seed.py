@@ -112,6 +112,12 @@ app_coaches = [
         "username" : "rburgess",
         "email" : "rburgess@gmail.com",
         "password" : "test"} 
+
+        {"fname" : "Ernest", 
+        "lname": "Black",
+        "username" : "ebalck",
+        "email" : "eblack@gmail.com",
+        "password" : "test"} 
 ]
 
 app_events = [
