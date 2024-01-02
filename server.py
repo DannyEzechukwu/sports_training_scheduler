@@ -154,9 +154,9 @@ def athlete(id, fname, lname):
     
         athlete = athlete_crud.get_athlete_by_id(id)
 
-        past_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[0], key = lambda k: k["date"])
-        current_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[1], key = lambda k: k["date"] )
-        future_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[2], key = lambda k: k["date"])
+        past_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[0], key = lambda k: (k["date"], k["start_time_object"]))
+        current_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[1], key = lambda k: (k["date"], k["start_time_object"]))
+        future_events = sorted(athlete_crud.athlete_past_present_future_events_by_id(id)[2], key = lambda k: (k["date"], k["start_time_object"]))
         
         return render_template("athlete.html", 
                         athlete_fname = athlete.fname,
@@ -228,17 +228,20 @@ def options_for_selected_date():
             if not
             athlete_crud.athlete_rejected_events(session["id"], event.month, event.date, event.year, event.start_time)
         ]
+
+        final_available_events = sorted(available_events, key = lambda k: (datetime.datetime(k.year, k.month, k.date).date(), 
+                                                    datetime.datetime.strptime(k.start_time, '%I:%M %p').time()))
     
         # Condition for if there are no events available for that day
         # due to them all being selected by other athletes 
-        if available_events == []:
+        if final_available_events == []:
             return jsonify({
                 "response" : "no events available", 
                 "output" : f"No available events between {start_month}/{start_date}/{start_year} and {end_month}/{end_date}/{end_year}  "})
         
         # Loop through the EventSchedule objects in all available events
         # scheduled for the interval selected by athlete
-        for available_event in available_events:
+        for available_event in final_available_events:
             available_coaches = set()
 
             # Get the object from the Event class for each event
@@ -399,9 +402,9 @@ def coach(id, fname, lname):
                                                 })
 
 
-        past_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[0], key = lambda k: k["date"])
-        current_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[1], key = lambda k: k["date"])
-        future_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[2], key = lambda k: k["date"])
+        past_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[0], key = lambda k: (k["date"], k["start_time_object"]))
+        current_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[1], key = lambda k: (k["date"], k["start_time_object"]))
+        future_events = sorted(coach_crud.coach_past_present_future_events_by_id(id)[2], key = lambda k: (k["date"], k["start_time_object"]))
         
         return render_template("coach.html",
                         coach_fname = coach.fname,

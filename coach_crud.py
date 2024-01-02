@@ -71,6 +71,7 @@ def coach_past_present_future_events_by_id(id):
                          "date": date_for_event_on_schedule, 
                          "display_date" : date_for_event_on_schedule.strftime("%m/%d/%Y"),
                          "start_time" : f"{event_on_schedule.start_time}",
+                         "start_time_object": datetime.datetime.strptime(event_on_schedule.start_time, '%I:%M %p').time(),
                          "end_time" : f"{event_on_schedule.start_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}",
                          "feedback" : event.feedback_message.feedback,
@@ -85,6 +86,7 @@ def coach_past_present_future_events_by_id(id):
                          "date": date_for_event_on_schedule, 
                          "display_date" : date_for_event_on_schedule.strftime("%m/%d/%Y"),
                          "start_time" : f"{event_on_schedule.start_time}",
+                         "start_time_object": datetime.datetime.strptime(event_on_schedule.start_time, '%I:%M %p').time(),
                          "end_time" : f"{event_on_schedule.start_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}"
                     })
@@ -98,6 +100,7 @@ def coach_past_present_future_events_by_id(id):
                          "date": date_for_event_on_schedule, 
                          "display_date" : date_for_event_on_schedule.strftime("%m/%d/%Y"),
                          "start_time" : f"{event_on_schedule.start_time}",
+                         "start_time_object": datetime.datetime.strptime(event_on_schedule.start_time, '%I:%M %p').time(),
                          "end_time" : f"{event_on_schedule.start_time}",
                          "duration" : f"{event_on_schedule.start_time} - {event_on_schedule.end_time}"
                     })

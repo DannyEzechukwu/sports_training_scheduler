@@ -21,6 +21,7 @@ body{
     margin-bottom: 50px;
     margin-top: 50px;
     font-size: 8em;
+    cursor: default;
 }
 
 .login-options{
@@ -34,6 +35,7 @@ body{
     background-color: #38D56C;
     color: white;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .modal{

@@ -24,6 +24,7 @@ body{
 .header{
     margin-top: 60px;
     text-align: center;
+    cursor: default;
 }
 
 /* SIDE NAV */
@@ -104,6 +105,7 @@ body{
     margin-top: -30px;
     margin-left: 10px;
     padding: 5px;
+    cursor: default;
 }
 
 .baby-logo{
@@ -119,6 +121,7 @@ body{
     margin-top: -30px;
     margin-left: 10px;
     padding: 5px;
+    cursor: default;
 }
 
 /* DATA TABLES */
